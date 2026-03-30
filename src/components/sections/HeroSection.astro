@@ -3,6 +3,7 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
 ---
 
 <section id="hero" class="Hero">
+  <div class="Hero__bg js-hero-bg"></div>
   <div class="Hero__inner">
     <div class="Hero__content">
       <p class="Hero__label">// portfolio_v1.0</p>
@@ -31,6 +32,10 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
   </div>
 </section>
 
+<script>
+  import '../../scripts/hero-voxel-bg.ts';
+</script>
+
 <style lang="scss">
   @use '../../styles/foundation/mixin' as mix;
 
@@ -40,13 +45,45 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
     display: flex;
     align-items: center;
     padding-top: 60px;
+    overflow: hidden;
 
     @include mix.mq(sp) {
       padding-top: 56px;
     }
 
+    // ===========================================
+    // Voxel Background
+    // ===========================================
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform, opacity;
+
+      :global(svg) {
+        width: 90%;
+        height: auto;
+        max-width: 800px;
+        opacity: .7;
+      }
+
+      @include mix.mq(sp) {
+        :global(svg) {
+          width: 95%;
+          max-width: none;
+          opacity: .5;
+        }
+      }
+    }
+
     &__inner {
       position: relative;
+      z-index: 1;
       width: 100%;
       margin-inline: auto;
       padding-inline: 40px;
