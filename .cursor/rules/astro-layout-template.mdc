@@ -1,0 +1,63 @@
+---
+description: Astro レイアウトテンプレート固有のルール
+globs: src/layouts/**/*.astro, src/pages/**/*.astro
+alwaysApply: false
+---
+
+# Astro レイアウトテンプレートルール
+
+`src/layouts/BaseLayout.astro` などのレイアウトは、全ページの基盤になるため以下を厳守すること。
+
+## デフォルト props
+
+- デフォルト値はプロジェクト固有の実値を設定する
+- プレースホルダー（`example.com`, `description here`）を残さない
+
+```astro
+---
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'Maymai Portfolio',
+  description = 'Maymai のポートフォリオサイトです。',
+  canonical = Astro.url.href,
+} = Astro.props;
+---
+```
+
+## meta 属性
+
+- `name` / `property` の値は小文字を基本に統一する
+- `keywords` メタタグは原則追加しない
+
+## 共通読み込みの一元管理
+
+- グローバル CSS、共通 Web フォント、サイト共通 JS はレイアウトに集約する
+- ページ側で重複 import しない
+- ページ固有の `<head>` 追加は named slot や明示的な props で扱う
+
+## `<script>` の扱い
+
+- 自作スクリプトは Astro に処理させる `<script>` を優先する
+- `is:inline` はサードパーティの埋め込みコードや素通しが必要な場合のみ
+- `public/` 配下のスクリプトは最適化されない前提で使う
+
+## 必須メタ情報
+
+以下はレイアウト基盤で欠けないようにする:
+
+| 項目 | 必須 |
+|---|---|
+| `charset` | ✅ |
+| `viewport` | ✅ |
+| `format-detection` | ✅ |
+| `description` | ✅ |
+| `canonical` | ✅ |
+| OGP（`og:title`, `og:description`, `og:type`, `og:url`, `og:image`, `og:site_name`） | ✅ |
+| Twitter Card（`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`） | ✅ |
+| `favicon` | ✅ |
+| `apple-touch-icon` | ✅ |

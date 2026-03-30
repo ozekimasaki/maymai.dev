@@ -1,0 +1,30 @@
+---
+description: デバッグ時はフルHD解像度で確認する
+alwaysApply: true
+---
+
+# デバッグ時の解像度設定
+
+Chrome DevTools MCPを使用してデバッグを行う際は、**必ずフルHD解像度（1920x1080）**で確認すること。
+
+## 手順
+
+1. ページを開いた後、`resize_page`ツールで解像度を設定：
+
+```javascript
+// PC表示確認時
+resize_page({ width: 1920, height: 1080 })
+```
+
+2. SP表示を確認する場合は、確認後にPC（フルHD）に戻す：
+
+```javascript
+// SP確認後、必ずPCに戻す
+resize_page({ width: 1920, height: 1080 })
+```
+
+## 注意事項
+
+- スクリーンショット撮影前に必ず解像度を確認
+- レスポンシブ確認時も最終確認はフルHDで行う
+- SP確認は390x844（iPhone相当）を使用

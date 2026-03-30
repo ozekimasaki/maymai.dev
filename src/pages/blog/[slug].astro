@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  title={`${post.data.title} | Blog | Maymai.dev`}
+  description={post.data.description}
+  ogType="article"
+>
+  <article class="BlogPost">
+    <div class="BlogPost__inner l-inner">
+      <div class="BlogPost__header">
+        <time class="BlogPost__date" datetime={post.data.date.replace(/\./g, '-')}>
+          {post.data.date}
+        </time>
+        <h1 class="BlogPost__title">{post.data.title}</h1>
+        {post.data.tags && (
+          <ul class="BlogPost__tags">
+            {post.data.tags.map((tag: string) => (
+              <li class="BlogPost__tag">{tag}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div class="BlogPost__body">
+        <Content />
+      </div>
+
+      <div class="BlogPost__back">
+        <a href="/blog/" class="BlogPost__backLink">&larr; Blog 一覧にもどる</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .BlogPost {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 100px 0 60px;
+    }
+
+    &__header {
+      max-width: 720px;
+      margin-inline: auto;
+      margin-bottom: 64px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    &__date {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+    }
+
+    &__title {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 2rem;
+      line-height: 1.5;
+      margin-top: 16px;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    &__tag {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      padding: 2px 10px;
+      border: 1px solid var(--color-border);
+    }
+
+    &__body {
+      max-width: 720px;
+      margin-inline: auto;
+
+      :global(h2) {
+        font-family: var(--font-heading);
+        font-weight: 400;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        margin-top: 48px;
+        margin-bottom: 16px;
+        color: var(--color-text);
+      }
+
+      :global(p) {
+        font-size: .875rem;
+        line-height: 2;
+        margin-bottom: 1.5em;
+      }
+
+      :global(ul),
+      :global(ol) {
+        margin-bottom: 1.5em;
+        padding-left: 1.5em;
+      }
+
+      :global(ul) {
+        list-style: disc;
+      }
+
+      :global(ol) {
+        list-style: decimal;
+      }
+
+      :global(li) {
+        font-size: .875rem;
+        line-height: 2;
+        margin-bottom: .5em;
+      }
+
+      :global(strong) {
+        font-weight: 500;
+      }
+
+      :global(code) {
+        font-family: var(--font-mono);
+        font-size: .8125rem;
+        background-color: var(--color-bg-alt);
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+    }
+
+    &__back {
+      max-width: 720px;
+      margin-inline: auto;
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    &__backLink {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--color-label);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+    }
+  }
+</style>

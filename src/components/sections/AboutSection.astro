@@ -1,0 +1,168 @@
+---
+const profileItems = [
+  { key: 'name', value: 'Masaki Ozeki' },
+  { key: 'role', value: 'Frontend Engineer' },
+  { key: 'based_in', value: 'Hokkaido' },
+];
+---
+
+<section id="about" class="About">
+  <div class="About__inner l-inner">
+    <div class="About__header">
+      <h2 class="About__heading">About</h2>
+      <span class="About__label">// Author_Profile</span>
+    </div>
+
+    <div class="About__body">
+      <div class="About__text">
+        <p>
+          テクノロジーは、しずかであるべきだと考えています。
+          すぐれたインターフェースは、ユーザーにその存在を意識させません。
+        </p>
+        <p>
+          英国のビスポーク・テーラーがひと針ひと針に魂をこめるように、
+          コードのいち行いち行に <span class="About__accent">品格</span> をこめます。
+        </p>
+        <p>
+          見えないところにこそ本質がある。
+          そのおもいが、すべての制作の起点です。
+        </p>
+      </div>
+
+      <dl class="About__profile">
+        {profileItems.map((item) => (
+          <div class="About__profileItem">
+            <dt class="About__profileKey">{item.key}:</dt>
+            <dd class="About__profileValue">{item.value}</dd>
+          </div>
+        ))}
+        <div class="About__profileItem">
+          <dt class="About__profileKey">philosophy:</dt>
+          <dd class="About__profileValue About__profileValue--accent">技術は誰かのために</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .About {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 80px 0 60px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 80px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 48px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__body {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+
+      @include mix.mq(sp) {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    &__text {
+      grid-column: 1 / 6;
+      font-size: .875rem;
+      font-weight: 300;
+      line-height: 2.2;
+
+      @include mix.mq(sp) {
+        grid-column: 1 / -1;
+      }
+
+      p + p {
+        margin-top: 1.5em;
+      }
+    }
+
+    &__accent {
+      font-family: var(--font-heading);
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+
+    &__profile {
+      grid-column: 7 / 13;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      @include mix.mq(sp) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &__profileItem {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__profileKey {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+    }
+
+    &__profileValue {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      &--accent {
+        font-weight: 500;
+        color: var(--color-accent);
+      }
+    }
+
+    &__inner::after {
+      content: '';
+      display: block;
+      margin-top: 80px;
+      border-top: 1px solid var(--color-border);
+
+      @include mix.mq(sp) {
+        margin-top: 60px;
+      }
+    }
+  }
+</style>

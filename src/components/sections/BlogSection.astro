@@ -1,0 +1,157 @@
+---
+const posts = [
+  {
+    slug: 'whitespace-speaks',
+    date: '2026.03.15',
+    title: '余白が語ること ─ タイポグラフィと静寂のデザイン',
+  },
+  {
+    slug: 'react-server-components',
+    date: '2026.02.28',
+    title: 'React Server Componentsと「見えない速さ」',
+  },
+  {
+    slug: 'bespoke-component-design',
+    date: '2026.01.10',
+    title: 'ビスポークなコンポーネント設計を目指して',
+  },
+];
+---
+
+<section id="blog" class="Blog">
+  <div class="Blog__inner l-inner">
+    <div class="Blog__header">
+      <h2 class="Blog__heading">Blog</h2>
+      <span class="Blog__label">// Blog.latest(3)</span>
+    </div>
+
+    <ul class="Blog__list">
+      {posts.map((post) => (
+        <li class="Blog__item">
+          <a href={`/blog/${post.slug}/`} class="Blog__link">
+            <time class="Blog__date" datetime={post.date.replace(/\./g, '-')}>{post.date}</time>
+            <span class="Blog__title">{post.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="Blog__more">
+      <a href="/blog/" class="Blog__moreLink">View More</a>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .Blog {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 80px 0 60px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__list {
+      border-top: 1px solid var(--color-border);
+    }
+
+    &__item {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    &__link {
+      display: flex;
+      align-items: baseline;
+      gap: 40px;
+      padding: 24px 0;
+      transition: opacity var(--duration-base) ease;
+
+      @include mix.mq(sp) {
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .6;
+        }
+      }
+    }
+
+    &__date {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    &__title {
+      font-size: .875rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    &__more {
+      display: flex;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    &__moreLink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      height: 55px;
+      border: 1px solid var(--color-text);
+      font-size: .875rem;
+      letter-spacing: .1em;
+      color: var(--color-text);
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--color-text);
+          color: var(--color-bg);
+        }
+      }
+    }
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+description: HTML / Astro マークアップ規約（セマンティクス、アクセシビリティ、属性）
+globs: **/*.astro, **/*.html, **/*.mdx
+alwaysApply: false
+---
+
+# HTML / Astro マークアップ規約
+
+## パス指定
+
+- 内部リンクと `public/` 配下の参照はルート相対パスを使用する
+- Astro に最適化させたいローカル画像は `src/assets/` から import して使う
+
+```astro
+---
+import { Image } from 'astro:assets';
+import heroImage from '../assets/images/hero/img_hero_01.webp';
+---
+
+<Image src={heroImage} alt="メインビジュアル" />
+<a href="/about/">About</a>
+<img src="/images/logo/logo_mark.svg" alt="ロゴ" width="48" height="48">
+```
+
+## 区分コンテンツ
+
+- `section`, `article`, `nav`, `aside` を適切に使用する
+- **すべての `section` 要素には `id` 属性を付与する**
+- `id` の値はブロッククラス名の kebab-case 版と一致させる
+- **見出しを持たないブロックは `section` ではなく `div` を使う**
+
+```astro
+<section id="mv" class="Mv js-mv">
+  <h1 class="Mv__headline">Your Potential, Our Edge.</h1>
+</section>
+
+<div id="footer-entry" class="FooterEntry">
+  ...
+</div>
+```
+
+## `nav` 要素の `aria-label`
+
+ページ内に複数の `nav` がある前提で、**すべての `nav` に `aria-label` を付与する**。
+
+| 用途 | `aria-label` 例 |
+|---|---|
+| ヘッダーナビ | `メインナビゲーション` |
+| SP メニュー | `メインメニュー` |
+| パンくず | `パンくずリスト` |
+| 目次 | `目次` |
+| フッターナビ | `フッターナビゲーション` |
+
+## 見出しルール
+
+- `h1` はページ内に 1 つのみ
+- 見出しレベルはアウトライン順に使う
+- 下層ページでも `h1` を省略しない
+
+## 画像
+
+| 項目 | ルール |
+|---|---|
+| ローカル画像 | `astro:assets` の `<Image />` / `<Picture />` を優先 |
+| `alt` | 必須（装飾画像は `alt=""`） |
+| `width` / `height` | 素の `<img>` を使う場合は必須 |
+| `role="img"` | SVG を `<img>` で使う場合に付与 |
+| `loading="lazy"` | ファーストビュー外の `<img>` に付与 |
+
+## リンク
+
+`target="_blank"` を指定するリンクには、**必ず `rel="noopener nofollow"`** を設定する。
+
+```astro
+<a href="https://example.com" target="_blank" rel="noopener nofollow">
+  外部リンク
+</a>
+```
+
+## `<script>` の扱い
+
+- `.astro` 内の自作 `<script>` は Astro に処理させる
+- `is:inline` は生のスニペットが必要な場合のみ
+- サイト共通の処理はレイアウトまたは共通コンポーネント側に寄せる
+
+```astro
+<script>
+  import { initHeader } from '../scripts/scroll-header.ts';
+
+  initHeader();
+</script>
+
+<script is:inline async src="https://example.com/analytics.js"></script>
+```
+
+## フォーム
+
+- 年齢入力に `type="tel"` を使わない
+- `type="number"` より `type="text" inputmode="numeric"` を優先する
+
+## HTML 記法
+
+| ルール | ✅ 正 | ❌ 誤 |
+|---|---|---|
+| 小文字タグ | `div` | `DIV` |
+| ダブルクォーテーション | `class="foo"` | `class='foo'` |
+| 終了タグ省略しない | `</p>` | 省略 |
+| 空要素に終端スラッシュなし | `<hr>` | `<hr />` |
+| ID は小文字ケバブ | `id="main-content"` | `id="MainContent"` |

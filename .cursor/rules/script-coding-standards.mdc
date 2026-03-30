@@ -1,0 +1,45 @@
+---
+description: スクリプトコーディング規約（TypeScript / JavaScript / Astro client-side）
+globs: **/*.js, **/*.ts, **/*.jsx, **/*.tsx
+alwaysApply: false
+---
+
+# スクリプトコーディング規約
+
+## 基本方針
+
+- ES Modules を使用する
+- `var` は禁止し、`const` / `let` を使う
+- 共有ロジックは TypeScript を優先する
+- 非同期処理は `async` / `await` を優先する
+
+## Astro の実行コンテキスト
+
+- `.astro` のフロントマターはサーバー側で実行される
+- `window`, `document`, `localStorage`, `matchMedia` などのブラウザ API はフロントマターで使わない
+- ブラウザ API は `.astro` の `<script>` または `client:*` 付き UI コンポーネント内で扱う
+
+```astro
+---
+const pageTitle = 'About';
+---
+
+<script>
+  const button = document.querySelector('.js-menu-button');
+  button?.addEventListener('click', () => {
+    document.body.classList.toggle('is-menu-open');
+  });
+</script>
+```
+
+## DOM 操作
+
+- DOM 操作用セレクタは `js-` プレフィックスクラスを使用する
+- スタイルクラスを直接取得しない
+- `querySelector`, `querySelectorAll`, `addEventListener`, `classList` などのモダン API を使う
+
+## Islands 運用
+
+- 静的 UI は `.astro` のまま実装する
+- 複雑な対話 UI が必要な場合だけ React / Vue / Svelte などの client component を使う
+- `client:load`, `client:idle`, `client:visible` を要件に応じて選び、惰性で `client:load` を使わない

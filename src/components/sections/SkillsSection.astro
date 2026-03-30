@@ -1,0 +1,137 @@
+---
+const skillGroups = [
+  {
+    label: '// languages',
+    items: ['TypeScript', 'JavaScript', 'Python', 'PHP', 'Kotlin', 'HTML', 'CSS · SCSS', 'Pug'],
+  },
+  {
+    label: '// frameworks',
+    items: ['Astro', 'Vite', 'React', 'Node.js', 'WordPress', 'Discord.js'],
+  },
+  {
+    label: '// infrastructure',
+    items: ['Cloudflare Workers', 'KV', 'R2', 'D1', 'Docker'],
+  },
+  {
+    label: '// ai coding',
+    items: ['Cursor', 'Codex', 'Claude Code', 'GitHub Copilot', 'Windsurf', 'Opencode', 'OpenClaw'],
+  },
+  {
+    label: '// tools & services',
+    items: ['Git', 'Chrome Extensions', 'MCP', 'Figma'],
+  },
+];
+
+const totalCount = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
+---
+
+<section id="skills" class="Skills">
+  <div class="Skills__inner l-inner">
+    <div class="Skills__header">
+      <h2 class="Skills__heading">Skills</h2>
+      <span class="Skills__label">// skills.length({totalCount})</span>
+    </div>
+
+    <div class="Skills__body">
+      {skillGroups.map((group) => (
+        <div class="Skills__group">
+          <p class="Skills__groupLabel">{group.label}</p>
+          <ul class="Skills__list">
+            {group.items.map((skill) => (
+              <li class="Skills__item">{skill}<span class="Skills__slash">/</span></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .Skills {
+    padding: 100px 0;
+
+    @include mix.mq(sp) {
+      padding: 60px 0;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+
+      @include mix.mq(sp) {
+        gap: 36px;
+      }
+    }
+
+    &__groupLabel {
+      font-family: var(--font-mono);
+      font-size: .6875rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      margin-bottom: 16px;
+    }
+
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    &__item {
+      font-family: var(--font-mono);
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
+    &__slash {
+      color: var(--color-accent);
+    }
+
+    &__inner::after {
+      content: '';
+      display: block;
+      margin-top: 100px;
+      border-top: 1px solid var(--color-border);
+
+      @include mix.mq(sp) {
+        margin-top: 60px;
+      }
+    }
+  }
+</style>

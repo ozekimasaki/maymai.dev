@@ -1,0 +1,29 @@
+// ===========================================
+// Media Query Mixins
+// ===========================================
+
+$breakpoint: 768px;
+
+@mixin mq($direction) {
+  @if $direction == pc {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  } @else if $direction == sp {
+    @media (max-width: #{$breakpoint - 1}) {
+      @content;
+    }
+  }
+}
+
+// ===========================================
+// Hover
+// ===========================================
+
+@mixin hover {
+  @media (any-hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

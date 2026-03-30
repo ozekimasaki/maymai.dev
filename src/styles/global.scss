@@ -1,0 +1,103 @@
+@use 'sass:math';
+@use './foundation/variables';
+@use './foundation/mixin' as mix;
+
+// ===========================================
+// Reset
+// ===========================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+// ===========================================
+// Utility
+// ===========================================
+
+.pc-only {
+  @include mix.mq(sp) {
+    display: none !important;
+  }
+}
+
+.sp-only {
+  @include mix.mq(pc) {
+    display: none !important;
+  }
+}
+
+// ===========================================
+// Focus
+// ===========================================
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+// ===========================================
+// Content Width
+// ===========================================
+
+.l-inner {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 40px;
+
+  @include mix.mq(sp) {
+    padding-inline: 20px;
+  }
+}

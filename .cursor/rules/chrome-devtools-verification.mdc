@@ -1,0 +1,32 @@
+---
+description: フロントエンド変更時は Chrome DevTools で検証を行う
+globs: **/*.astro, **/*.scss, **/*.css, **/*.js, **/*.ts, **/*.jsx, **/*.tsx
+alwaysApply: false
+---
+
+# Chrome DevTools 検証ルール
+
+フロントエンドファイル（Astro, CSS, SCSS, JavaScript, TypeScript）を変更した際は、可能な範囲で Chrome DevTools で検証を行うこと。
+
+## 検証手順
+
+1. `npm run dev` の起動 URL にアクセスする
+2. デフォルトポートは `http://localhost:4321`。`astro.config.mjs` や起動ログで異なる場合は実際の URL を使う
+3. PC は `1920x1080`、SP は `390x844` で確認する
+4. スクリーンショットで見た目を確認する
+5. コンソールの `error` / `warn` を確認する
+
+## 検証タイミング
+
+| 変更内容 | 検証項目 |
+|---|---|
+| レイアウト変更 | PC / SP のスクリーンショット |
+| スタイル変更 | 該当セクションの表示確認 |
+| スクリプト変更 | コンソール確認 + 動作確認 |
+| アニメーション変更 | 複数回の動作確認 |
+
+## 確認完了時に報告すること
+
+- 表示崩れの有無
+- コンソールエラー / warning の有無
+- 意図した動作になっているか

@@ -1,0 +1,56 @@
+---
+alwaysApply: true
+---
+
+# 画像ファイル命名規則
+
+## プレフィックス
+
+| プレフィックス | 用途 | 例 |
+|---|---|---|
+| `img_` | 一般画像 | `img_hero_01.webp`, `img_profile_pc.webp` |
+| `icon_` | アイコン | `icon_instagram.svg`, `icon_arrow.svg` |
+| `logo_` | ロゴ | `logo_wordmark.svg`, `logo_symbol.svg` |
+
+## サフィックス
+
+| サフィックス | 用途 |
+|---|---|
+| `_pc` | PC 用画像 |
+| `_sp` | SP 用画像 |
+
+## 命名形式
+
+**snake_case** を使用する。
+
+```text
+{prefix}_{name}_{variant}_{number}.{ext}
+```
+
+## 配置ルール
+
+```text
+src/assets/images/        # Astro に最適化させる画像
+public/images/            # 素通しで配信する画像
+public/favicon.svg
+public/apple-touch-icon.png
+```
+
+- 最適化対象のローカル画像は `src/assets/images/`
+- そのまま URL 配信したい画像は `public/images/`
+- favicon, og-image, webmanifest 関連は `public/` に置く
+
+## フォーマット方針
+
+| フォーマット | 用途 |
+|---|---|
+| `.avif` | 写真・ヒーロー画像の第一候補 |
+| `.webp` | 写真・ヒーロー画像の代替候補 |
+| `.svg` | アイコン・ロゴ |
+| `.png` | 透過が必要な画像、スクリーンショット |
+
+## Astro での扱い
+
+- `src/assets/` の画像は import して `astro:assets` で使う
+- `public/` の画像はルート相対パスで参照する
+- 画像最適化を受けたい画像を `public/` に置かない

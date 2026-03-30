@@ -1,0 +1,183 @@
+---
+const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+---
+
+<section id="hero" class="Hero">
+  <div class="Hero__inner">
+    <div class="Hero__content">
+      <p class="Hero__label">// portfolio_v1.0</p>
+      <h1 class="Hero__heading">
+        Code with AI,<br>
+        Create for Someone.
+      </h1>
+      <p class="Hero__description">
+        AIの力をかりながら、<br>
+        しずかで心地よいデジタル体験をつくっています。
+      </p>
+    </div>
+
+    <div class="Hero__scroll">
+      <span class="Hero__scrollText">scroll</span>
+      <span class="Hero__scrollLine"></span>
+    </div>
+
+    <p class="Hero__lang">lang: ja-JP</p>
+
+    <div class="Hero__status">
+      <p>[ status: online ]</p>
+      <p>last_deploy: {today}</p>
+      <p>version: 1.0.0</p>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .Hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 60px;
+
+    @include mix.mq(sp) {
+      padding-top: 56px;
+    }
+
+    &__inner {
+      position: relative;
+      width: 100%;
+      margin-inline: auto;
+      padding-inline: 40px;
+      min-height: calc(100vh - 60px);
+      display: flex;
+      align-items: center;
+
+      @include mix.mq(sp) {
+        padding-inline: 20px;
+        min-height: calc(100vh - 56px);
+      }
+    }
+
+    &__content {
+      padding-top: 80px;
+
+      @include mix.mq(sp) {
+        padding-top: 40px;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .6875rem;
+      line-height: 1.5;
+      letter-spacing: .1em;
+      color: var(--color-label);
+      margin-bottom: 24px;
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 5rem;
+      line-height: 1.2;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2.5rem;
+      }
+    }
+
+    &__description {
+      margin-top: 32px;
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: .875rem;
+      line-height: 2;
+      color: var(--color-text);
+      opacity: .7;
+    }
+
+    &__scroll {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &__scrollText {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: var(--color-label);
+    }
+
+    &__scrollLine {
+      display: block;
+      width: 1px;
+      height: 80px;
+      background-color: var(--color-accent);
+      animation: scrollLine 3s ease infinite;
+    }
+
+    &__lang {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+
+      @include mix.mq(sp) {
+        left: 20px;
+        bottom: 24px;
+      }
+    }
+
+    &__status {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      text-align: right;
+
+      @include mix.mq(sp) {
+        right: 20px;
+        bottom: 24px;
+      }
+
+      p {
+        font-family: var(--font-mono);
+        font-size: .625rem;
+        line-height: 1.5;
+        color: var(--color-label);
+      }
+    }
+  }
+
+  @keyframes scrollLine {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+
+    50.1% {
+      transform-origin: bottom;
+    }
+
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+</style>

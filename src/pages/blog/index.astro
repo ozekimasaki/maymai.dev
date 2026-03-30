@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort(
+  (a, b) => new Date(b.data.date.replace(/\./g, '-')).getTime() - new Date(a.data.date.replace(/\./g, '-')).getTime()
+);
+---
+
+<BaseLayout title="Blog | Maymai.dev" description="ブログ記事の一覧です。">
+  <section id="blog" class="BlogPage">
+    <div class="BlogPage__inner l-inner">
+      <div class="BlogPage__header">
+        <h1 class="BlogPage__heading">Blog</h1>
+        <span class="BlogPage__label">// Blog.all()</span>
+      </div>
+
+      <ul class="BlogPage__list">
+        {sortedPosts.map((post) => (
+          <li class="BlogPage__item">
+            <a href={`/blog/${post.id}/`} class="BlogPage__link">
+              <time class="BlogPage__date" datetime={post.data.date.replace(/\./g, '-')}>{post.data.date}</time>
+              <div class="BlogPage__content">
+                <span class="BlogPage__title">{post.data.title}</span>
+                {post.data.description && (
+                  <p class="BlogPage__excerpt">{post.data.description}</p>
+                )}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .BlogPage {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 100px 0 60px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__list {
+      border-top: 1px solid var(--color-border);
+    }
+
+    &__item {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    &__link {
+      display: flex;
+      align-items: baseline;
+      gap: 40px;
+      padding: 28px 0;
+      transition: opacity var(--duration-base) ease;
+
+      @include mix.mq(sp) {
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .6;
+        }
+      }
+    }
+
+    &__date {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    &__title {
+      font-size: .875rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    &__excerpt {
+      margin-top: 4px;
+      font-size: .75rem;
+      line-height: 1.6;
+      color: var(--color-label);
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+description: CSS コーディング規約（グローバル CSS / Astro scoped style）
+globs: **/*.scss, **/*.css, **/*.astro
+alwaysApply: false
+---
+
+# CSS コーディング規約
+
+## セレクタ
+
+- グローバル CSS / SCSS はクラスセレクタ中心で書く
+- `.astro` の scoped style 内では、必要最小限の要素セレクタを許容する
+- ID セレクタは禁止
+- セレクタ深さは最大 3 階層を目安にする
+
+```astro
+<style lang="scss">
+  .Card {
+    padding: 24px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+</style>
+```
+
+## グローバル汚染の抑制
+
+- `:global()` や `<style is:global>` は必要最小限にする
+- サードパーティライブラリの上書きや reset 用途以外で広域指定しない
+
+## ブロック・宣言
+
+- 空ブロック禁止
+- 不要な空行禁止
+- `color: #222;` の形式を守る
+- 末尾セミコロン省略禁止
+- 同一プロパティの重複禁止
+
+## `!important`
+
+- 原則禁止
+- ユーティリティクラスや外部ライブラリ上書きで本当に必要な場合のみ
+
+## 値ルール
+
+| ルール | ✅ 正 | ❌ 誤 |
+|---|---|---|
+| `font-size` は `rem` 優先 | `font-size: 1rem` | `font-size: 16px` |
+| ゼロに単位なし | `margin: 0` | `margin: 0px` |
+| 先行ゼロ省略 | `opacity: .5` | `opacity: 0.5` |
+| 名前付き色より HEX | `color: #fff` | `color: white` |
+| `url()` クォーテーションなし | `url(/images/bg.webp)` | `url("/images/bg.webp")` |
+
+## JS 連携クラス
+
+- JS 操作用クラスは `js-` プレフィックスでスタイル用クラスと分離する
+
+## ホバー状態
+
+- `:hover` は必ず `@media (any-hover: hover)` で囲む
+
+```scss
+@media (any-hover: hover) {
+  .Button:hover {
+    opacity: .7;
+  }
+}
+```
+
+## `transition: all` 禁止
+
+```scss
+.Button {
+  transition: background .3s ease, color .3s ease;
+}
+```
+
+## フォーカス状態
+
+```scss
+.Button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+```

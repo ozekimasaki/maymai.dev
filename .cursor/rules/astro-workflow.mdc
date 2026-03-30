@@ -1,0 +1,58 @@
+---
+alwaysApply: true
+---
+
+# Astro ワークフロー
+
+## 開発コマンド
+
+```bash
+# 開発サーバー
+npm run dev
+
+# 本番ビルド
+npm run build
+
+# ビルド後の確認
+npm run preview
+
+# 型・テンプレート検証
+npx astro check
+```
+
+## 基本ディレクトリ構成
+
+```text
+プロジェクトルート/
+├── public/                 # そのまま配信するファイル
+├── src/
+│   ├── assets/             # Astro に最適化させる画像など
+│   ├── components/         # 再利用コンポーネント
+│   ├── layouts/            # 共通レイアウト
+│   ├── pages/              # ルーティング対象（必須）
+│   ├── scripts/            # 共有クライアントスクリプト
+│   └── styles/             # 共有スタイル
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
+```
+
+## 運用ルール
+
+1. `src/pages/` はルーティング起点として必須
+2. 共通 UI は `src/layouts/` と `src/components/` に分割する
+3. 自作の CSS / JS / 画像は原則 `src/` 配下に置く
+4. `public/` は favicon, robots.txt, そのまま配信したいファイルのみに使う
+5. 画像最適化が必要な画像は `src/assets/` から import して `astro:assets` を使う
+6. Astro は静的 HTML を基本とし、インタラクティブな箇所だけ `client:*` で hydrate する
+7. 日常の確認は `npm run dev` を使い、`npm run preview` はビルド結果確認時のみ使う
+
+## Islands 運用
+
+| 指令 | 用途 |
+|---|---|
+| `client:load` | ファーストビュー直後に必要な UI |
+| `client:idle` | 優先度が低い補助 UI |
+| `client:visible` | 画面に入ってから読み込めばよい UI |
+
+**原則**: テキスト・画像・静的レイアウトは `.astro` のまま出し、不要な hydrate を避ける。

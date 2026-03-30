@@ -1,0 +1,37 @@
+---
+description: Figma MCPでダウンロードした未使用画像の削除ルール
+alwaysApply: true
+---
+
+# Figma MCP 画像クリーンアップ
+
+Figma MCPを使用して画像をダウンロードした後、使用しなかったファイルは必ず削除する。
+
+## ルール
+
+1. **ダウンロード後の確認**: Figma MCPで `dirForAssetWrites` を指定してアセットをダウンロードした場合、実装完了時に使用したファイルを確認する
+
+2. **未使用ファイルの削除**: 実装で使用しなかったハッシュ名のファイル（例: `088ecb7e89ded268fc4c157827f5c6a9fc7d8d8b.svg`）は削除する
+
+3. **リネーム後の元ファイル削除**: ファイルをリネームした場合、元のハッシュ名ファイルも削除する
+
+## 例
+
+```bash
+# ❌ 残してはいけない
+src/assets/images/header/
+  - 088ecb7e89ded268fc4c157827f5c6a9fc7d8d8b.svg  # 未使用
+  - c10b69e87442bd660ffdd82ccc03dbf2db567af0.svg  # リネーム元
+  - logo_header-newoman.svg  # 使用中
+
+# ✅ 正しい状態
+src/assets/images/header/
+  - logo_header-newoman.svg  # 使用中
+  - logo_header-mimure.svg   # 使用中
+```
+
+## タイミング
+
+- 実装完了時
+- リファクタリング時
+- ユーザーから依頼があった時

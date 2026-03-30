@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allWorks = await getCollection('works');
+const sortedWorks = allWorks.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。">
+  <section id="works" class="WorksPage">
+    <div class="WorksPage__inner l-inner">
+      <div class="WorksPage__header">
+        <h1 class="WorksPage__heading">Works</h1>
+        <span class="WorksPage__label">// Works.filter(all)</span>
+      </div>
+
+      <div class="WorksPage__grid">
+        {sortedWorks.map((work) => (
+          <a href={`/works/${work.id}/`} class="WorksPage__card">
+            <div class="WorksPage__cardImage">
+              <img
+                src={work.data.thumbnail}
+                alt={work.data.title}
+                width="580"
+                height="360"
+                loading="lazy"
+              />
+            </div>
+            <div class="WorksPage__cardInfo">
+              <h2 class="WorksPage__cardTitle">{work.data.title}</h2>
+              <p class="WorksPage__cardCategory">{work.data.category}</p>
+              <p class="WorksPage__cardDescription">{work.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .WorksPage {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 100px 0 60px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px 16px;
+
+      @include mix.mq(sp) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    &__card {
+      display: block;
+
+      img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 580 / 360;
+        object-fit: cover;
+        transition: transform var(--duration-base) ease;
+      }
+
+      @media (any-hover: hover) {
+        &:hover img {
+          transform: scale(1.03);
+        }
+      }
+    }
+
+    &__cardImage {
+      overflow: hidden;
+    }
+
+    &__cardInfo {
+      margin-top: 16px;
+    }
+
+    &__cardTitle {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
+    &__cardCategory {
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+    }
+
+    &__cardDescription {
+      margin-top: 8px;
+      font-size: .8125rem;
+      line-height: 1.8;
+      color: var(--color-label);
+    }
+  }
+</style>

@@ -1,0 +1,208 @@
+---
+const navItems = [
+  { label: 'About', href: '/#about' },
+  { label: 'Skills', href: '/#skills' },
+  { label: 'Works', href: '/#works' },
+  { label: 'Blog', href: '/#blog' },
+  { label: 'Contact', href: '/#contact' },
+];
+---
+
+<header class="Header js-header">
+  <div class="Header__inner">
+    <a href="/" class="Header__logo">Maymai.dev</a>
+
+    <nav class="Header__nav pc-only" aria-label="メインナビゲーション">
+      <ul class="Header__navList">
+        {navItems.map((item) => (
+          <li class="Header__navItem">
+            <a href={item.href} class="Header__navLink">{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <button
+      class="Header__burger sp-only js-header-burger"
+      type="button"
+      aria-label="メニューを開く"
+      aria-expanded="false"
+      aria-controls="sp-menu"
+    >
+      <span class="Header__burgerLine"></span>
+      <span class="Header__burgerLine"></span>
+      <span class="Header__burgerLine"></span>
+    </button>
+  </div>
+
+  <div class="Header__menu sp-only" id="sp-menu" aria-hidden="true">
+    <nav aria-label="メインメニュー">
+      <ul class="Header__menuList">
+        {navItems.map((item) => (
+          <li class="Header__menuItem">
+            <a href={item.href} class="Header__menuLink js-menu-link">{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style lang="scss">
+  @use '../styles/foundation/mixin' as mix;
+
+  .Header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--z-header);
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+
+    &__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+
+      @include mix.mq(sp) {
+        padding: 0 20px;
+        height: 56px;
+      }
+    }
+
+    &__logo {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-text);
+      white-space: nowrap;
+    }
+
+    &__navList {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    &__navLink {
+      font-family: var(--font-mono);
+      font-size: .6875rem;
+      line-height: 1.5;
+      letter-spacing: .05em;
+      color: var(--color-label);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+    }
+
+    // Hamburger button
+    &__burger {
+      position: relative;
+      width: 28px;
+      height: 20px;
+      z-index: calc(var(--z-hamburger) + 1);
+    }
+
+    &__burgerLine {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-text);
+      transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
+
+      &:nth-child(1) { top: 0; }
+      &:nth-child(2) { top: 50%; }
+      &:nth-child(3) { bottom: 0; }
+    }
+
+    &.is-open &__burgerLine {
+      &:nth-child(1) {
+        top: 50%;
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(2) { opacity: 0; }
+
+      &:nth-child(3) {
+        bottom: auto;
+        top: 50%;
+        transform: rotate(-45deg);
+      }
+    }
+
+    // SP fullscreen menu
+    &__menu {
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-hamburger);
+      background-color: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--duration-base) ease, visibility var(--duration-base) ease;
+    }
+
+    &.is-open &__menu {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &__menuList {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      text-align: center;
+    }
+
+    &__menuLink {
+      font-family: var(--font-mono);
+      font-size: .875rem;
+      letter-spacing: .05em;
+      color: var(--color-label);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('.js-header');
+  const burger = document.querySelector('.js-header-burger');
+  const menuLinks = document.querySelectorAll('.js-menu-link');
+
+  if (burger && header) {
+    burger.addEventListener('click', () => {
+      const isOpen = header.classList.toggle('is-open');
+      burger.setAttribute('aria-expanded', String(isOpen));
+      burger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+      document.querySelector('#sp-menu')?.setAttribute('aria-hidden', String(!isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        header.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'メニューを開く');
+        document.querySelector('#sp-menu')?.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+</script>

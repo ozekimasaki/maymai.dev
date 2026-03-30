@@ -1,0 +1,96 @@
+---
+alwaysApply: true
+---
+
+# SCSS 命名規則
+
+## 基本方針
+
+- 共有スタイルは `src/styles/` に配置する
+- コンポーネント固有スタイルは `.astro` 内の `<style lang="scss">` を優先する
+- パーシャルは `_` プレフィックスで管理する
+
+## ファイル命名
+
+| 種別 | 規則 | 例 |
+|---|---|---|
+| グローバルエントリー | 用途が分かる名前 | `global.scss`, `editor.scss` |
+| パーシャル | `_` プレフィックス | `_variables.scss`, `_mixin.scss`, `_header.scss` |
+| 複合名 | kebab-case | `_hero-section.scss` |
+
+```scss
+@use 'sass:math';
+@use './foundation/variables' as vars;
+@use './foundation/mixin' as mix;
+```
+
+## 推奨ディレクトリ構成
+
+```text
+src/styles/
+├── foundation/
+│   ├── _variables.scss
+│   └── _mixin.scss
+├── components/
+│   └── _button.scss
+└── global.scss
+```
+
+## BEM 命名規則
+
+| 部位 | ケース | 例 |
+|---|---|---|
+| Block | PascalCase | `.Header`, `.FooterEntry`, `.OverviewHero` |
+| Element | camelCase | `.Header__navLink`, `.Footer__btnText` |
+| Modifier | kebab-case | `.Header__btn--filled`, `.FooterEntry__btn--primary` |
+
+### 状態クラス
+
+```scss
+.is-visible
+.is-active
+.is-hidden
+.is-disabled
+.is-open
+```
+
+### ユーティリティクラス
+
+```scss
+.pc-only
+.sp-only
+.u-anime
+```
+
+## CSS 変数
+
+- 色、フォント、z-index、トランジション時間は CSS 変数化する
+- 余白や要素固有の寸法は原則ベタ書きにする
+
+```scss
+:root {
+  --color-text: #222;
+  --color-background: #fff;
+  --font-base: 'Noto Sans JP', sans-serif;
+  --duration-base: .3s;
+}
+```
+
+## メディアクエリ
+
+- ホバー演出は必ず `@media (any-hover: hover)` で囲む
+- ブレークポイント用 mixin を使う場合は名前空間付きで呼び出す
+
+```scss
+@media (any-hover: hover) {
+  .Button:hover {
+    opacity: .7;
+  }
+}
+
+@include mix.mq(pc) {
+  .Header {
+    padding-inline: 40px;
+  }
+}
+```

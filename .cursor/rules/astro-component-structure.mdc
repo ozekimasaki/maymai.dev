@@ -1,0 +1,65 @@
+---
+alwaysApply: true
+---
+
+# Astro 構成・命名規則
+
+## ファイル命名
+
+| 種別 | 規則 | 例 |
+|---|---|---|
+| レイアウト | PascalCase + `Layout.astro` | `BaseLayout.astro`, `DefaultLayout.astro` |
+| コンポーネント | PascalCase | `Header.astro`, `HeroSection.astro` |
+| ページ | ルート準拠の kebab-case | `index.astro`, `about.astro`, `blog/[slug].astro` |
+| フレームワーク UI | PascalCase | `Accordion.tsx`, `Carousel.jsx` |
+
+## 基本構成
+
+```text
+src/
+├── components/
+│   ├── Header.astro
+│   ├── Footer.astro
+│   └── sections/
+│       └── HeroSection.astro
+├── layouts/
+│   └── BaseLayout.astro
+├── pages/
+│   ├── index.astro
+│   └── about.astro
+├── scripts/
+│   └── scroll-header.ts
+└── styles/
+    └── global.scss
+```
+
+## 再利用の考え方
+
+- Pug の `include` / `mixin` 相当は、Astro では **コンポーネント + props + slots** で表現する
+- ページ全体の共通構造は `src/layouts/*.astro`
+- 再利用 UI は `src/components/`
+- ページ固有の小さな構造はページ内または該当セクションコンポーネント内に閉じる
+
+## Props と Slots
+
+```astro
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<section class="Section">
+  <h2>{title}</h2>
+  <slot />
+</section>
+```
+
+## ルーティング
+
+- ルート名は URL と一致する kebab-case
+- 一覧ページは `src/pages/blog/index.astro`
+- 動的ルートは `src/pages/blog/[slug].astro`
+- 404 は `src/pages/404.astro`

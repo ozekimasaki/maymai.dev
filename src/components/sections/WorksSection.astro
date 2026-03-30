@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import imgWork01 from '../../assets/images/works/img_work_01.jpg';
+import imgWork02 from '../../assets/images/works/img_work_02.jpg';
+import imgWork03 from '../../assets/images/works/img_work_03.jpg';
+import imgWork04 from '../../assets/images/works/img_work_04.jpg';
+
+const works = [
+  {
+    slug: 'spatial-margin',
+    title: '空間の余白',
+    category: '建築系Webメディア',
+    image: imgWork01,
+  },
+  {
+    slug: 'night-dashboard',
+    title: '夜のダッシュボード',
+    category: 'データ可視化ツール',
+    image: imgWork02,
+  },
+  {
+    slug: 'garden-of-type',
+    title: '活字の庭',
+    category: 'タイポグラフィ実験',
+    image: imgWork03,
+  },
+  {
+    slug: 'still-life-ec',
+    title: '静物のEC',
+    category: 'プロダクトコマース',
+    image: imgWork04,
+  },
+];
+---
+
+<section id="works" class="Works">
+  <div class="Works__inner l-inner">
+    <div class="Works__header">
+      <h2 class="Works__heading">Works</h2>
+      <span class="Works__label">// Works.filter(selected)</span>
+    </div>
+
+    <div class="Works__grid">
+      {works.map((work) => (
+        <a href={`/works/${work.slug}/`} class="Works__card">
+          <div class="Works__cardImage">
+            <Image
+              src={work.image}
+              alt={work.title}
+              width={580}
+              height={360}
+              loading="lazy"
+            />
+          </div>
+          <div class="Works__cardInfo">
+            <h3 class="Works__cardTitle">{work.title}</h3>
+            <p class="Works__cardCategory">{work.category}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="Works__more">
+      <a href="/works/" class="Works__moreLink">View More</a>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .Works {
+    padding: 128px 0 80px;
+
+    @include mix.mq(sp) {
+      padding: 80px 0 60px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 40px;
+
+      @include mix.mq(sp) {
+        margin-bottom: 32px;
+      }
+    }
+
+    &__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 16px;
+
+      @include mix.mq(sp) {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    &__card {
+      display: block;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 580 / 360;
+        object-fit: cover;
+        transition: transform var(--duration-base) ease;
+      }
+
+      @media (any-hover: hover) {
+        &:hover img {
+          transform: scale(1.03);
+        }
+      }
+    }
+
+    &__cardImage {
+      overflow: hidden;
+    }
+
+    &__cardInfo {
+      margin-top: 16px;
+    }
+
+    &__cardTitle {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--color-text);
+    }
+
+    &__cardCategory {
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+    }
+
+    &__more {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    &__moreLink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      height: 55px;
+      border: 1px solid var(--color-text);
+      font-size: .875rem;
+      letter-spacing: .1em;
+      color: var(--color-text);
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--color-text);
+          color: var(--color-bg);
+        }
+      }
+    }
+
+    &__inner::after {
+      content: '';
+      display: block;
+      margin-top: 80px;
+      border-top: 1px solid var(--color-border);
+
+      @include mix.mq(sp) {
+        margin-top: 60px;
+      }
+    }
+  }
+</style>

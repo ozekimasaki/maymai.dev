@@ -1,0 +1,66 @@
+---
+description: ボタンコンポーネントのスタイリングパターンとホバー演出のルール
+alwaysApply: true
+---
+
+# ボタンスタイリングルール
+
+## ホバー時のグラデーション演出
+
+`linear-gradient` は直接 `transition` できないため、`::before` 疑似要素 + `opacity` で制御する。
+
+```scss
+.Btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-gradient-green);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity .3s ease;
+    z-index: -1;
+  }
+
+  @media (any-hover: hover) {
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+}
+```
+
+## グラデーション文字 -> 白文字
+
+```scss
+.Btn__text {
+  background: var(--color-gradient-green);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background .3s ease, -webkit-text-fill-color .3s ease;
+}
+
+@media (any-hover: hover) {
+  .Btn:hover .Btn__text {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: #fff;
+    background-clip: unset;
+    text-decoration: none;
+  }
+}
+```
+
+## 必須要件
+
+| 項目 | ルール |
+|---|---|
+| `focus-visible` | すべてのボタン・リンクに `outline: 2px solid var(--color-green)` |
+| ホバー | `@media (any-hover: hover)` 内で定義 |
+| トランジション | `.3s ease` を基本とする |
+| SP 対応 | `max-width` + `width: 100%` を基本にする |
