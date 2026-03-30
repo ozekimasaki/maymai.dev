@@ -5,6 +5,9 @@ const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const BASE_ANGLE = 315;
 const BASE_DISTANCE = 20;
 
+const heerichReady = REDUCED_MOTION ? null : import('heerich');
+const animejsReady = REDUCED_MOTION ? null : import('animejs');
+
 function buildScene(h: any) {
   h.clear();
   const s = IS_SP ? 6 : 8;
@@ -31,7 +34,7 @@ async function init() {
   const heroSection = container.closest('.Hero') as HTMLElement;
   if (!heroSection) return;
 
-  const { Heerich } = await import('heerich');
+  const { Heerich } = await heerichReady!;
 
   const engine = new Heerich({
     tile: IS_SP ? [18, 18] : [28, 28],
@@ -91,7 +94,7 @@ async function init() {
     const polys = container.querySelectorAll('polygon');
     polys.forEach(p => { p.style.opacity = '0'; });
 
-    const { animate } = await import('animejs');
+    const { animate } = await animejsReady!;
 
     animate(polys, {
       opacity: [0, 1],
