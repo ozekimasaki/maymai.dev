@@ -27,14 +27,14 @@ const totalCount = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
 
 <section id="skills" class="Skills">
   <div class="Skills__inner l-inner">
-    <div class="Skills__header">
+    <div class="Skills__header u-anime">
       <h2 class="Skills__heading">Skills</h2>
       <span class="Skills__label">// skills.length({totalCount})</span>
     </div>
 
     <div class="Skills__body">
-      {skillGroups.map((group) => (
-        <div class="Skills__group">
+      {skillGroups.map((group, i) => (
+        <div class="Skills__group u-anime" style={`--delay: ${.1 + i * .08}s;`}>
           <p class="Skills__groupLabel">{group.label}</p>
           <ul class="Skills__list">
             {group.items.map((skill) => (

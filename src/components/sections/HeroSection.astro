@@ -6,25 +6,25 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
   <div class="Hero__bg js-hero-bg"></div>
   <div class="Hero__inner">
     <div class="Hero__content">
-      <p class="Hero__label">// portfolio_v1.0</p>
-      <h1 class="Hero__heading">
+      <p class="Hero__label Hero__fadeItem" style="--hero-order: 0;">// portfolio_v1.0</p>
+      <h1 class="Hero__heading Hero__fadeItem" style="--hero-order: 1;">
         Code with AI,<br>
         Create for Someone.
       </h1>
-      <p class="Hero__description">
+      <p class="Hero__description Hero__fadeItem" style="--hero-order: 2;">
         AIの力をかりながら、<br>
         しずかで心地よいデジタル体験をつくっています。
       </p>
     </div>
 
-    <div class="Hero__scroll">
+    <div class="Hero__scroll Hero__fadeItem" style="--hero-order: 3;">
       <span class="Hero__scrollText">scroll</span>
       <span class="Hero__scrollLine"></span>
     </div>
 
-    <p class="Hero__lang">lang: ja-JP</p>
+    <p class="Hero__lang Hero__fadeItem" style="--hero-order: 3;">lang: ja-JP</p>
 
-    <div class="Hero__status">
+    <div class="Hero__status Hero__fadeItem" style="--hero-order: 3;">
       <p>[ status: online ]</p>
       <p>last_deploy: {today}</p>
       <p>version: 1.0.0</p>
@@ -194,6 +194,28 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
         line-height: 1.5;
         color: var(--color-label);
       }
+    }
+  }
+
+  .Hero__fadeItem {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroFadeUp .8s ease forwards;
+    animation-delay: calc(.3s + var(--hero-order, 0) * .15s);
+  }
+
+  @keyframes heroFadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .Hero__fadeItem {
+      opacity: 1;
+      transform: none;
+      animation: none;
     }
   }
 

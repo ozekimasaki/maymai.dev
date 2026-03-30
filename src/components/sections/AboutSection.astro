@@ -8,13 +8,13 @@ const profileItems = [
 
 <section id="about" class="About">
   <div class="About__inner l-inner">
-    <div class="About__header">
+    <div class="About__header u-anime">
       <h2 class="About__heading">About</h2>
       <span class="About__label">// Author_Profile</span>
     </div>
 
     <div class="About__body">
-      <div class="About__text">
+      <div class="About__text u-anime" style="--delay: .1s;">
         <p>
           テクノロジーは、しずかであるべきだと考えています。
           すぐれたインターフェースは、ユーザーにその存在を意識させません。
@@ -29,7 +29,7 @@ const profileItems = [
         </p>
       </div>
 
-      <dl class="About__profile">
+      <dl class="About__profile u-anime" style="--delay: .2s;">
         {profileItems.map((item) => (
           <div class="About__profileItem">
             <dt class="About__profileKey">{item.key}:</dt>

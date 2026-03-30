@@ -35,14 +35,14 @@ const works = [
 
 <section id="works" class="Works">
   <div class="Works__inner l-inner">
-    <div class="Works__header">
+    <div class="Works__header u-anime">
       <h2 class="Works__heading">Works</h2>
       <span class="Works__label">// Works.filter(selected)</span>
     </div>
 
     <div class="Works__grid">
-      {works.map((work) => (
-        <a href={`/works/${work.slug}/`} class="Works__card">
+      {works.map((work, i) => (
+        <a href={`/works/${work.slug}/`} class="Works__card u-anime" style={`--delay: ${i * .1}s;`}>
           <div class="Works__cardImage">
             <Image
               src={work.image}
@@ -60,7 +60,7 @@ const works = [
       ))}
     </div>
 
-    <div class="Works__more">
+    <div class="Works__more u-anime" style="--delay: .1s;">
       <a href="/works/" class="Works__moreLink">View More</a>
     </div>
   </div>

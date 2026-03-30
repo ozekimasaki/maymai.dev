@@ -21,7 +21,7 @@ const { Content } = await render(post);
 >
   <article class="BlogPost">
     <div class="BlogPost__inner l-inner">
-      <div class="BlogPost__header">
+      <div class="BlogPost__header u-anime">
         <time class="BlogPost__date" datetime={post.data.date.replace(/\./g, '-')}>
           {post.data.date}
         </time>
@@ -35,7 +35,7 @@ const { Content } = await render(post);
         )}
       </div>
 
-      <div class="BlogPost__body">
+      <div class="BlogPost__body u-anime" style="--delay: .1s;">
         <Content />
       </div>
 

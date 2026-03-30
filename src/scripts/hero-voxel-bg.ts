@@ -138,8 +138,10 @@ function init() {
       if (moved) {
         const svgEl = container.querySelector('svg');
         if (svgEl) {
-          const ry = (currentAngle - frozenAngle) * .6;
-          const rx = -(currentDistance - frozenDistance) * .4;
+          const clamp = (v: number, lo: number, hi: number) =>
+            Math.max(lo, Math.min(hi, v));
+          const ry = clamp((currentAngle - frozenAngle) * .5, -15, 15);
+          const rx = clamp(-(currentDistance - frozenDistance) * .5, -8, 8);
           svgEl.style.transformOrigin = '50% 50%';
           svgEl.style.transform =
             `perspective(800px) rotateY(${ry}deg) rotateX(${rx}deg)`;

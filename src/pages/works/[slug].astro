@@ -21,13 +21,13 @@ const { Content } = await render(work);
 >
   <article class="WorkDetail">
     <div class="WorkDetail__inner l-inner">
-      <div class="WorkDetail__header">
+      <div class="WorkDetail__header u-anime">
         <p class="WorkDetail__category">{work.data.category}</p>
         <h1 class="WorkDetail__title">{work.data.title}</h1>
         <p class="WorkDetail__description">{work.data.description}</p>
       </div>
 
-      <div class="WorkDetail__meta">
+      <div class="WorkDetail__meta u-anime" style="--delay: .1s;">
         <div class="WorkDetail__metaItem">
           <dt class="WorkDetail__metaKey">date:</dt>
           <dd class="WorkDetail__metaValue">{work.data.date}</dd>
@@ -38,7 +38,7 @@ const { Content } = await render(work);
         </div>
       </div>
 
-      <div class="WorkDetail__thumbnail">
+      <div class="WorkDetail__thumbnail u-anime" style="--delay: .2s;">
         <img
           src={work.data.thumbnail}
           alt={work.data.title}
@@ -47,7 +47,7 @@ const { Content } = await render(work);
         />
       </div>
 
-      <div class="WorkDetail__body">
+      <div class="WorkDetail__body u-anime" style="--delay: .15s;">
         <Content />
       </div>
 

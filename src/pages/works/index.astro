@@ -9,14 +9,14 @@ const sortedWorks = allWorks.sort((a, b) => (a.data.order ?? 99) - (b.data.order
 <BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。">
   <section id="works" class="WorksPage">
     <div class="WorksPage__inner l-inner">
-      <div class="WorksPage__header">
+      <div class="WorksPage__header u-anime">
         <h1 class="WorksPage__heading">Works</h1>
         <span class="WorksPage__label">// Works.filter(all)</span>
       </div>
 
       <div class="WorksPage__grid">
-        {sortedWorks.map((work) => (
-          <a href={`/works/${work.id}/`} class="WorksPage__card">
+        {sortedWorks.map((work, i) => (
+          <a href={`/works/${work.id}/`} class="WorksPage__card u-anime" style={`--delay: ${i * .1}s;`}>
             <div class="WorksPage__cardImage">
               <img
                 src={work.data.thumbnail}

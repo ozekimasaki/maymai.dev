@@ -89,6 +89,30 @@ select {
 }
 
 // ===========================================
+// Scroll Fade Animation
+// ===========================================
+
+.u-anime {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-fade) ease, transform var(--duration-fade) ease;
+  transition-delay: var(--delay, 0s);
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-anime {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+// ===========================================
 // Content Width
 // ===========================================
 
