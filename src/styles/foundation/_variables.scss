@@ -7,18 +7,19 @@
   --color-bg: #fcfaf5;
   --color-bg-alt: #f5f3ee;
   --color-text: #1a1b1e;
-  --color-label: #8c9299;
+  --color-label: #656d76;
   --color-accent: #c85b17;
   --color-border: rgba(26, 27, 30, .1);
 
   // Fonts
-  --font-heading: 'Shippori Mincho', serif;
-  --font-body: 'Noto Sans JP', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-heading: 'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', serif;
+  --font-body: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic Medium', 'Yu Gothic', 'Meiryo', sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', Consolas, Menlo, monospace;
 
   // Z-index
   --z-header: 100;
   --z-hamburger: 200;
+  --z-loading: 9999;
 
   // Transition
   --duration-base: .3s;

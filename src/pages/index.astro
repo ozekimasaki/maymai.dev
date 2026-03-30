@@ -6,9 +6,39 @@ import SkillsSection from '../components/sections/SkillsSection.astro';
 import WorksSection from '../components/sections/WorksSection.astro';
 import BlogSection from '../components/sections/BlogSection.astro';
 import ContactSection from '../components/sections/ContactSection.astro';
+
+const siteUrl = 'https://maymai.dev';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Maymai.dev',
+    url: siteUrl,
+    description: 'AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。',
+    inLanguage: 'ja',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Masaki Ozeki',
+    alternateName: 'Maymai',
+    url: siteUrl,
+    jobTitle: 'Frontend Engineer',
+    description: 'AIの力をかりながら、しずかで心地よいデジタル体験をつくるフロントエンドエンジニア。',
+    sameAs: [
+      'https://x.com/mei_999_',
+      'https://github.com/ozekimasaki',
+    ],
+    knowsAbout: [
+      'TypeScript', 'JavaScript', 'Astro', 'React', 'SCSS',
+      'Cloudflare Workers', 'Vite', 'AI-assisted development',
+    ],
+  },
+];
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={jsonLd}>
   <HeroSection />
   <AboutSection />
   <SkillsSection />

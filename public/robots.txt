@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://maymai.dev/sitemap-index.xml

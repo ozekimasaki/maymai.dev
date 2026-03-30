@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import LikeButton from '../../components/LikeButton.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,12 +14,38 @@ export async function getStaticPaths() {
 
 const { work } = Astro.props;
 const { Content } = await render(work);
+
+const siteUrl = 'https://maymai.dev';
+const pageUrl = `${siteUrl}/works/${work.id}/`;
+const isoDate = work.data.date.replace(/\./g, '-');
+const ogImage = work.data.thumbnail.startsWith('http')
+  ? work.data.thumbnail
+  : `${siteUrl}${work.data.thumbnail}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: work.data.title,
+  description: work.data.description,
+  url: pageUrl,
+  image: ogImage,
+  datePublished: isoDate,
+  author: {
+    '@type': 'Person',
+    name: 'Masaki Ozeki',
+    url: siteUrl,
+  },
+  keywords: work.data.technologies.join(', '),
+};
 ---
 
 <BaseLayout
   title={`${work.data.title} | Works | Maymai.dev`}
   description={work.data.description}
   ogType="article"
+  ogImage={work.data.thumbnail}
+  publishedTime={isoDate}
+  jsonLd={jsonLd}
 >
   <article class="WorkDetail">
     <div class="WorkDetail__inner l-inner">
@@ -49,6 +77,11 @@ const { Content } = await render(work);
 
       <div class="WorkDetail__body u-anime" style="--delay: .15s;">
         <Content />
+      </div>
+
+      <div class="WorkDetail__actions u-anime" style="--delay: .2s;">
+        <ShareButtons url={Astro.url.href} title={work.data.title} />
+        <LikeButton type="works" slug={work.id} />
       </div>
 
       <div class="WorkDetail__back">
@@ -177,6 +210,17 @@ const { Content } = await render(work);
         line-height: 2;
         margin-bottom: .5em;
       }
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 720px;
+      margin-inline: auto;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
     }
 
     &__back {

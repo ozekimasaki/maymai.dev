@@ -6,9 +6,20 @@ const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort(
   (a, b) => new Date(b.data.date.replace(/\./g, '-')).getTime() - new Date(a.data.date.replace(/\./g, '-')).getTime()
 );
+
+const siteUrl = 'https://maymai.dev';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Blog',
+  description: 'ブログ記事の一覧です。',
+  url: `${siteUrl}/blog/`,
+  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
+};
 ---
 
-<BaseLayout title="Blog | Maymai.dev" description="ブログ記事の一覧です。">
+<BaseLayout title="Blog | Maymai.dev" description="ブログ記事の一覧です。" jsonLd={jsonLd}>
   <section id="blog" class="BlogPage">
     <div class="BlogPage__inner l-inner">
       <div class="BlogPage__header u-anime">

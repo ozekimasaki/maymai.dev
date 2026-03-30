@@ -125,3 +125,16 @@ select {
     padding-inline: 20px;
   }
 }
+
+// ===========================================
+// Below-fold Rendering Optimization
+// ===========================================
+
+.About,
+.Skills,
+.Works,
+.Blog,
+.Contact {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}

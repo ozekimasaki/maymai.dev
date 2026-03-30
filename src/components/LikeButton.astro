@@ -1,0 +1,164 @@
+---
+interface Props {
+  type: 'blog' | 'works';
+  slug: string;
+}
+
+const { type, slug } = Astro.props;
+---
+
+<div class="LikeButton js-like-button" data-type={type} data-slug={slug}>
+  <button class="LikeButton__btn js-like-btn" type="button" aria-label="いいね">
+    <svg class="LikeButton__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+    <span class="LikeButton__count js-like-count"></span>
+  </button>
+</div>
+
+<style lang="scss">
+  @use '../styles/foundation/mixin' as mix;
+
+  .LikeButton {
+    &__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      transition: border-color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          border-color: var(--color-accent);
+
+          .LikeButton__icon {
+            stroke: var(--color-accent);
+          }
+        }
+      }
+    }
+
+    &__icon {
+      fill: none;
+      stroke: var(--color-label);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: fill var(--duration-base) ease, stroke var(--duration-base) ease, transform .3s ease;
+    }
+
+    &__count {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      line-height: 1;
+      color: var(--color-label);
+      min-width: 1em;
+      transition: color var(--duration-base) ease;
+    }
+
+    // ===========================================
+    // いいね済み状態
+    // ===========================================
+
+    &.is-liked &__icon {
+      fill: var(--color-accent);
+      stroke: var(--color-accent);
+    }
+
+    &.is-liked &__count {
+      color: var(--color-accent);
+    }
+
+    &.is-liked &__btn {
+      border-color: var(--color-accent);
+      cursor: default;
+
+      @media (any-hover: hover) {
+        &:hover {
+          border-color: var(--color-accent);
+        }
+      }
+    }
+
+    // ===========================================
+    // いいねアニメーション
+    // ===========================================
+
+    &.is-animating &__icon {
+      animation: likePopup .3s ease;
+    }
+  }
+
+  @keyframes likePopup {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+</style>
+
+<script>
+  function initLikeButtons(): void {
+    document.querySelectorAll<HTMLElement>('.js-like-button').forEach((el) => {
+      const type = el.dataset.type;
+      const slug = el.dataset.slug;
+      if (!type || !slug) return;
+
+      const btn = el.querySelector<HTMLButtonElement>('.js-like-btn');
+      const countEl = el.querySelector<HTMLElement>('.js-like-count');
+      if (!btn || !countEl) return;
+
+      const storageKey = `liked:${type}:${slug}`;
+
+      let isLiked = false;
+      try {
+        isLiked = localStorage.getItem(storageKey) === '1';
+      } catch {
+        // localStorage unavailable
+      }
+
+      if (isLiked) {
+        el.classList.add('is-liked');
+      }
+
+      fetch(`/api/likes?type=${type}&slug=${slug}`)
+        .then((r) => r.json())
+        .then((data: { count: number }) => {
+          countEl.textContent = String(data.count);
+        })
+        .catch(() => {
+          countEl.textContent = '-';
+        });
+
+      btn.addEventListener('click', async () => {
+        if (el.classList.contains('is-liked')) return;
+
+        try {
+          const res = await fetch('/api/likes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, slug }),
+          });
+          const data: { count: number } = await res.json();
+          countEl.textContent = String(data.count);
+          el.classList.add('is-liked', 'is-animating');
+
+          el.addEventListener('animationend', () => {
+            el.classList.remove('is-animating');
+          }, { once: true });
+
+          try {
+            localStorage.setItem(storageKey, '1');
+          } catch {
+            // localStorage unavailable
+          }
+        } catch {
+          // API error — keep current state
+        }
+      });
+    });
+  }
+
+  initLikeButtons();
+</script>

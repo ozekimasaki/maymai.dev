@@ -1,0 +1,124 @@
+---
+const logoChars = 'Maymai.dev'.split('');
+---
+
+<div class="Loading js-loading" aria-hidden="true">
+  <div class="Loading__content">
+    <p class="Loading__logo">
+      {logoChars.map((char, i) => (
+        <span style={`--ci:${i}`}>{char}</span>
+      ))}
+    </p>
+    <div class="Loading__line"></div>
+    <p class="Loading__label">// initializing</p>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    var KEY = 'maymai-loading-shown';
+    var el = document.querySelector('.js-loading');
+    if (!el) return;
+    var skip = false;
+    try { skip = !!sessionStorage.getItem(KEY); } catch(e) {}
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || skip) {
+      el.remove();
+      return;
+    }
+    document.body.style.overflow = 'hidden';
+    try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+    el.addEventListener('animationend', function(e) {
+      if (e.animationName === 'loadingFadeOut') {
+        el.remove();
+        document.body.style.overflow = '';
+      }
+    });
+  })();
+</script>
+
+<style lang="scss">
+  .Loading {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-loading);
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: loadingFadeOut .4s ease-in-out .8s forwards;
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &__logo {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(.6em);
+        animation: charUp .4s ease forwards;
+        animation-delay: calc(var(--ci) * 30ms);
+      }
+    }
+
+    &__line {
+      width: 40px;
+      height: 1px;
+      background-color: var(--color-accent);
+      transform-origin: center;
+      transform: scaleX(0);
+      animation: lineGrow .3s ease-in-out .2s forwards;
+    }
+
+    &__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: var(--color-label);
+      opacity: 0;
+      animation: labelShow .2s ease .35s forwards;
+    }
+  }
+
+  @keyframes charUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes lineGrow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes labelShow {
+    to {
+      opacity: .5;
+    }
+  }
+
+  @keyframes loadingFadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .Loading {
+      display: none;
+    }
+  }
+</style>

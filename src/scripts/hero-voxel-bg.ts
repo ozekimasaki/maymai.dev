@@ -1,13 +1,11 @@
 // @ts-nocheck — heerich has no type declarations
-import { Heerich } from 'heerich';
-import { animate } from 'animejs';
 
 const IS_SP = window.matchMedia('(max-width: 767px)').matches;
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const BASE_ANGLE = 315;
 const BASE_DISTANCE = 20;
 
-function buildScene(h) {
+function buildScene(h: any) {
   h.clear();
   const s = IS_SP ? 6 : 8;
   const half = s / 2;
@@ -23,25 +21,23 @@ function buildScene(h) {
   h.addBox({ position: [off, off, -2], size: [arm, arm, s + 4], mode: 'union' });
 }
 
-function createEngine() {
-  return new Heerich({
-    tile: IS_SP ? [18, 18] : [28, 28],
-    camera: { type: 'oblique', angle: BASE_ANGLE, distance: BASE_DISTANCE },
-    style: { fill: 'none', stroke: 'rgba(26, 27, 30, 0.14)', strokeWidth: .5 },
-  });
-}
-
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3;
 }
 
-function init() {
+async function init() {
   const container = document.querySelector<HTMLElement>('.js-hero-bg');
   if (!container) return;
   const heroSection = container.closest('.Hero') as HTMLElement;
   if (!heroSection) return;
 
-  const engine = createEngine();
+  const { Heerich } = await import('heerich');
+
+  const engine = new Heerich({
+    tile: IS_SP ? [18, 18] : [28, 28],
+    camera: { type: 'oblique', angle: BASE_ANGLE, distance: BASE_DISTANCE },
+    style: { fill: 'none', stroke: 'rgba(26, 27, 30, 0.14)', strokeWidth: .5 },
+  });
   buildScene(engine);
 
   // ===========================================
@@ -80,10 +76,10 @@ function init() {
   renderSvg(BASE_ANGLE, BASE_DISTANCE);
 
   // ===========================================
-  // Entrance animation (anime.js)
+  // Entrance animation (anime.js — lazy loaded)
   // ===========================================
 
-  function playEntrance(onDone: () => void) {
+  async function playEntrance(onDone: () => void) {
     const svgEl = container.querySelector('svg');
     if (!svgEl) { onDone(); return; }
 
@@ -94,6 +90,8 @@ function init() {
 
     const polys = container.querySelectorAll('polygon');
     polys.forEach(p => { p.style.opacity = '0'; });
+
+    const { animate } = await import('animejs');
 
     animate(polys, {
       opacity: [0, 1],
@@ -306,8 +304,16 @@ function init() {
   });
 }
 
+function deferInit() {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => init(), { timeout: 2000 });
+  } else {
+    setTimeout(init, 200);
+  }
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', deferInit);
 } else {
-  init();
+  deferInit();
 }

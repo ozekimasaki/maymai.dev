@@ -4,9 +4,20 @@ import { getCollection } from 'astro:content';
 
 const allWorks = await getCollection('works');
 const sortedWorks = allWorks.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const siteUrl = 'https://maymai.dev';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Works',
+  description: '制作実績の一覧です。',
+  url: `${siteUrl}/works/`,
+  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
+};
 ---
 
-<BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。">
+<BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。" jsonLd={jsonLd}>
   <section id="works" class="WorksPage">
     <div class="WorksPage__inner l-inner">
       <div class="WorksPage__header u-anime">
