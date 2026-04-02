@@ -13,6 +13,12 @@ export interface SocialLink {
   href: string;
 }
 
+interface MediaSettingLike {
+  mediaId?: string;
+  alt?: string;
+  url?: string | null;
+}
+
 export interface SiteProfileData {
   heroLabel: string;
   heroHeadingLine1: string;
@@ -83,10 +89,13 @@ export const DEFAULT_PROFILE: SiteProfileData = {
 interface SiteSettingsLike {
   title?: string | null;
   tagline?: string | null;
+  logo?: MediaSettingLike | null;
+  favicon?: MediaSettingLike | null;
   url?: string | null;
   social?: Record<string, unknown> | null;
   seo?: {
     titleSeparator?: string | null;
+    defaultOgImage?: MediaSettingLike | null;
     googleVerification?: string | null;
     bingVerification?: string | null;
   } | null;
@@ -181,6 +190,14 @@ export function resolveSocialLinks(settings?: SiteSettingsLike | null): SocialLi
 
 export function resolveSameAs(settings?: SiteSettingsLike | null): string[] {
   return resolveSocialLinks(settings).map((link) => link.href);
+}
+
+export function resolveMediaUrl(value: unknown): string | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  return typeof value.url === 'string' && value.url.trim().length > 0 ? value.url : undefined;
 }
 
 export function canFallbackProfileEntry(error: unknown): boolean {
