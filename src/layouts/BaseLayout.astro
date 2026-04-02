@@ -6,7 +6,19 @@ import Footer from '../components/Footer.astro';
 import { getSiteSettings } from 'emdash';
 import { createPublicPageContext } from 'emdash/page';
 import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui';
-import { resolveMediaUrl, resolveSiteName, resolveSiteUrl, resolveTagline } from '../site-config';
+import {
+  resolveMediaUrl,
+  resolveSiteName,
+  resolveSiteUrl,
+  resolveTagline,
+  type SiteSettingsLike,
+} from '../site-config';
+
+interface NavItem {
+  label: string;
+  target?: string | null;
+  url: string;
+}
 
 interface Props {
   title?: string;
@@ -19,18 +31,15 @@ interface Props {
   author?: string;
   content?: { collection: string; id: string; slug?: string | null };
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  navItems?: NavItem[];
+  siteSettings?: SiteSettingsLike | null;
 }
 
-const settings = await getSiteSettings();
-const siteUrl = resolveSiteUrl(settings);
-const siteName = resolveSiteName(settings);
-const defaultDescription = resolveTagline(settings).replace(/\s+/g, ' ').trim();
-const defaultFavicon = resolveMediaUrl(settings?.favicon) ?? '/favicon.svg';
-const defaultOgImage = resolveMediaUrl(settings?.seo?.defaultOgImage) ?? '/og-image.png';
-
 const {
-  title = siteName,
-  description = defaultDescription,
+  navItems = [],
+  siteSettings = null,
+  title: titleProp,
+  description: descriptionProp,
   canonical = Astro.url.href,
   ogType = 'website',
   ogImage,
@@ -40,6 +49,15 @@ const {
   content,
   jsonLd,
 } = Astro.props;
+
+const settings = siteSettings ?? await getSiteSettings();
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const defaultDescription = resolveTagline(settings).replace(/\s+/g, ' ').trim();
+const defaultFavicon = resolveMediaUrl(settings?.favicon) ?? '/favicon.svg';
+const defaultOgImage = resolveMediaUrl(settings?.seo?.defaultOgImage) ?? '/og-image.png';
+const title = titleProp ?? siteName;
+const description = descriptionProp ?? defaultDescription;
 
 const resolvedOgImage = ogImage ?? defaultOgImage;
 const absoluteOgImage = resolvedOgImage.startsWith('http')
@@ -98,7 +116,7 @@ const pageCtx = createPublicPageContext({
   <body>
     <EmDashBodyStart page={pageCtx} />
     <Loading siteName={siteName} />
-    <Header siteName={siteName} />
+    <Header siteName={siteName} navItems={navItems} />
     <main>
       <slot />
     </main>

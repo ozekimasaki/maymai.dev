@@ -2,15 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import LikeButton from '../../components/LikeButton.astro';
-import { getEmDashEntry, getEntryTerms, getSiteSettings } from 'emdash';
+import { getEmDashEntry } from 'emdash';
 import { CommentForm, Comments, PortableText } from 'emdash/ui';
-import {
-  canFallbackProfileEntry,
-  resolveSiteName,
-  resolveSiteProfile,
-  resolveSiteUrl,
-  resolveTitleSeparator,
-} from '../../site-config';
+import { getCachedEntryTerms, getPublicSiteShellData } from '../../public-site-cache';
 
 const { slug } = Astro.params;
 
@@ -18,31 +12,30 @@ if (!slug) {
   return Astro.redirect('/404');
 }
 
-const { entry: post, cacheHint } = await getEmDashEntry('blog', slug);
+const [
+  { entry: post, cacheHint },
+  {
+    navItems,
+    profile,
+    siteName,
+    siteSettings: settings,
+    siteUrl,
+    titleSeparator,
+  },
+] = await Promise.all([
+  getEmDashEntry('blog', slug),
+  getPublicSiteShellData(),
+]);
 
 if (!post) {
   return Astro.redirect('/404');
 }
 
 Astro.cache.set(cacheHint);
-
-const settings = await getSiteSettings();
-const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
-
-if (profileError && !canFallbackProfileEntry(profileError)) {
-  throw profileError;
-}
-
-Astro.cache.set(profileCacheHint);
-
-const siteUrl = resolveSiteUrl(settings);
-const siteName = resolveSiteName(settings);
-const titleSeparator = resolveTitleSeparator(settings);
-const profile = resolveSiteProfile(profileEntry?.data);
 const authorName = profile.profileName;
 const pageUrl = `${siteUrl}/blog/${post.id}/`;
 const isoDate = post.data.date.replace(/\./g, '-');
-const tags = await getEntryTerms('blog', post.data.id, 'tag');
+const tags = await getCachedEntryTerms('blog', post.data.id, 'tag');
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -74,6 +67,8 @@ const jsonLd = {
   author={authorName}
   content={{ collection: 'blog', id: post.data.id, slug }}
   jsonLd={jsonLd}
+  navItems={navItems}
+  siteSettings={settings}
 >
   <article class="BlogPost">
     <div class="BlogPost__inner l-inner">

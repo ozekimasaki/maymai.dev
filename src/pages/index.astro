@@ -6,35 +6,28 @@ import SkillsSection from '../components/sections/SkillsSection.astro';
 import WorksSection from '../components/sections/WorksSection.astro';
 import BlogSection from '../components/sections/BlogSection.astro';
 import ContactSection from '../components/sections/ContactSection.astro';
-import { getEmDashEntry, getSiteSettings } from 'emdash';
-import {
-  canFallbackProfileEntry,
-  resolveSameAs,
-  resolveSiteName,
-  resolveSiteProfile,
-  resolveSiteUrl,
-  resolveSocialLinks,
-  resolveTagline,
-  resolveTitleSeparator,
-} from '../site-config';
+import { getCachedHomePosts, getCachedHomeWorks, getPublicSiteShellData } from '../public-site-cache';
 
-const settings = await getSiteSettings();
-const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
-
-if (profileError && !canFallbackProfileEntry(profileError)) {
-  throw profileError;
-}
-
-Astro.cache.set(profileCacheHint);
-
-const siteUrl = resolveSiteUrl(settings);
-const siteName = resolveSiteName(settings);
-const tagline = resolveTagline(settings);
+const [
+  {
+    navItems,
+    profile,
+    sameAs,
+    siteName,
+    siteSettings: settings,
+    siteUrl,
+    socialLinks,
+    tagline,
+    titleSeparator,
+  },
+  worksWithCategories,
+  posts,
+] = await Promise.all([
+  getPublicSiteShellData(),
+  getCachedHomeWorks(),
+  getCachedHomePosts(),
+]);
 const siteDescription = tagline.replace(/\s+/g, ' ').trim();
-const titleSeparator = resolveTitleSeparator(settings);
-const profile = resolveSiteProfile(profileEntry?.data);
-const sameAs = resolveSameAs(settings);
-const socialLinks = resolveSocialLinks(settings);
 const personDescription = profile.aboutParagraphs[0] ?? siteDescription;
 
 const jsonLd = [
@@ -67,6 +60,8 @@ const jsonLd = [
   title={`${siteName}${titleSeparator}${profile.profileRole}`}
   description={siteDescription}
   jsonLd={jsonLd}
+  navItems={navItems}
+  siteSettings={settings}
 >
   <HeroSection
     label={profile.heroLabel}
@@ -82,7 +77,7 @@ const jsonLd = [
     aboutParagraphs={profile.aboutParagraphs}
   />
   <SkillsSection skillGroups={profile.skillGroups} />
-  <WorksSection />
-  <BlogSection />
+  <WorksSection works={worksWithCategories} />
+  <BlogSection posts={posts} />
   <ContactSection description={profile.contactDescription} links={socialLinks} />
 </BaseLayout>

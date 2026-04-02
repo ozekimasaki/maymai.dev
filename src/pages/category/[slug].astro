@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getTaxonomyTerms, getSiteSettings } from 'emdash';
-import { resolveSiteName, resolveTitleSeparator } from '../../site-config';
+import { getCachedTaxonomyTerms, getCachedWorksByCategory, getPublicSiteShellData } from '../../public-site-cache';
 
 const { slug } = Astro.params;
 
@@ -9,29 +8,24 @@ if (!slug) {
   return Astro.redirect('/404');
 }
 
-const category = (await getTaxonomyTerms('category')).find((term) => term.slug === slug);
+const [allCategories, { navItems, siteName, siteSettings: settings, titleSeparator }] = await Promise.all([
+  getCachedTaxonomyTerms('category'),
+  getPublicSiteShellData(),
+]);
+const category = allCategories.find((term) => term.slug === slug);
 
 if (!category) {
   return Astro.redirect('/404');
 }
 
-const { entries: allWorks, cacheHint } = await getEmDashCollection('works', {
-  where: { category: category.slug },
-});
-const settings = await getSiteSettings();
-
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
-
-const works = [...allWorks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-const siteName = resolveSiteName(settings);
-const titleSeparator = resolveTitleSeparator(settings);
+const works = await getCachedWorksByCategory(category.slug);
 ---
 
 <BaseLayout
   title={`${category.label}${titleSeparator}Works${titleSeparator}${siteName}`}
   description={`${category.label} の制作実績一覧です。`}
+  navItems={navItems}
+  siteSettings={settings}
 >
   <section id="category" class="CategoryPage">
     <div class="CategoryPage__inner l-inner">
@@ -45,16 +39,16 @@ const titleSeparator = resolveTitleSeparator(settings);
           <a href={`/works/${work.id}/`} class="CategoryPage__card u-anime" style={`--delay: ${i * .1}s;`}>
             <div class="CategoryPage__cardImage">
               <img
-                src={work.data.thumbnail}
-                alt={work.data.title}
+                src={work.thumbnail}
+                alt={work.title}
                 width="580"
                 height="360"
                 loading="lazy"
               />
             </div>
             <div class="CategoryPage__cardInfo">
-              <h2 class="CategoryPage__cardTitle">{work.data.title}</h2>
-              <p class="CategoryPage__cardDescription">{work.data.description}</p>
+              <h2 class="CategoryPage__cardTitle">{work.title}</h2>
+              <p class="CategoryPage__cardDescription">{work.description}</p>
             </div>
           </a>
         ))}

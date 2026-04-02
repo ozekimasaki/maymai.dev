@@ -1,19 +1,16 @@
 ---
-import { getEmDashCollection, getEntryTerms } from 'emdash';
+interface WorkSectionItem {
+  categoryLabel?: string;
+  id: string;
+  thumbnail: string;
+  title: string;
+}
 
-const { entries: allWorks, cacheHint } = await getEmDashCollection('works');
+interface Props {
+  works?: WorkSectionItem[];
+}
 
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
-
-const works = [...allWorks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)).slice(0, 4);
-const worksWithCategories = await Promise.all(
-  works.map(async (work) => ({
-    work,
-    categories: await getEntryTerms('works', work.data.id, 'category'),
-  }))
-);
+const { works = [] } = Astro.props;
 ---
 
 <section id="works" class="Works">
@@ -24,21 +21,21 @@ const worksWithCategories = await Promise.all(
     </div>
 
     <div class="Works__grid">
-      {worksWithCategories.map(({ work, categories }, i) => (
+      {works.map((work, i) => (
         <a href={`/works/${work.id}/`} class="Works__card u-anime" style={`--delay: ${i * .1}s;`}>
           <div class="Works__cardImage">
             <img
-              src={work.data.thumbnail}
-              alt={work.data.title}
+              src={work.thumbnail}
+              alt={work.title}
               width="580"
               height="360"
               loading="lazy"
             />
           </div>
             <div class="Works__cardInfo">
-              <h3 class="Works__cardTitle">{work.data.title}</h3>
-              {categories[0] && (
-                <p class="Works__cardCategory">{categories[0].label}</p>
+              <h3 class="Works__cardTitle">{work.title}</h3>
+              {work.categoryLabel && (
+                <p class="Works__cardCategory">{work.categoryLabel}</p>
               )}
             </div>
         </a>

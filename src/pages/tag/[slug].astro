@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getTaxonomyTerms, getSiteSettings } from 'emdash';
-import { resolveSiteName, resolveTitleSeparator } from '../../site-config';
+import { getCachedPostsByTag, getCachedTaxonomyTerms, getPublicSiteShellData } from '../../public-site-cache';
 
 const { slug } = Astro.params;
 
@@ -9,33 +8,24 @@ if (!slug) {
   return Astro.redirect('/404');
 }
 
-const tag = (await getTaxonomyTerms('tag')).find((term) => term.slug === slug);
+const [allTags, { navItems, siteName, siteSettings: settings, titleSeparator }] = await Promise.all([
+  getCachedTaxonomyTerms('tag'),
+  getPublicSiteShellData(),
+]);
+const tag = allTags.find((term) => term.slug === slug);
 
 if (!tag) {
   return Astro.redirect('/404');
 }
 
-const { entries: allPosts, cacheHint } = await getEmDashCollection('blog', {
-  where: { tag: tag.slug },
-});
-const settings = await getSiteSettings();
-
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
-
-const posts = [...allPosts].sort(
-  (a, b) =>
-    new Date(b.data.date.replace(/\./g, '-')).getTime() -
-    new Date(a.data.date.replace(/\./g, '-')).getTime()
-);
-const siteName = resolveSiteName(settings);
-const titleSeparator = resolveTitleSeparator(settings);
+const posts = await getCachedPostsByTag(tag.slug);
 ---
 
 <BaseLayout
   title={`#${tag.label}${titleSeparator}Blog${titleSeparator}${siteName}`}
   description={`${tag.label} の記事一覧です。`}
+  navItems={navItems}
+  siteSettings={settings}
 >
   <section id="tag" class="TagPage">
     <div class="TagPage__inner l-inner">
@@ -48,12 +38,12 @@ const titleSeparator = resolveTitleSeparator(settings);
         {posts.map((post, i) => (
           <li class="TagPage__item u-anime" style={`--delay: ${i * .06}s;`}>
             <a href={`/blog/${post.id}/`} class="TagPage__link">
-              <time class="TagPage__date" datetime={post.data.date.replace(/\./g, '-')}>
-                {post.data.date}
+              <time class="TagPage__date" datetime={post.date.replace(/\./g, '-')}>
+                {post.date}
               </time>
               <div class="TagPage__content">
-                <span class="TagPage__title">{post.data.title}</span>
-                {post.data.description && <p class="TagPage__excerpt">{post.data.description}</p>}
+                <span class="TagPage__title">{post.title}</span>
+                {post.description && <p class="TagPage__excerpt">{post.description}</p>}
               </div>
             </a>
           </li>

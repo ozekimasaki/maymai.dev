@@ -1,19 +1,15 @@
 ---
-import { getEmDashCollection } from 'emdash';
+interface BlogSectionItem {
+  date: string;
+  id: string;
+  title: string;
+}
 
-const { entries: allPosts, cacheHint } = await getEmDashCollection('blog');
+interface Props {
+  posts?: BlogSectionItem[];
+}
 
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
-
-const posts = [...allPosts]
-  .sort(
-    (a, b) =>
-      new Date(b.data.date.replace(/\./g, '-')).getTime() -
-      new Date(a.data.date.replace(/\./g, '-')).getTime()
-  )
-  .slice(0, 3);
+const { posts = [] } = Astro.props;
 ---
 
 <section id="blog" class="Blog">
@@ -27,8 +23,8 @@ const posts = [...allPosts]
       {posts.map((post, i) => (
         <li class="Blog__item u-anime" style={`--delay: ${i * .08}s;`}>
           <a href={`/blog/${post.id}/`} class="Blog__link">
-            <time class="Blog__date" datetime={post.data.date.replace(/\./g, '-')}>{post.data.date}</time>
-            <span class="Blog__title">{post.data.title}</span>
+            <time class="Blog__date" datetime={post.date.replace(/\./g, '-')}>{post.date}</time>
+            <span class="Blog__title">{post.title}</span>
           </a>
         </li>
       ))}

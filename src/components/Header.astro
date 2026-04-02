@@ -1,13 +1,14 @@
 ---
-import { getMenu } from 'emdash';
-
 interface Props {
   siteName?: string;
+  navItems?: Array<{
+    label: string;
+    target?: string | null;
+    url: string;
+  }>;
 }
 
-const { siteName = 'Maymai.dev' } = Astro.props;
-const menu = await getMenu('primary');
-const navItems = menu?.items ?? [];
+const { siteName = 'Maymai.dev', navItems = [] } = Astro.props;
 
 function isCurrentItem(url: string): boolean {
   return Astro.url.pathname === url;

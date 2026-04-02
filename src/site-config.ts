@@ -86,7 +86,7 @@ export const DEFAULT_PROFILE: SiteProfileData = {
   ],
 };
 
-interface SiteSettingsLike {
+export interface SiteSettingsLike {
   title?: string | null;
   tagline?: string | null;
   logo?: MediaSettingLike | null;

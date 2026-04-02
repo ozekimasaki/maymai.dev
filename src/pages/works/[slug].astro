@@ -2,15 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import LikeButton from '../../components/LikeButton.astro';
-import { getEmDashEntry, getEntryTerms, getSiteSettings } from 'emdash';
+import { getEmDashEntry } from 'emdash';
 import { PortableText } from 'emdash/ui';
-import {
-  canFallbackProfileEntry,
-  resolveSiteName,
-  resolveSiteProfile,
-  resolveSiteUrl,
-  resolveTitleSeparator,
-} from '../../site-config';
+import { getCachedEntryTerms, getPublicSiteShellData } from '../../public-site-cache';
 
 const { slug } = Astro.params;
 
@@ -18,27 +12,26 @@ if (!slug) {
   return Astro.redirect('/404');
 }
 
-const { entry: work, cacheHint } = await getEmDashEntry('works', slug);
+const [
+  { entry: work, cacheHint },
+  {
+    navItems,
+    profile,
+    siteName,
+    siteSettings: settings,
+    siteUrl,
+    titleSeparator,
+  },
+] = await Promise.all([
+  getEmDashEntry('works', slug),
+  getPublicSiteShellData(),
+]);
 
 if (!work) {
   return Astro.redirect('/404');
 }
 
 Astro.cache.set(cacheHint);
-
-const settings = await getSiteSettings();
-const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
-
-if (profileError && !canFallbackProfileEntry(profileError)) {
-  throw profileError;
-}
-
-Astro.cache.set(profileCacheHint);
-
-const siteUrl = resolveSiteUrl(settings);
-const siteName = resolveSiteName(settings);
-const titleSeparator = resolveTitleSeparator(settings);
-const profile = resolveSiteProfile(profileEntry?.data);
 const authorName = profile.profileName;
 const pageUrl = `${siteUrl}/works/${work.id}/`;
 const isoDate = work.data.date.replace(/\./g, '-');
@@ -48,7 +41,7 @@ const ogImage = work.data.thumbnail.startsWith('http')
 const technologies = Array.isArray(work.data.technologies)
   ? work.data.technologies.filter((item): item is string => typeof item === 'string')
   : [];
-const categories = await getEntryTerms('works', work.data.id, 'category');
+const categories = await getCachedEntryTerms('works', work.data.id, 'category');
 const primaryCategory = categories[0] ?? null;
 
 const jsonLd = {
@@ -77,6 +70,8 @@ const jsonLd = {
   author={authorName}
   content={{ collection: 'works', id: work.data.id, slug }}
   jsonLd={jsonLd}
+  navItems={navItems}
+  siteSettings={settings}
 >
   <article class="WorkDetail">
     <div class="WorkDetail__inner l-inner">

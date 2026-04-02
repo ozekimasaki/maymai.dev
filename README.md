@@ -34,7 +34,9 @@ EmDash の管理画面は `/_emdash/admin` です。
 | `npm run typecheck` | Astro / TypeScript のチェック |
 | `npm run build` | 本番ビルド |
 | `npm run preview` | ビルド結果をローカル確認 |
-| `npm run deploy` | Cloudflare へデプロイ |
+| `npm run prewarm` | sitemap + 再帰 crawl で公開 route / asset を prewarm |
+| `npm run deploy` | Cloudflare へデプロイし、そのまま prewarm |
+| `npm run deploy:raw` | prewarm なしで Cloudflare へデプロイ |
 
 ## Content
 
@@ -59,6 +61,8 @@ EmDash の管理画面は `/_emdash/admin` です。
 
 - `DB`: D1 database
 - `MEDIA`: R2 bucket
-- `LIKES_KV`: KV namespace
+- `LIKES_KV`: KV namespace（likes API と public prewarm cache の両方で使用）
 
 `DB.database_id` はローカル用のプレースホルダーなので、実デプロイ前に実際の D1 ID に置き換えてください。
+
+`npm run deploy` は `https://maymai.dev` を既定で prewarm し、`wrangler deploy` の出力から `workers.dev` URL を拾えた場合はそちらも続けて warm します。追加ドメインも warm したい場合は `PREWARM_URLS="https://example.com https://foo.example.com" npm run deploy` のように指定できます。
