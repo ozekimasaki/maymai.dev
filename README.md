@@ -1,7 +1,7 @@
 # Maymai.dev
 
 EmDash をデータ層 / CMS として組み込んだ、Cloudflare 向けのポートフォリオサイトです。  
-既存の `Maymai.dev` の UI とルーティングを維持しつつ、`works` / `blog` のコンテンツ管理を EmDash に移行し、メニュー / taxonomy / コメントも EmDash 標準機能に寄せています。
+既存の `Maymai.dev` の UI とルーティングを維持しつつ、`works` / `blog` のコンテンツ管理を EmDash に移行し、メニュー / taxonomy / コメント / site settings も EmDash 標準機能に寄せています。
 
 ## Stack
 
@@ -39,6 +39,8 @@ EmDash の管理画面は `/_emdash/admin` です。
 ## Content
 
 - EmDash seed: `seed/seed.json`
+- サイト名 / URL / tagline / social: EmDash Settings
+- ホームの hero / about / skills / contact: EmDash collection `profile`
 - 作品一覧: `/works`
 - ブログ一覧: `/blog`
 - タグアーカイブ: `/tag/[slug]`

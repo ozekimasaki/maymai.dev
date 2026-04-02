@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getTaxonomyTerms } from 'emdash';
+import { getEmDashCollection, getTaxonomyTerms, getSiteSettings } from 'emdash';
+import { resolveSiteName, resolveTitleSeparator } from '../../site-config';
 
 const { slug } = Astro.params;
 
@@ -17,6 +18,7 @@ if (!tag) {
 const { entries: allPosts, cacheHint } = await getEmDashCollection('blog', {
   where: { tag: tag.slug },
 });
+const settings = await getSiteSettings();
 
 try {
   Astro.cache.set(cacheHint);
@@ -27,9 +29,14 @@ const posts = [...allPosts].sort(
     new Date(b.data.date.replace(/\./g, '-')).getTime() -
     new Date(a.data.date.replace(/\./g, '-')).getTime()
 );
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
 ---
 
-<BaseLayout title={`#${tag.label} | Blog | Maymai.dev`} description={`${tag.label} の記事一覧です。`}>
+<BaseLayout
+  title={`#${tag.label}${titleSeparator}Blog${titleSeparator}${siteName}`}
+  description={`${tag.label} の記事一覧です。`}
+>
   <section id="tag" class="TagPage">
     <div class="TagPage__inner l-inner">
       <div class="TagPage__header u-anime">

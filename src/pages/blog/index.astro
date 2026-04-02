@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection } from 'emdash';
+import { getEmDashCollection, getSiteSettings } from 'emdash';
+import { resolveSiteName, resolveSiteUrl, resolveTitleSeparator } from '../../site-config';
 
 const { entries: allPosts, cacheHint } = await getEmDashCollection('blog');
+const settings = await getSiteSettings();
 
 try {
   Astro.cache.set(cacheHint);
@@ -12,7 +14,9 @@ const sortedPosts = [...allPosts].sort(
   (a, b) => new Date(b.data.date.replace(/\./g, '-')).getTime() - new Date(a.data.date.replace(/\./g, '-')).getTime()
 );
 
-const siteUrl = 'https://maymai.dev';
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -20,11 +24,11 @@ const jsonLd = {
   name: 'Blog',
   description: 'ブログ記事の一覧です。',
   url: `${siteUrl}/blog/`,
-  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
+  isPartOf: { '@type': 'WebSite', name: siteName, url: siteUrl },
 };
 ---
 
-<BaseLayout title="Blog | Maymai.dev" description="ブログ記事の一覧です。" jsonLd={jsonLd}>
+<BaseLayout title={`Blog${titleSeparator}${siteName}`} description="ブログ記事の一覧です。" jsonLd={jsonLd}>
   <section id="blog" class="BlogPage">
     <div class="BlogPage__inner l-inner">
       <div class="BlogPage__header u-anime">

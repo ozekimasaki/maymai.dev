@@ -2,8 +2,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import LikeButton from '../../components/LikeButton.astro';
-import { getEmDashEntry, getEntryTerms } from 'emdash';
+import { getEmDashEntry, getEntryTerms, getSiteSettings } from 'emdash';
 import { PortableText } from 'emdash/ui';
+import {
+  canFallbackProfileEntry,
+  resolveSiteName,
+  resolveSiteProfile,
+  resolveSiteUrl,
+  resolveTitleSeparator,
+} from '../../site-config';
 
 const { slug } = Astro.params;
 
@@ -17,11 +24,22 @@ if (!work) {
   return Astro.redirect('/404');
 }
 
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
+Astro.cache.set(cacheHint);
 
-const siteUrl = 'https://maymai.dev';
+const settings = await getSiteSettings();
+const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
+
+if (profileError && !canFallbackProfileEntry(profileError)) {
+  throw profileError;
+}
+
+Astro.cache.set(profileCacheHint);
+
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
+const profile = resolveSiteProfile(profileEntry?.data);
+const authorName = profile.profileName;
 const pageUrl = `${siteUrl}/works/${work.id}/`;
 const isoDate = work.data.date.replace(/\./g, '-');
 const ogImage = work.data.thumbnail.startsWith('http')
@@ -43,7 +61,7 @@ const jsonLd = {
   datePublished: isoDate,
   author: {
     '@type': 'Person',
-    name: 'Masaki Ozeki',
+    name: authorName,
     url: siteUrl,
   },
   ...(technologies.length > 0 && { keywords: technologies.join(', ') }),
@@ -51,12 +69,12 @@ const jsonLd = {
 ---
 
 <BaseLayout
-  title={`${work.data.title} | Works | Maymai.dev`}
+  title={`${work.data.title}${titleSeparator}Works${titleSeparator}${siteName}`}
   description={work.data.description}
   ogType="article"
   ogImage={work.data.thumbnail}
   publishedTime={isoDate}
-  author="Masaki Ozeki"
+  author={authorName}
   content={{ collection: 'works', id: work.data.id, slug }}
   jsonLd={jsonLd}
 >

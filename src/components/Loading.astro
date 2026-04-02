@@ -1,5 +1,10 @@
 ---
-const logoChars = 'Maymai.dev'.split('');
+interface Props {
+  siteName?: string;
+}
+
+const { siteName = 'Maymai.dev' } = Astro.props;
+const logoChars = siteName.split('');
 ---
 
 <div class="Loading js-loading" aria-hidden="true">

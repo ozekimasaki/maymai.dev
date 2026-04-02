@@ -1,8 +1,28 @@
 ---
+interface Props {
+  profileName?: string;
+  profileRole?: string;
+  basedIn?: string;
+  philosophy?: string;
+  aboutParagraphs?: string[];
+}
+
+const {
+  profileName = 'Masaki Ozeki',
+  profileRole = 'Frontend Engineer',
+  basedIn = 'Hokkaido',
+  philosophy = '技術は誰かのために',
+  aboutParagraphs = [
+    '技術は誰かのために。誰かの小さな幸せのために、コードを書いています。',
+    'Cursor・Claude Code・Copilot など AIコーディングツール を日常の開発に取り入れ、品質とスピードを両立するワークフローを追求しています。',
+    'Viteプラグインの自作からMCPゲームの実験まで、思いついたら手を動かす。そのアウトプットの積み重ねが、すべての技術力の起点です。',
+  ],
+} = Astro.props;
+
 const profileItems = [
-  { key: 'name', value: 'Masaki Ozeki' },
-  { key: 'role', value: 'Frontend Engineer' },
-  { key: 'based_in', value: 'Hokkaido' },
+  { key: 'name', value: profileName },
+  { key: 'role', value: profileRole },
+  { key: 'based_in', value: basedIn },
 ];
 ---
 
@@ -15,18 +35,9 @@ const profileItems = [
 
     <div class="About__body">
       <div class="About__text u-anime" style="--delay: .1s;">
-        <p>
-          技術は誰かのために。
-          誰かの小さな幸せのために、コードを書いています。
-        </p>
-        <p>
-          Cursor・Claude Code・Copilot など <span class="About__accent">AIコーディングツール</span> を日常の開発に取り入れ、
-          品質とスピードを両立するワークフローを追求しています。
-        </p>
-        <p>
-          Viteプラグインの自作からMCPゲームの実験まで、
-          思いついたら手を動かす。そのアウトプットの積み重ねが、すべての技術力の起点です。
-        </p>
+        {aboutParagraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
       </div>
 
       <dl class="About__profile u-anime" style="--delay: .2s;">
@@ -38,7 +49,7 @@ const profileItems = [
         ))}
         <div class="About__profileItem">
           <dt class="About__profileKey">philosophy:</dt>
-          <dd class="About__profileValue About__profileValue--accent">技術は誰かのために</dd>
+          <dd class="About__profileValue About__profileValue--accent">{philosophy}</dd>
         </div>
       </dl>
     </div>
@@ -109,12 +120,6 @@ const profileItems = [
       p + p {
         margin-top: 1.5em;
       }
-    }
-
-    &__accent {
-      font-family: var(--font-heading);
-      font-weight: 500;
-      color: var(--color-accent);
     }
 
     &__profile {

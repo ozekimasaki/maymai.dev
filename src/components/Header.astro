@@ -1,7 +1,11 @@
 ---
-import { getMenu, getSiteSettings } from 'emdash';
+import { getMenu } from 'emdash';
 
-const settings = await getSiteSettings();
+interface Props {
+  siteName?: string;
+}
+
+const { siteName = 'Maymai.dev' } = Astro.props;
 const menu = await getMenu('primary');
 const navItems = menu?.items ?? [];
 
@@ -12,7 +16,7 @@ function isCurrentItem(url: string): boolean {
 
 <header class="Header js-header">
   <div class="Header__inner">
-    <a href="/" class="Header__logo">{settings?.title || 'Maymai.dev'}</a>
+    <a href="/" class="Header__logo">{siteName}</a>
 
     <nav class="Header__nav pc-only" aria-label="メインナビゲーション">
       <ul class="Header__navList">

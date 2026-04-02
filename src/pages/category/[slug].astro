@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getTaxonomyTerms } from 'emdash';
+import { getEmDashCollection, getTaxonomyTerms, getSiteSettings } from 'emdash';
+import { resolveSiteName, resolveTitleSeparator } from '../../site-config';
 
 const { slug } = Astro.params;
 
@@ -17,15 +18,21 @@ if (!category) {
 const { entries: allWorks, cacheHint } = await getEmDashCollection('works', {
   where: { category: category.slug },
 });
+const settings = await getSiteSettings();
 
 try {
   Astro.cache.set(cacheHint);
 } catch {}
 
 const works = [...allWorks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
 ---
 
-<BaseLayout title={`${category.label} | Works | Maymai.dev`} description={`${category.label} の制作実績一覧です。`}>
+<BaseLayout
+  title={`${category.label}${titleSeparator}Works${titleSeparator}${siteName}`}
+  description={`${category.label} の制作実績一覧です。`}
+>
   <section id="category" class="CategoryPage">
     <div class="CategoryPage__inner l-inner">
       <div class="CategoryPage__header u-anime">

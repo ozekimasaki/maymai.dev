@@ -1,11 +1,16 @@
 ---
+interface Props {
+  siteName?: string;
+}
+
+const { siteName = 'Maymai.dev' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer class="Footer">
   <div class="Footer__inner">
     <p class="Footer__copyright">
-      &copy; {year} Maymai.dev All rights reserved.
+      &copy; {year} {siteName} All rights reserved.
     </p>
     <p class="Footer__meta">
       built_with: Astro + EmDash + TypeScript | rendered: {new Date().toISOString().slice(0, 10)}

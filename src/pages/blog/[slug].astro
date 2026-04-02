@@ -2,8 +2,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import LikeButton from '../../components/LikeButton.astro';
-import { getEmDashEntry, getEntryTerms } from 'emdash';
+import { getEmDashEntry, getEntryTerms, getSiteSettings } from 'emdash';
 import { CommentForm, Comments, PortableText } from 'emdash/ui';
+import {
+  canFallbackProfileEntry,
+  resolveSiteName,
+  resolveSiteProfile,
+  resolveSiteUrl,
+  resolveTitleSeparator,
+} from '../../site-config';
 
 const { slug } = Astro.params;
 
@@ -17,11 +24,22 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-try {
-  Astro.cache.set(cacheHint);
-} catch {}
+Astro.cache.set(cacheHint);
 
-const siteUrl = 'https://maymai.dev';
+const settings = await getSiteSettings();
+const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
+
+if (profileError && !canFallbackProfileEntry(profileError)) {
+  throw profileError;
+}
+
+Astro.cache.set(profileCacheHint);
+
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
+const profile = resolveSiteProfile(profileEntry?.data);
+const authorName = profile.profileName;
 const pageUrl = `${siteUrl}/blog/${post.id}/`;
 const isoDate = post.data.date.replace(/\./g, '-');
 const tags = await getEntryTerms('blog', post.data.id, 'tag');
@@ -35,12 +53,12 @@ const jsonLd = {
   datePublished: isoDate,
   author: {
     '@type': 'Person',
-    name: 'Masaki Ozeki',
+    name: authorName,
     url: siteUrl,
   },
   publisher: {
     '@type': 'Person',
-    name: 'Masaki Ozeki',
+    name: authorName,
     url: siteUrl,
   },
   inLanguage: 'ja',
@@ -49,11 +67,11 @@ const jsonLd = {
 ---
 
 <BaseLayout
-  title={`${post.data.title} | Blog | Maymai.dev`}
+  title={`${post.data.title}${titleSeparator}Blog${titleSeparator}${siteName}`}
   description={post.data.description}
   ogType="article"
   publishedTime={isoDate}
-  author="Masaki Ozeki"
+  author={authorName}
   content={{ collection: 'blog', id: post.data.id, slug }}
   jsonLd={jsonLd}
 >

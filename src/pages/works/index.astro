@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getEntryTerms } from 'emdash';
+import { getEmDashCollection, getEntryTerms, getSiteSettings } from 'emdash';
+import { resolveSiteName, resolveSiteUrl, resolveTitleSeparator } from '../../site-config';
 
 const { entries: allWorks, cacheHint } = await getEmDashCollection('works');
+const settings = await getSiteSettings();
 
 try {
   Astro.cache.set(cacheHint);
@@ -16,7 +18,9 @@ const worksWithCategories = await Promise.all(
   }))
 );
 
-const siteUrl = 'https://maymai.dev';
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const titleSeparator = resolveTitleSeparator(settings);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -24,11 +28,11 @@ const jsonLd = {
   name: 'Works',
   description: '制作実績の一覧です。',
   url: `${siteUrl}/works/`,
-  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
+  isPartOf: { '@type': 'WebSite', name: siteName, url: siteUrl },
 };
 ---
 
-<BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。" jsonLd={jsonLd}>
+<BaseLayout title={`Works${titleSeparator}${siteName}`} description="制作実績の一覧です。" jsonLd={jsonLd}>
   <section id="works" class="WorksPage">
     <div class="WorksPage__inner l-inner">
       <div class="WorksPage__header u-anime">

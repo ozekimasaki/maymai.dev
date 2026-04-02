@@ -8,9 +8,83 @@
   },
   "settings": {
     "title": "Maymai.dev",
-    "tagline": "AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。"
+    "tagline": "AIの力をかりながら、\nしずかで心地よいデジタル体験をつくっています。",
+    "url": "https://maymai.dev",
+    "social": {
+      "twitter": "https://x.com/mei_999_",
+      "github": "https://github.com/ozekimasaki"
+    }
   },
   "collections": [
+    {
+      "slug": "profile",
+      "label": "Site Profile",
+      "labelSingular": "Profile",
+      "fields": [
+        {
+          "slug": "hero_label",
+          "label": "Hero Label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "hero_heading_line_1",
+          "label": "Hero Heading Line 1",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "hero_heading_line_2",
+          "label": "Hero Heading Line 2",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "profile_name",
+          "label": "Profile Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "profile_alias",
+          "label": "Profile Alias",
+          "type": "string"
+        },
+        {
+          "slug": "profile_role",
+          "label": "Profile Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "based_in",
+          "label": "Based In",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "philosophy",
+          "label": "Philosophy",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "about_paragraphs",
+          "label": "About Paragraphs",
+          "type": "json"
+        },
+        {
+          "slug": "contact_description",
+          "label": "Contact Description",
+          "type": "text"
+        },
+        {
+          "slug": "skill_groups",
+          "label": "Skill Groups",
+          "type": "json"
+        }
+      ]
+    },
     {
       "slug": "works",
       "label": "Works",
@@ -133,6 +207,51 @@
     }
   ],
   "content": {
+    "profile": [
+      {
+        "id": "default",
+        "slug": "default",
+        "status": "published",
+        "data": {
+          "hero_label": "// portfolio_v1.0",
+          "hero_heading_line_1": "Code with AI,",
+          "hero_heading_line_2": "Create for Someone.",
+          "profile_name": "Masaki Ozeki",
+          "profile_alias": "Maymai",
+          "profile_role": "Frontend Engineer",
+          "based_in": "Hokkaido",
+          "philosophy": "技術は誰かのために",
+          "about_paragraphs": [
+            "技術は誰かのために。誰かの小さな幸せのために、コードを書いています。",
+            "Cursor・Claude Code・Copilot など AIコーディングツール を日常の開発に取り入れ、品質とスピードを両立するワークフローを追求しています。",
+            "Viteプラグインの自作からMCPゲームの実験まで、思いついたら手を動かす。そのアウトプットの積み重ねが、すべての技術力の起点です。"
+          ],
+          "contact_description": "連絡はお気軽にどうぞ。",
+          "skill_groups": [
+            {
+              "label": "// languages",
+              "items": ["TypeScript", "JavaScript", "Python", "PHP", "Kotlin", "HTML", "CSS · SCSS", "Pug"]
+            },
+            {
+              "label": "// frameworks",
+              "items": ["Astro", "Vite", "React", "Node.js", "WordPress", "Discord.js"]
+            },
+            {
+              "label": "// infrastructure",
+              "items": ["Cloudflare Workers", "KV", "R2", "D1", "Docker"]
+            },
+            {
+              "label": "// ai coding",
+              "items": ["Cursor", "Codex", "Claude Code", "GitHub Copilot", "Windsurf", "Opencode", "OpenClaw"]
+            },
+            {
+              "label": "// tools & services",
+              "items": ["Git", "Chrome Extensions", "MCP", "Figma"]
+            }
+          ]
+        }
+      }
+    ],
     "works": [
       {
         "id": "spatial-margin",

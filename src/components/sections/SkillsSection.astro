@@ -1,26 +1,12 @@
 ---
-const skillGroups = [
-  {
-    label: '// languages',
-    items: ['TypeScript', 'JavaScript', 'Python', 'PHP', 'Kotlin', 'HTML', 'CSS · SCSS', 'Pug'],
-  },
-  {
-    label: '// frameworks',
-    items: ['Astro', 'Vite', 'React', 'Node.js', 'WordPress', 'Discord.js'],
-  },
-  {
-    label: '// infrastructure',
-    items: ['Cloudflare Workers', 'KV', 'R2', 'D1', 'Docker'],
-  },
-  {
-    label: '// ai coding',
-    items: ['Cursor', 'Codex', 'Claude Code', 'GitHub Copilot', 'Windsurf', 'Opencode', 'OpenClaw'],
-  },
-  {
-    label: '// tools & services',
-    items: ['Git', 'Chrome Extensions', 'MCP', 'Figma'],
-  },
-];
+import type { SkillGroup } from '../../site-config';
+import { DEFAULT_PROFILE } from '../../site-config';
+
+interface Props {
+  skillGroups?: SkillGroup[];
+}
+
+const { skillGroups = DEFAULT_PROFILE.skillGroups } = Astro.props;
 
 const totalCount = skillGroups.reduce((sum, g) => sum + g.items.length, 0);
 ---

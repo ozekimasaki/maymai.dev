@@ -6,30 +6,55 @@ import SkillsSection from '../components/sections/SkillsSection.astro';
 import WorksSection from '../components/sections/WorksSection.astro';
 import BlogSection from '../components/sections/BlogSection.astro';
 import ContactSection from '../components/sections/ContactSection.astro';
+import { getEmDashEntry, getSiteSettings } from 'emdash';
+import {
+  canFallbackProfileEntry,
+  resolveSameAs,
+  resolveSiteName,
+  resolveSiteProfile,
+  resolveSiteUrl,
+  resolveSocialLinks,
+  resolveTagline,
+  resolveTitleSeparator,
+} from '../site-config';
 
-const siteUrl = 'https://maymai.dev';
+const settings = await getSiteSettings();
+const { entry: profileEntry, error: profileError, cacheHint: profileCacheHint } = await getEmDashEntry('profile', 'default');
+
+if (profileError && !canFallbackProfileEntry(profileError)) {
+  throw profileError;
+}
+
+Astro.cache.set(profileCacheHint);
+
+const siteUrl = resolveSiteUrl(settings);
+const siteName = resolveSiteName(settings);
+const tagline = resolveTagline(settings);
+const siteDescription = tagline.replace(/\s+/g, ' ').trim();
+const titleSeparator = resolveTitleSeparator(settings);
+const profile = resolveSiteProfile(profileEntry?.data);
+const sameAs = resolveSameAs(settings);
+const socialLinks = resolveSocialLinks(settings);
+const personDescription = profile.aboutParagraphs[0] ?? siteDescription;
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Maymai.dev',
+    name: siteName,
     url: siteUrl,
-    description: 'AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。',
+    description: siteDescription,
     inLanguage: 'ja',
   },
   {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Masaki Ozeki',
-    alternateName: 'Maymai',
+    name: profile.profileName,
+    alternateName: profile.profileAlias,
     url: siteUrl,
-    jobTitle: 'Frontend Engineer',
-    description: 'AIの力をかりながら、しずかで心地よいデジタル体験をつくるフロントエンドエンジニア。',
-    sameAs: [
-      'https://x.com/mei_999_',
-      'https://github.com/ozekimasaki',
-    ],
+    jobTitle: profile.profileRole,
+    description: personDescription,
+    sameAs,
     knowsAbout: [
       'TypeScript', 'JavaScript', 'Astro', 'React', 'SCSS',
       'Cloudflare Workers', 'Vite', 'AI-assisted development',
@@ -38,11 +63,26 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout jsonLd={jsonLd}>
-  <HeroSection />
-  <AboutSection />
-  <SkillsSection />
+<BaseLayout
+  title={`${siteName}${titleSeparator}${profile.profileRole}`}
+  description={siteDescription}
+  jsonLd={jsonLd}
+>
+  <HeroSection
+    label={profile.heroLabel}
+    headingLine1={profile.heroHeadingLine1}
+    headingLine2={profile.heroHeadingLine2}
+    description={tagline}
+  />
+  <AboutSection
+    profileName={profile.profileName}
+    profileRole={profile.profileRole}
+    basedIn={profile.basedIn}
+    philosophy={profile.philosophy}
+    aboutParagraphs={profile.aboutParagraphs}
+  />
+  <SkillsSection skillGroups={profile.skillGroups} />
   <WorksSection />
   <BlogSection />
-  <ContactSection />
+  <ContactSection description={profile.contactDescription} links={socialLinks} />
 </BaseLayout>

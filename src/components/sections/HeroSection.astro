@@ -1,19 +1,38 @@
 ---
+interface Props {
+  label?: string;
+  headingLine1?: string;
+  headingLine2?: string;
+  description?: string;
+}
+
+const {
+  label = '// portfolio_v1.0',
+  headingLine1 = 'Code with AI,',
+  headingLine2 = 'Create for Someone.',
+  description = 'AIの力をかりながら、\nしずかで心地よいデジタル体験をつくっています。',
+} = Astro.props;
+
 const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+const descriptionLines = description.split(/\r?\n/).filter((line) => line.length > 0);
 ---
 
 <section id="hero" class="Hero">
   <div class="Hero__bg js-hero-bg"></div>
   <div class="Hero__inner">
     <div class="Hero__content">
-      <p class="Hero__label Hero__fadeItem" style="--hero-order: 0;">// portfolio_v1.0</p>
+      <p class="Hero__label Hero__fadeItem" style="--hero-order: 0;">{label}</p>
       <h1 class="Hero__heading Hero__fadeItem" style="--hero-order: 1;">
-        Code with AI,<br>
-        Create for Someone.
+        {headingLine1}<br>
+        {headingLine2}
       </h1>
       <p class="Hero__description Hero__fadeItem" style="--hero-order: 2;">
-        AIの力をかりながら、<br>
-        しずかで心地よいデジタル体験をつくっています。
+        {descriptionLines.map((line, index) => (
+          <span>
+            {line}
+            {index < descriptionLines.length - 1 && <br>}
+          </span>
+        ))}
       </p>
     </div>
 
