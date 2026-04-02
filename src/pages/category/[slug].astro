@@ -1,45 +1,42 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection, getEntryTerms } from 'emdash';
+import { getEmDashCollection, getTaxonomyTerms } from 'emdash';
 
-const { entries: allWorks, cacheHint } = await getEmDashCollection('works');
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const category = (await getTaxonomyTerms('category')).find((term) => term.slug === slug);
+
+if (!category) {
+  return Astro.redirect('/404');
+}
+
+const { entries: allWorks, cacheHint } = await getEmDashCollection('works', {
+  where: { category: category.slug },
+});
 
 try {
   Astro.cache.set(cacheHint);
 } catch {}
 
-const sortedWorks = [...allWorks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-const worksWithCategories = await Promise.all(
-  sortedWorks.map(async (work) => ({
-    work,
-    categories: await getEntryTerms('works', work.data.id, 'category'),
-  }))
-);
-
-const siteUrl = 'https://maymai.dev';
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'Works',
-  description: '制作実績の一覧です。',
-  url: `${siteUrl}/works/`,
-  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
-};
+const works = [...allWorks].sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
-<BaseLayout title="Works | Maymai.dev" description="制作実績の一覧です。" jsonLd={jsonLd}>
-  <section id="works" class="WorksPage">
-    <div class="WorksPage__inner l-inner">
-      <div class="WorksPage__header u-anime">
-        <h1 class="WorksPage__heading">Works</h1>
-        <span class="WorksPage__label">// Works.filter(all)</span>
+<BaseLayout title={`${category.label} | Works | Maymai.dev`} description={`${category.label} の制作実績一覧です。`}>
+  <section id="category" class="CategoryPage">
+    <div class="CategoryPage__inner l-inner">
+      <div class="CategoryPage__header u-anime">
+        <h1 class="CategoryPage__heading">{category.label}</h1>
+        <span class="CategoryPage__label">// category:{category.slug}</span>
       </div>
 
-      <div class="WorksPage__grid">
-        {worksWithCategories.map(({ work, categories }, i) => (
-          <a href={`/works/${work.id}/`} class="WorksPage__card u-anime" style={`--delay: ${i * .1}s;`}>
-            <div class="WorksPage__cardImage">
+      <div class="CategoryPage__grid">
+        {works.map((work, i) => (
+          <a href={`/works/${work.id}/`} class="CategoryPage__card u-anime" style={`--delay: ${i * .1}s;`}>
+            <div class="CategoryPage__cardImage">
               <img
                 src={work.data.thumbnail}
                 alt={work.data.title}
@@ -48,12 +45,9 @@ const jsonLd = {
                 loading="lazy"
               />
             </div>
-            <div class="WorksPage__cardInfo">
-              <h2 class="WorksPage__cardTitle">{work.data.title}</h2>
-              {categories[0] && (
-                <p class="WorksPage__cardCategory">{categories[0].label}</p>
-              )}
-              <p class="WorksPage__cardDescription">{work.data.description}</p>
+            <div class="CategoryPage__cardInfo">
+              <h2 class="CategoryPage__cardTitle">{work.data.title}</h2>
+              <p class="CategoryPage__cardDescription">{work.data.description}</p>
             </div>
           </a>
         ))}
@@ -65,7 +59,7 @@ const jsonLd = {
 <style lang="scss">
   @use '../../styles/foundation/mixin' as mix;
 
-  .WorksPage {
+  .CategoryPage {
     padding: 128px 0 80px;
 
     @include mix.mq(sp) {
@@ -146,14 +140,6 @@ const jsonLd = {
       font-size: 1.25rem;
       line-height: 1.5;
       color: var(--color-text);
-    }
-
-    &__cardCategory {
-      margin-top: 4px;
-      font-family: var(--font-mono);
-      font-size: .625rem;
-      line-height: 1.5;
-      color: var(--color-label);
     }
 
     &__cardDescription {

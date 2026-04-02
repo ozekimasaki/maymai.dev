@@ -1,43 +1,62 @@
-# Astro Starter Kit: Minimal
+# Maymai.dev
+
+EmDash をデータ層 / CMS として組み込んだ、Cloudflare 向けのポートフォリオサイトです。  
+既存の `Maymai.dev` の UI とルーティングを維持しつつ、`works` / `blog` のコンテンツ管理を EmDash に移行し、メニュー / taxonomy / コメントも EmDash 標準機能に寄せています。
+
+## Stack
+
+- Astro
+- EmDash
+- Cloudflare Workers
+- Cloudflare D1
+- Cloudflare R2
+- Cloudflare KV（likes API）
+- TypeScript / SCSS
+
+## Setup
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run bootstrap
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+EmDash の管理画面は `/_emdash/admin` です。
+ローカル開発では `data.db` と `./.emdash/uploads` を使い、本番ビルドでは Cloudflare D1 / R2 を使います。
 
-## 🚀 Project Structure
+## Scripts
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command | Action |
+| :-- | :-- |
+| `pnpm dev` | ローカル SQLite / local storage で開発サーバーを起動 |
+| `npm run bootstrap` | EmDash の初期化と seed 投入 |
+| `npm run seed` | `seed/seed.json` を再投入 |
+| `npm run typecheck` | Astro / TypeScript のチェック |
+| `npm run build` | 本番ビルド |
+| `npm run preview` | ビルド結果をローカル確認 |
+| `npm run deploy` | Cloudflare へデプロイ |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Content
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- EmDash seed: `seed/seed.json`
+- 作品一覧: `/works`
+- ブログ一覧: `/blog`
+- タグアーカイブ: `/tag/[slug]`
+- カテゴリアーカイブ: `/category/[slug]`
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## EmDash features
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Header navigation: EmDash menu `primary`
+- Blog tags: EmDash taxonomy `tag`
+- Works categories: EmDash taxonomy `category`
+- Blog comments: EmDash built-in comments UI
 
-## 🧞 Commands
+## Cloudflare bindings
 
-All commands are run from the root of the project, from a terminal:
+`wrangler.jsonc` では以下を使用します。
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- `DB`: D1 database
+- `MEDIA`: R2 bucket
+- `LIKES_KV`: KV namespace
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`DB.database_id` はローカル用のプレースホルダーなので、実デプロイ前に実際の D1 ID に置き換えてください。

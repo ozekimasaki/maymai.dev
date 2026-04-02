@@ -1,21 +1,19 @@
 ---
-const posts = [
-  {
-    slug: 'whitespace-speaks',
-    date: '2026.03.15',
-    title: '記事タイトルが入ります ─ サンプル記事 01',
-  },
-  {
-    slug: 'react-server-components',
-    date: '2026.02.28',
-    title: '記事タイトルが入ります ─ サンプル記事 02',
-  },
-  {
-    slug: 'bespoke-component-design',
-    date: '2026.01.10',
-    title: '記事タイトルが入ります ─ サンプル記事 03',
-  },
-];
+import { getEmDashCollection } from 'emdash';
+
+const { entries: allPosts, cacheHint } = await getEmDashCollection('blog');
+
+try {
+  Astro.cache.set(cacheHint);
+} catch {}
+
+const posts = [...allPosts]
+  .sort(
+    (a, b) =>
+      new Date(b.data.date.replace(/\./g, '-')).getTime() -
+      new Date(a.data.date.replace(/\./g, '-')).getTime()
+  )
+  .slice(0, 3);
 ---
 
 <section id="blog" class="Blog">
@@ -28,9 +26,9 @@ const posts = [
     <ul class="Blog__list">
       {posts.map((post, i) => (
         <li class="Blog__item u-anime" style={`--delay: ${i * .08}s;`}>
-          <a href={`/blog/${post.slug}/`} class="Blog__link">
-            <time class="Blog__date" datetime={post.date.replace(/\./g, '-')}>{post.date}</time>
-            <span class="Blog__title">{post.title}</span>
+          <a href={`/blog/${post.id}/`} class="Blog__link">
+            <time class="Blog__date" datetime={post.data.date.replace(/\./g, '-')}>{post.data.date}</time>
+            <span class="Blog__title">{post.data.title}</span>
           </a>
         </li>
       ))}

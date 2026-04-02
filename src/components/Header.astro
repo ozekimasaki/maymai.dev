@@ -1,22 +1,32 @@
 ---
-const navItems = [
-  { label: 'About', href: '/#about' },
-  { label: 'Skills', href: '/#skills' },
-  { label: 'Works', href: '/#works' },
-  { label: 'Blog', href: '/#blog' },
-  { label: 'Contact', href: '/#contact' },
-];
+import { getMenu, getSiteSettings } from 'emdash';
+
+const settings = await getSiteSettings();
+const menu = await getMenu('primary');
+const navItems = menu?.items ?? [];
+
+function isCurrentItem(url: string): boolean {
+  return Astro.url.pathname === url;
+}
 ---
 
 <header class="Header js-header">
   <div class="Header__inner">
-    <a href="/" class="Header__logo">Maymai.dev</a>
+    <a href="/" class="Header__logo">{settings?.title || 'Maymai.dev'}</a>
 
     <nav class="Header__nav pc-only" aria-label="メインナビゲーション">
       <ul class="Header__navList">
         {navItems.map((item) => (
           <li class="Header__navItem">
-            <a href={item.href} class="Header__navLink">{item.label}</a>
+            <a
+              href={item.url}
+              class="Header__navLink"
+              target={item.target}
+              rel={item.target === '_blank' ? 'noopener nofollow' : undefined}
+              aria-current={isCurrentItem(item.url) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
           </li>
         ))}
       </ul>
@@ -40,7 +50,15 @@ const navItems = [
       <ul class="Header__menuList">
         {navItems.map((item) => (
           <li class="Header__menuItem">
-            <a href={item.href} class="Header__menuLink js-menu-link">{item.label}</a>
+            <a
+              href={item.url}
+              class="Header__menuLink js-menu-link"
+              target={item.target}
+              rel={item.target === '_blank' ? 'noopener nofollow' : undefined}
+              aria-current={isCurrentItem(item.url) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
           </li>
         ))}
       </ul>

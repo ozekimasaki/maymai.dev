@@ -2,18 +2,24 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import LikeButton from '../../components/LikeButton.astro';
-import { getCollection, render } from 'astro:content';
+import { getEmDashEntry, getEntryTerms } from 'emdash';
+import { PortableText } from 'emdash/ui';
 
-export async function getStaticPaths() {
-  const works = await getCollection('works');
-  return works.map((work) => ({
-    params: { slug: work.id },
-    props: { work },
-  }));
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
 }
 
-const { work } = Astro.props;
-const { Content } = await render(work);
+const { entry: work, cacheHint } = await getEmDashEntry('works', slug);
+
+if (!work) {
+  return Astro.redirect('/404');
+}
+
+try {
+  Astro.cache.set(cacheHint);
+} catch {}
 
 const siteUrl = 'https://maymai.dev';
 const pageUrl = `${siteUrl}/works/${work.id}/`;
@@ -21,6 +27,11 @@ const isoDate = work.data.date.replace(/\./g, '-');
 const ogImage = work.data.thumbnail.startsWith('http')
   ? work.data.thumbnail
   : `${siteUrl}${work.data.thumbnail}`;
+const technologies = Array.isArray(work.data.technologies)
+  ? work.data.technologies.filter((item): item is string => typeof item === 'string')
+  : [];
+const categories = await getEntryTerms('works', work.data.id, 'category');
+const primaryCategory = categories[0] ?? null;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -35,7 +46,7 @@ const jsonLd = {
     name: 'Masaki Ozeki',
     url: siteUrl,
   },
-  keywords: work.data.technologies.join(', '),
+  ...(technologies.length > 0 && { keywords: technologies.join(', ') }),
 };
 ---
 
@@ -45,12 +56,18 @@ const jsonLd = {
   ogType="article"
   ogImage={work.data.thumbnail}
   publishedTime={isoDate}
+  author="Masaki Ozeki"
+  content={{ collection: 'works', id: work.data.id, slug }}
   jsonLd={jsonLd}
 >
   <article class="WorkDetail">
     <div class="WorkDetail__inner l-inner">
       <div class="WorkDetail__header u-anime">
-        <p class="WorkDetail__category">{work.data.category}</p>
+        {primaryCategory && (
+          <p class="WorkDetail__category">
+            <a href={`/category/${primaryCategory.slug}/`}>{primaryCategory.label}</a>
+          </p>
+        )}
         <h1 class="WorkDetail__title">{work.data.title}</h1>
         <p class="WorkDetail__description">{work.data.description}</p>
       </div>
@@ -62,7 +79,7 @@ const jsonLd = {
         </div>
         <div class="WorkDetail__metaItem">
           <dt class="WorkDetail__metaKey">technologies:</dt>
-          <dd class="WorkDetail__metaValue">{work.data.technologies.join(' / ')}</dd>
+          <dd class="WorkDetail__metaValue">{technologies.length > 0 ? technologies.join(' / ') : '-'}</dd>
         </div>
       </div>
 
@@ -76,7 +93,7 @@ const jsonLd = {
       </div>
 
       <div class="WorkDetail__body u-anime" style="--delay: .15s;">
-        <Content />
+        {work.data.content ? <PortableText value={work.data.content} /> : <p>準備中です。</p>}
       </div>
 
       <div class="WorkDetail__actions u-anime" style="--delay: .2s;">
@@ -111,6 +128,11 @@ const jsonLd = {
       line-height: 1.5;
       color: var(--color-label);
       margin-bottom: 12px;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     &__title {

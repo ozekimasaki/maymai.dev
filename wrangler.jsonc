@@ -1,12 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "portfolio-maymai",
-  "compatibility_date": "2026-03-30",
+  "compatibility_date": "2026-04-01",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "binding": "ASSETS",
-    "directory": "./dist"
-  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "portfolio-maymai",
+      "database_id": "58c69857-d7dd-48bb-8895-0a5c20da731d"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "portfolio-maymai-media"
+    }
+  ],
   "kv_namespaces": [
     {
       "binding": "LIKES_KV",

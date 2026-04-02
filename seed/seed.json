@@ -1,0 +1,503 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Maymai.dev",
+    "description": "AIの力をかりながら、しずかで心地よいデジタル体験をつくるポートフォリオサイト",
+    "author": "Masaki Ozeki"
+  },
+  "settings": {
+    "title": "Maymai.dev",
+    "tagline": "AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。"
+  },
+  "collections": [
+    {
+      "slug": "works",
+      "label": "Works",
+      "labelSingular": "Work",
+      "supports": ["drafts", "revisions", "search", "seo"],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "technologies",
+          "label": "Technologies",
+          "type": "json"
+        },
+        {
+          "slug": "date",
+          "label": "Date",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "thumbnail",
+          "label": "Thumbnail",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "order",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "blog",
+      "label": "Blog",
+      "labelSingular": "Blog Post",
+      "commentsEnabled": true,
+      "supports": ["drafts", "revisions", "search", "seo"],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date",
+          "label": "Date",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    }
+  ],
+  "taxonomies": [
+    {
+      "name": "category",
+      "label": "Categories",
+      "labelSingular": "Category",
+      "hierarchical": false,
+      "collections": ["works"],
+      "terms": [
+        { "slug": "preparing", "label": "カテゴリー ─ 準備中" }
+      ]
+    },
+    {
+      "name": "tag",
+      "label": "Tags",
+      "labelSingular": "Tag",
+      "hierarchical": false,
+      "collections": ["blog"],
+      "terms": [
+        { "slug": "sample", "label": "サンプル" },
+        { "slug": "preparing", "label": "準備中" }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        { "type": "custom", "label": "About", "url": "/#about" },
+        { "type": "custom", "label": "Skills", "url": "/#skills" },
+        { "type": "custom", "label": "Works", "url": "/works/" },
+        { "type": "custom", "label": "Blog", "url": "/blog/" },
+        { "type": "custom", "label": "Contact", "url": "/#contact" }
+      ]
+    }
+  ],
+  "content": {
+    "works": [
+      {
+        "id": "spatial-margin",
+        "slug": "spatial-margin",
+        "status": "published",
+        "taxonomies": {
+          "category": ["preparing"]
+        },
+        "data": {
+          "title": "タイトルが入ります 01",
+          "description": "この実績の説明文が入ります。プロジェクトの概要や担当範囲を記載する想定です。",
+          "technologies": ["Astro", "TypeScript", "SCSS"],
+          "date": "2026.02.15",
+          "thumbnail": "/images/works/img_work_01.jpg",
+          "order": 1,
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "概要" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際のプロジェクト内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "このセクションにはプロジェクトの概要文が入ります。どのような案件で、どのような役割を担当したかを記載します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "技術的なポイント" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 の説明が入ります" }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "night-dashboard",
+        "slug": "night-dashboard",
+        "status": "published",
+        "taxonomies": {
+          "category": ["preparing"]
+        },
+        "data": {
+          "title": "タイトルが入ります 02",
+          "description": "この実績の説明文が入ります。プロジェクトの概要や担当範囲を記載する想定です。",
+          "technologies": ["React", "TypeScript", "D3.js"],
+          "date": "2026.01.20",
+          "thumbnail": "/images/works/img_work_02.jpg",
+          "order": 2,
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "概要" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際のプロジェクト内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "このセクションにはプロジェクトの概要文が入ります。どのような案件で、どのような役割を担当したかを記載します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "技術的なポイント" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 の説明が入ります" }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "garden-of-type",
+        "slug": "garden-of-type",
+        "status": "published",
+        "taxonomies": {
+          "category": ["preparing"]
+        },
+        "data": {
+          "title": "タイトルが入ります 03",
+          "description": "この実績の説明文が入ります。プロジェクトの概要や担当範囲を記載する想定です。",
+          "technologies": ["Next.js", "Three.js", "GSAP"],
+          "date": "2025.11.05",
+          "thumbnail": "/images/works/img_work_03.jpg",
+          "order": 3,
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "概要" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際のプロジェクト内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "このセクションにはプロジェクトの概要文が入ります。どのような案件で、どのような役割を担当したかを記載します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "技術的なポイント" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 の説明が入ります" }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "still-life-ec",
+        "slug": "still-life-ec",
+        "status": "published",
+        "taxonomies": {
+          "category": ["preparing"]
+        },
+        "data": {
+          "title": "タイトルが入ります 04",
+          "description": "この実績の説明文が入ります。プロジェクトの概要や担当範囲を記載する想定です。",
+          "technologies": ["Shopify", "Liquid", "Alpine.js"],
+          "date": "2025.09.12",
+          "thumbnail": "/images/works/img_work_04.jpg",
+          "order": 4,
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "概要" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際のプロジェクト内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "このセクションにはプロジェクトの概要文が入ります。どのような案件で、どのような役割を担当したかを記載します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "技術的なポイント" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 の説明が入ります" }]
+            }
+          ]
+        }
+      }
+    ],
+    "blog": [
+      {
+        "id": "whitespace-speaks",
+        "slug": "whitespace-speaks",
+        "status": "published",
+        "taxonomies": {
+          "tag": ["sample", "preparing"]
+        },
+        "data": {
+          "title": "記事タイトルが入ります ─ サンプル記事 01",
+          "date": "2026.03.15",
+          "description": "この記事の説明文が入ります。記事の概要やテーマを簡潔に記載する想定です。",
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際の記事内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ここに本文が入ります。テーマに沿った内容を記載し、読者にとって有益な情報を提供します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "次の見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 — 説明文が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 — 説明文が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 — 説明文が入ります" }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "react-server-components",
+        "slug": "react-server-components",
+        "status": "published",
+        "taxonomies": {
+          "tag": ["sample", "preparing"]
+        },
+        "data": {
+          "title": "記事タイトルが入ります ─ サンプル記事 02",
+          "date": "2026.02.28",
+          "description": "この記事の説明文が入ります。記事の概要やテーマを簡潔に記載する想定です。",
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際の記事内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ここに本文が入ります。テーマに沿った内容を記載し、読者にとって有益な情報を提供します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "次の見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 の説明が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 の説明が入ります" }]
+            }
+          ]
+        }
+      },
+      {
+        "id": "bespoke-component-design",
+        "slug": "bespoke-component-design",
+        "status": "published",
+        "taxonomies": {
+          "tag": ["sample", "preparing"]
+        },
+        "data": {
+          "title": "記事タイトルが入ります ─ サンプル記事 03",
+          "date": "2026.01.10",
+          "description": "この記事の説明文が入ります。記事の概要やテーマを簡潔に記載する想定です。",
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "※ 仮データです。実際の記事内容に差し替え予定。" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ここに本文が入ります。テーマに沿った内容を記載し、読者にとって有益な情報を提供します。" }]
+            },
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [{ "_type": "span", "text": "次の見出しが入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 1 — 説明文が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 2 — 説明文が入ります" }]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [{ "_type": "span", "text": "ポイント 3 — 説明文が入ります" }]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

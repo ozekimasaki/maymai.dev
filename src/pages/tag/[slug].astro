@@ -1,47 +1,52 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getEmDashCollection } from 'emdash';
+import { getEmDashCollection, getTaxonomyTerms } from 'emdash';
 
-const { entries: allPosts, cacheHint } = await getEmDashCollection('blog');
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const tag = (await getTaxonomyTerms('tag')).find((term) => term.slug === slug);
+
+if (!tag) {
+  return Astro.redirect('/404');
+}
+
+const { entries: allPosts, cacheHint } = await getEmDashCollection('blog', {
+  where: { tag: tag.slug },
+});
 
 try {
   Astro.cache.set(cacheHint);
 } catch {}
 
-const sortedPosts = [...allPosts].sort(
-  (a, b) => new Date(b.data.date.replace(/\./g, '-')).getTime() - new Date(a.data.date.replace(/\./g, '-')).getTime()
+const posts = [...allPosts].sort(
+  (a, b) =>
+    new Date(b.data.date.replace(/\./g, '-')).getTime() -
+    new Date(a.data.date.replace(/\./g, '-')).getTime()
 );
-
-const siteUrl = 'https://maymai.dev';
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: 'Blog',
-  description: 'ブログ記事の一覧です。',
-  url: `${siteUrl}/blog/`,
-  isPartOf: { '@type': 'WebSite', name: 'Maymai.dev', url: siteUrl },
-};
 ---
 
-<BaseLayout title="Blog | Maymai.dev" description="ブログ記事の一覧です。" jsonLd={jsonLd}>
-  <section id="blog" class="BlogPage">
-    <div class="BlogPage__inner l-inner">
-      <div class="BlogPage__header u-anime">
-        <h1 class="BlogPage__heading">Blog</h1>
-        <span class="BlogPage__label">// Blog.all()</span>
+<BaseLayout title={`#${tag.label} | Blog | Maymai.dev`} description={`${tag.label} の記事一覧です。`}>
+  <section id="tag" class="TagPage">
+    <div class="TagPage__inner l-inner">
+      <div class="TagPage__header u-anime">
+        <h1 class="TagPage__heading">#{tag.label}</h1>
+        <span class="TagPage__label">// tag:{tag.slug}</span>
       </div>
 
-      <ul class="BlogPage__list">
-        {sortedPosts.map((post, i) => (
-          <li class="BlogPage__item u-anime" style={`--delay: ${i * .06}s;`}>
-            <a href={`/blog/${post.id}/`} class="BlogPage__link">
-              <time class="BlogPage__date" datetime={post.data.date.replace(/\./g, '-')}>{post.data.date}</time>
-              <div class="BlogPage__content">
-                <span class="BlogPage__title">{post.data.title}</span>
-                {post.data.description && (
-                  <p class="BlogPage__excerpt">{post.data.description}</p>
-                )}
+      <ul class="TagPage__list">
+        {posts.map((post, i) => (
+          <li class="TagPage__item u-anime" style={`--delay: ${i * .06}s;`}>
+            <a href={`/blog/${post.id}/`} class="TagPage__link">
+              <time class="TagPage__date" datetime={post.data.date.replace(/\./g, '-')}>
+                {post.data.date}
+              </time>
+              <div class="TagPage__content">
+                <span class="TagPage__title">{post.data.title}</span>
+                {post.data.description && <p class="TagPage__excerpt">{post.data.description}</p>}
               </div>
             </a>
           </li>
@@ -54,7 +59,7 @@ const jsonLd = {
 <style lang="scss">
   @use '../../styles/foundation/mixin' as mix;
 
-  .BlogPage {
+  .TagPage {
     padding: 128px 0 80px;
 
     @include mix.mq(sp) {

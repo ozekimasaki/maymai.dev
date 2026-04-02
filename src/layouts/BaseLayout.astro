@@ -3,6 +3,9 @@ import '../styles/global.scss';
 import Loading from '../components/Loading.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getSiteSettings } from 'emdash';
+import { createPublicPageContext } from 'emdash/page';
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui';
 
 interface Props {
   title?: string;
@@ -12,20 +15,26 @@ interface Props {
   ogImage?: string;
   publishedTime?: string;
   modifiedTime?: string;
+  author?: string;
+  content?: { collection: string; id: string; slug?: string | null };
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const siteUrl = 'https://maymai.dev';
-const siteName = 'Maymai.dev';
+const settings = await getSiteSettings();
+const siteName = settings?.title || 'Maymai.dev';
+const defaultDescription = settings?.tagline || 'AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。';
 
 const {
-  title = 'Maymai.dev | Frontend Engineer',
-  description = 'AIの力をかりながら、しずかで心地よいデジタル体験をつくっています。',
+  title = `${siteName} | Frontend Engineer`,
+  description = defaultDescription,
   canonical = Astro.url.href,
   ogType = 'website',
   ogImage = '/og-image.png',
   publishedTime,
   modifiedTime,
+  author,
+  content,
   jsonLd,
 } = Astro.props;
 
@@ -36,6 +45,20 @@ const absoluteOgImage = ogImage.startsWith('http')
 const jsonLdArray = jsonLd
   ? Array.isArray(jsonLd) ? jsonLd : [jsonLd]
   : [];
+
+const pageCtx = createPublicPageContext({
+  Astro,
+  kind: content ? 'content' : 'custom',
+  pageType: ogType === 'article' ? 'article' : 'website',
+  title,
+  description,
+  canonical,
+  image: absoluteOgImage,
+  content,
+  seo: { ogImage: absoluteOgImage },
+  articleMeta: { publishedTime, modifiedTime, author },
+  siteName,
+});
 ---
 
 <html lang="ja">
@@ -44,43 +67,25 @@ const jsonLdArray = jsonLd
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
     <title>{title}</title>
-    <meta name="description" content={description}>
-    <link rel="canonical" href={canonical}>
     <meta name="robots" content="index, follow">
     <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#fcfaf5">
-
-    <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
-    <meta property="og:type" content={ogType}>
-    <meta property="og:url" content={canonical}>
-    <meta property="og:image" content={absoluteOgImage}>
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content={siteName}>
-    <meta property="og:locale" content="ja_JP">
+    <EmDashHead page={pageCtx} />
     {publishedTime && <meta property="article:published_time" content={publishedTime}>}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime}>}
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@mei_999_">
-    <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={absoluteOgImage}>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
 
-
-
     {jsonLdArray.map((ld) => (
-      <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
     ))}
 
     <slot name="head" />
   </head>
   <body>
+    <EmDashBodyStart page={pageCtx} />
     <Loading />
     <Header />
     <main>
@@ -91,5 +96,6 @@ const jsonLdArray = jsonLd
       import '../scripts/dissolve-scroll.ts';
       import '../scripts/scroll-fade.ts';
     </script>
+    <EmDashBodyEnd page={pageCtx} />
   </body>
 </html>
