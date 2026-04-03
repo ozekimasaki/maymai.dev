@@ -2,3 +2,7 @@ interface Env {
   LIKES_KV: KVNamespace;
   ASSETS: Fetcher;
 }
+
+declare module 'cloudflare:workers' {
+  export const env: Env;
+}

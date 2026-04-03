@@ -1,10 +1,15 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { env } from 'cloudflare:workers';
 
 const ALLOWED_TYPES = ['blog', 'works'] as const;
 const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
+const devLikesStore = new Map<string, string>();
+
+type LikesKv = {
+  get: (key: string) => Promise<string | null>;
+  put: (key: string, value: string) => Promise<void>;
+};
 
 function buildKey(type: string, slug: string): string {
   return `likes:${type}:${slug}`;
@@ -15,6 +20,20 @@ function jsonResponse(data: object, status = 200): Response {
     status,
     headers: { 'Content-Type': 'application/json' },
   });
+}
+
+async function getLikesKv(): Promise<LikesKv> {
+  if (import.meta.env.DEV) {
+    return {
+      get: async (key) => devLikesStore.get(key) ?? null,
+      put: async (key, value) => {
+        devLikesStore.set(key, value);
+      },
+    };
+  }
+
+  const { env } = await import('cloudflare:workers');
+  return env.LIKES_KV;
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -32,7 +51,8 @@ export const GET: APIRoute = async ({ url }) => {
   }
 
   const key = buildKey(type, slug);
-  const value = await env.LIKES_KV.get(key);
+  const likesKv = await getLikesKv();
+  const value = await likesKv.get(key);
   const count = value ? parseInt(value, 10) : 0;
 
   return jsonResponse({ count });
@@ -57,9 +77,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const key = buildKey(type, slug);
-  const current = await env.LIKES_KV.get(key);
+  const likesKv = await getLikesKv();
+  const current = await likesKv.get(key);
   const count = (current ? parseInt(current, 10) : 0) + 1;
-  await env.LIKES_KV.put(key, String(count));
+  await likesKv.put(key, String(count));
 
   return jsonResponse({ count });
 };

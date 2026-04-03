@@ -5,7 +5,7 @@ const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const BASE_ANGLE = 315;
 const BASE_DISTANCE = 20;
 
-const heerichReady = REDUCED_MOTION ? null : import('heerich');
+const heerichReady = import('heerich');
 const animejsReady = REDUCED_MOTION ? null : import('animejs');
 
 function buildScene(h: any) {
