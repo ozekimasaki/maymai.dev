@@ -16,7 +16,7 @@ const siteName = 'Maymai.dev';
 
 const {
   title = '桜草メイプロジェクト | Maymai.dev',
-  description = 'クラシカルな空間で、使用人たちがあなたをお待ちしております。紅茶と古典、そしてささやかな非日常を。',
+  description = 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。',
   canonical = Astro.url.href,
   ogImage = '/og-image.png',
   jsonLd,
@@ -95,13 +95,20 @@ const jsonLdArray = jsonLd
     --mp-color-dark: #1a1a2e;
     --mp-color-bg-warm: #fff6f0;
     --mp-color-border: #eee8ef;
-    --mp-color-text: rgba(26, 26, 46, .9);
-    --mp-color-text-light: rgba(26, 26, 46, .55);
-    --mp-color-text-muted: rgba(26, 26, 46, .35);
+    --mp-color-text: rgba(26, 26, 46, 1);
+    --mp-color-text-light: rgba(26, 26, 46, .7);
+    --mp-color-text-muted: rgba(26, 26, 46, .48);
     --mp-font-main: 'Zen Maru Gothic', serif;
 
     font-family: var(--mp-font-main);
+    font-weight: 500;
     color: var(--mp-color-dark);
     background-color: #fff;
+  }
+
+  .MpSections {
+    position: relative;
+    z-index: 1;
+    margin-top: 100svh;
   }
 </style>

@@ -5,14 +5,15 @@ import MpNewsSection from '../../components/mayproject/MpNewsSection.astro';
 import MpAboutSection from '../../components/mayproject/MpAboutSection.astro';
 import MpGallerySection from '../../components/mayproject/MpGallerySection.astro';
 import MpCharacterSection from '../../components/mayproject/MpCharacterSection.astro';
+import MpReferenceSection from '../../components/mayproject/MpReferenceSection.astro';
 import MpContactSection from '../../components/mayproject/MpContactSection.astro';
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: '桜草メイプロジェクト — Victoria Maid Manor',
+  name: '桜草メイプロジェクト',
   url: 'https://maymai.dev/mayproject/',
-  description: 'クラシカルな空間で、使用人たちがあなたをお待ちしております。紅茶と古典、そしてささやかな非日常を。',
+  description: 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。',
   isPartOf: {
     '@type': 'WebSite',
     name: 'Maymai.dev',
@@ -22,14 +23,17 @@ const jsonLd = {
 ---
 
 <MayprojectLayout
-  title="桜草メイプロジェクト — Victoria Maid Manor | Maymai.dev"
-  description="クラシカルな空間で、使用人たちがあなたをお待ちしております。紅茶と古典、そしてささやかな非日常を。"
+  title="桜草メイプロジェクト | Maymai.dev"
+  description="ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。"
   jsonLd={jsonLd}
 >
   <MpMvSection />
-  <MpNewsSection />
-  <MpAboutSection />
-  <MpGallerySection />
-  <MpCharacterSection />
-  <MpContactSection />
+  <div class="MpSections">
+    <MpNewsSection />
+    <MpAboutSection />
+    <MpGallerySection />
+    <MpCharacterSection />
+    <MpReferenceSection />
+    <MpContactSection />
+  </div>
 </MayprojectLayout>

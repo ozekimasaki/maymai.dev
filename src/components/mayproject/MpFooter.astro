@@ -1,4 +1,6 @@
 ---
+import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
+
 const year = new Date().getFullYear();
 
 const navItems = [
@@ -14,8 +16,8 @@ const navItems = [
   <div class="MpFooter__inner">
     <div class="MpFooter__top">
       <div class="MpFooter__brand">
-        <p class="MpFooter__brandName">Victoria Maid Manor</p>
-        <p class="MpFooter__brandSub">ヴィクトリアン・メイド館</p>
+        <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpFooter__brandLogo" width="160" height="86" />
+        <p class="MpFooter__brandSub">Sakurakusa Mei Project</p>
       </div>
       <nav class="MpFooter__nav" aria-label="フッターナビゲーション">
         <ul class="MpFooter__navList">
@@ -29,7 +31,7 @@ const navItems = [
     </div>
     <div class="MpFooter__bottom">
       <p class="MpFooter__copyright">
-        &copy; {year} Victoria Maid Manor. All rights reserved.
+        &copy; {year} Sakurakusa Mei Project. All rights reserved.
       </p>
       <p class="MpFooter__meta">This is a fictional project.</p>
     </div>
@@ -81,19 +83,23 @@ const navItems = [
       }
     }
 
-    &__brandName {
-      font-family: var(--mp-font-main);
-      font-size: 1.25rem;
-      font-weight: 400;
-      letter-spacing: .15em;
-      color: rgba(255, 255, 255, .8);
+    &__brandLogo {
+      height: 60px;
+      width: auto;
+      display: block;
+      opacity: 1;
+
+      @include mix.mq(sp) {
+        height: 40px;
+        margin-inline: auto;
+      }
     }
 
     &__brandSub {
       margin-top: 8px;
       font-size: .6875rem;
       letter-spacing: .05em;
-      color: rgba(255, 255, 255, .4);
+      color: rgba(255, 255, 255, .55);
     }
 
     &__navList {
@@ -109,12 +115,12 @@ const navItems = [
     &__navLink {
       font-size: .6875rem;
       letter-spacing: .1em;
-      color: rgba(255, 255, 255, .45);
+      color: rgba(255, 255, 255, .6);
       transition: color var(--duration-base) ease;
 
       @media (any-hover: hover) {
         &:hover {
-          color: rgba(255, 255, 255, .8);
+          color: rgba(255, 255, 255, .9);
         }
       }
     }
@@ -136,13 +142,13 @@ const navItems = [
     &__copyright {
       font-size: .625rem;
       letter-spacing: .05em;
-      color: rgba(255, 255, 255, .35);
+      color: rgba(255, 255, 255, .5);
     }
 
     &__meta {
       font-size: .625rem;
       letter-spacing: .1em;
-      color: rgba(255, 255, 255, .2);
+      color: rgba(255, 255, 255, .35);
     }
   }
 </style>

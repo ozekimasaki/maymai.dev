@@ -1,7 +1,9 @@
 ---
+import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
+
 const navItems = [
   { en: 'ABOUT', ja: 'プロジェクトについて', href: '#about' },
-  { en: 'GALLERY', ja: '展示室', href: '#gallery' },
+  { en: 'GALLERY', ja: '画像展示室', href: '#gallery' },
   { en: 'CHARACTER', ja: 'キャラクター紹介', href: '#character' },
   { en: 'CONTACT', ja: 'お手紙', href: '#contact' },
 ];
@@ -9,7 +11,9 @@ const navItems = [
 
 <header class="MpHeader js-mp-header">
   <div class="MpHeader__inner">
-    <a href="/mayproject/" class="MpHeader__logo">桜草メイプロジェクト</a>
+    <a href="/mayproject/" class="MpHeader__logo">
+      <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpHeader__logoImg" width="160" height="86" />
+    </a>
 
     <nav class="MpHeader__nav pc-only" aria-label="メインナビゲーション">
       <ul class="MpHeader__navList">
@@ -62,7 +66,7 @@ const navItems = [
     left: 0;
     width: 100%;
     z-index: var(--z-header);
-    background-color: rgba(255, 255, 255, .97);
+    background-color: rgba(255, 255, 255, .8);
     border-bottom: 1px solid var(--mp-color-border);
     backdrop-filter: blur(12px);
     box-shadow: 0 1px 8px rgba(26, 26, 46, .06);
@@ -72,21 +76,28 @@ const navItems = [
       align-items: center;
       justify-content: space-between;
       padding: 0 64px;
-      height: 64px;
+      height: 96px;
 
       @include mix.mq(sp) {
         padding: 0 20px;
-        height: 56px;
+        height: 72px;
       }
     }
 
     &__logo {
-      font-family: var(--mp-font-main);
-      font-size: .875rem;
-      font-weight: 500;
-      letter-spacing: .12em;
-      color: var(--mp-color-dark);
-      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    &__logoImg {
+      height: 75px;
+      width: auto;
+      display: block;
+
+      @include mix.mq(sp) {
+        height: 50px;
+      }
     }
 
     &__navList {
@@ -100,7 +111,7 @@ const navItems = [
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 64px;
+      height: 96px;
       padding: 0 20px;
       border-bottom: 1px solid transparent;
       transition: border-color var(--duration-base) ease;
@@ -108,7 +119,6 @@ const navItems = [
 
     &__navEn {
       font-size: .6875rem;
-      font-weight: 500;
       letter-spacing: .12em;
       color: var(--mp-color-dark);
     }
@@ -116,7 +126,7 @@ const navItems = [
     &__navJa {
       font-size: .5625rem;
       letter-spacing: .05em;
-      color: rgba(26, 26, 46, .55);
+      color: rgba(26, 26, 46, .7);
     }
 
     @media (any-hover: hover) {
@@ -154,9 +164,14 @@ const navItems = [
     }
 
     // SP menu
+    // backdrop-filter が新しい包含ブロックを生成するため
+    // inset: 0 だけでは親(.MpHeader)基準になる。明示的にサイズ指定で回避。
     &__menu {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100dvh;
       z-index: var(--z-hamburger);
       background-color: #fff;
       display: flex;
@@ -189,12 +204,12 @@ const navItems = [
     &__menuEn {
       font-size: .875rem;
       letter-spacing: .12em;
-      color: rgba(26, 26, 46, .8);
+      color: rgba(26, 26, 46, .9);
     }
 
     &__menuJa {
       font-size: .625rem;
-      color: rgba(26, 26, 46, .45);
+      color: rgba(26, 26, 46, .6);
     }
   }
 </style>

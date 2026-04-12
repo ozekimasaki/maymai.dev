@@ -1,0 +1,374 @@
+---
+import { Image } from 'astro:assets';
+import imgCharacter03 from '../../assets/images/mayproject/img_character_03.jpg';
+
+const sheets = [
+  {
+    id: '01',
+    name: '桜草メイ',
+    nameEn: 'Mei Sakurakusa',
+    role: 'ハウスキーパー',
+    roleColor: '#6B8E5A',
+    imageColor: '#6B8E5A',
+    image: imgCharacter03,
+    file: '/mayproject/assets/ref_mei.png',
+  },
+  {
+    id: '02',
+    name: 'エレナ・グレース・アッシュフォード',
+    nameEn: 'Elena Grace Ashford',
+    role: 'お嬢様',
+    roleColor: '#7F90A6',
+    imageColor: '#7F90A6',
+    image: imgCharacter03,
+    file: '/mayproject/assets/ref_elena.png',
+  },
+  {
+    id: '03',
+    name: 'アイリス・ウェインライト',
+    nameEn: 'Iris Wainwright',
+    role: '設備・制御管理担当',
+    roleColor: '#5C7E86',
+    imageColor: '#5C7E86',
+    image: imgCharacter03,
+    file: '/mayproject/assets/ref_iris.png',
+  },
+];
+---
+
+<section class="MpRef" id="reference">
+  <div class="MpRef__inner">
+    <div class="MpRef__header">
+      <div class="MpRef__titleBg">REFERENCE</div>
+      <div class="MpRef__titleWrap">
+        <span class="MpRef__titleBar"></span>
+        <div class="MpRef__titleGroup">
+          <span class="MpRef__titleEn">REFERENCE SHEET</span>
+          <h2 class="MpRef__titleJa">三面図・資料配布</h2>
+        </div>
+      </div>
+    </div>
+
+    <p class="MpRef__lead">
+      二次創作にご活用いただける三面図・設定資料をご用意しました。<br>
+      ガイドラインの範囲内でご自由にお使いください。
+    </p>
+
+    <div class="MpRef__grid">
+      {sheets.map((sheet) => (
+        <div class="MpRef__card">
+          <div class="MpRef__cardAccent" style={`background-color: ${sheet.imageColor}`}></div>
+          <div class="MpRef__cardVisual">
+            <Image
+              src={sheet.image}
+              alt={`${sheet.name} 三面図`}
+              class="MpRef__cardImg"
+              width={960}
+              height={540}
+            />
+            <div class="MpRef__cardOverlay"></div>
+            <span class="MpRef__cardNum">{sheet.id}</span>
+          </div>
+          <div class="MpRef__cardBody">
+            <span class="MpRef__cardRole" style={`background-color: ${sheet.roleColor}`}>{sheet.role}</span>
+            <h3 class="MpRef__cardName">{sheet.name}</h3>
+            <p class="MpRef__cardNameEn">{sheet.nameEn}</p>
+            <a href={sheet.file} download class="MpRef__cardDl">
+              <svg class="MpRef__cardDlIcon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 1v10m0 0L4.5 7.5M8 11l3.5-3.5M2 14h12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>DOWNLOAD</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="MpRef__notice">
+      <h3 class="MpRef__noticeTitle">二次創作ガイドライン</h3>
+      <ul class="MpRef__noticeList">
+        <li>非営利の個人利用に限り、ご自由にお使いいただけます</li>
+        <li>公序良俗に反する利用はご遠慮ください</li>
+        <li>公開時は「桜草メイプロジェクト」のクレジット表記をお願いします</li>
+        <li>AI学習目的での使用はお控えください</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .MpRef {
+    background-color: rgba(255, 255, 255, .95);
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+
+    @include mix.mq(sp) {
+      padding: 56px 0;
+    }
+
+    &__inner {
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 64px;
+
+      @include mix.mq(sp) {
+        padding-inline: 20px;
+      }
+    }
+
+    &__header {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    &__titleBg {
+      position: absolute;
+      top: -44px;
+      left: -12px;
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @include mix.mq(sp) {
+        font-size: 3.5rem;
+        top: -24px;
+      }
+    }
+
+    &__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    &__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    &__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @include mix.mq(sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__lead {
+      font-size: .875rem;
+      line-height: 2.2;
+      letter-spacing: .06em;
+      color: rgba(26, 26, 46, .85);
+      margin-bottom: 48px;
+
+      @include mix.mq(sp) {
+        font-size: .8125rem;
+        margin-bottom: 32px;
+
+        br {
+          display: none;
+        }
+      }
+    }
+
+    // Card grid
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+
+      @include mix.mq(sp) {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    &__card {
+      position: relative;
+      border: 1px solid var(--mp-color-border);
+      background-color: #fff;
+      transition: box-shadow .3s ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          box-shadow: 0 8px 32px rgba(26, 26, 46, .08);
+        }
+      }
+    }
+
+    &__cardAccent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 2;
+    }
+
+    &__cardVisual {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+
+    &__cardImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &__cardOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(26, 26, 46, .45) 0%,
+        transparent 35%
+      );
+      pointer-events: none;
+    }
+
+    &__cardNum {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-family: var(--mp-font-main);
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      color: rgba(255, 255, 255, .15);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    &__cardBody {
+      padding: 20px 24px 24px;
+
+      @include mix.mq(sp) {
+        padding: 16px 20px 20px;
+      }
+    }
+
+    &__cardRole {
+      display: inline-block;
+      padding: 2px 12px;
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: #fff;
+    }
+
+    &__cardName {
+      font-family: var(--mp-font-main);
+      font-size: 1rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+      margin-top: 10px;
+    }
+
+    &__cardNameEn {
+      font-size: .6875rem;
+      letter-spacing: .06em;
+      color: rgba(26, 26, 46, .6);
+      margin-top: 4px;
+    }
+
+    &__cardDl {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: 1px solid var(--mp-color-primary);
+      color: var(--mp-color-primary);
+      font-size: .6875rem;
+      letter-spacing: .15em;
+      transition: background-color .3s ease, color .3s ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--mp-color-primary);
+          color: #fff;
+        }
+      }
+    }
+
+    &__cardDlIcon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    // Notice
+    &__notice {
+      margin-top: 64px;
+      padding: 32px 40px;
+      background-color: var(--mp-color-bg-warm);
+      border-left: 3px solid var(--mp-color-primary);
+
+      @include mix.mq(sp) {
+        margin-top: 40px;
+        padding: 24px 20px;
+      }
+    }
+
+    &__noticeTitle {
+      font-family: var(--mp-font-main);
+      font-size: .8125rem;
+      letter-spacing: .12em;
+      color: var(--mp-color-dark);
+      margin-bottom: 16px;
+    }
+
+    &__noticeList {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      li {
+        position: relative;
+        padding-left: 16px;
+        font-size: .8125rem;
+        line-height: 1.8;
+        letter-spacing: .04em;
+        color: rgba(26, 26, 46, .85);
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: .7em;
+          left: 0;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: rgba(232, 115, 42, .4);
+        }
+      }
+    }
+  }
+</style>

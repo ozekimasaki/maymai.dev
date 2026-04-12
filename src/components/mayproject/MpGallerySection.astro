@@ -28,32 +28,48 @@ const slides = [
       <span class="MpGallery__titleBar"></span>
       <div class="MpGallery__titleGroup">
         <span class="MpGallery__titleEn">GALLERY</span>
-        <h2 class="MpGallery__titleJa">展示室</h2>
+        <h2 class="MpGallery__titleJa">画像展示室</h2>
       </div>
     </div>
+    <p class="MpGallery__counter pc-only">
+      <span class="MpGallery__counterCurrent js-mp-gallery-current">01</span>
+      <span class="MpGallery__counterSep">/</span>
+      <span class="MpGallery__counterTotal">{String(slides.length).padStart(2, '0')}</span>
+    </p>
   </div>
 
   <div class="MpGallery__bgText pc-only">GALLERY</div>
 
   <div class="MpGallery__sliderWrap">
-    <div class="MpGallery__slider js-mp-gallery-splide splide" aria-label="ギャラリー">
-      <div class="splide__track">
-        <ul class="splide__list">
-          {slides.map((slide) => (
-            <li class="splide__slide MpGallery__slide">
-              <div class="MpGallery__slideInner">
-                <Image
-                  src={slide.src}
-                  alt={slide.alt}
-                  class="MpGallery__slideImg"
-                  width={400}
-                  height={500}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
+    <div class="MpGallery__slider swiper js-mp-gallery-swiper">
+      <div class="swiper-wrapper">
+        {slides.map((slide, i) => (
+          <div class="swiper-slide MpGallery__slide">
+            <div class="MpGallery__slideInner">
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                class="MpGallery__slideImg"
+                width={480}
+                height={600}
+              />
+              <div class="MpGallery__slideOverlay"></div>
+              <span class="MpGallery__slideNum">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+          </div>
+        ))}
       </div>
+      <div class="swiper-pagination MpGallery__pagination"></div>
+      <button class="MpGallery__arrow MpGallery__arrow--prev js-mp-gallery-prev" type="button" aria-label="前のスライド">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="MpGallery__arrow MpGallery__arrow--next js-mp-gallery-next" type="button" aria-label="次のスライド">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
   </div>
 </section>
@@ -62,7 +78,7 @@ const slides = [
   @use '../../styles/foundation/mixin' as mix;
 
   .MpGallery {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, .95);
     padding: 96px 0 80px;
     position: relative;
     overflow: hidden;
@@ -74,10 +90,15 @@ const slides = [
     &__header {
       position: relative;
       padding-left: 96px;
+      padding-right: 96px;
       margin-bottom: 48px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
 
       @include mix.mq(sp) {
         padding-left: 20px;
+        padding-right: 20px;
         margin-bottom: 32px;
       }
     }
@@ -130,13 +151,41 @@ const slides = [
     &__titleJa {
       font-family: var(--mp-font-main);
       font-size: 2rem;
-      font-weight: 500;
       letter-spacing: .08em;
       color: var(--mp-color-dark);
 
       @include mix.mq(sp) {
         font-size: 1.5rem;
       }
+    }
+
+    &__counter {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      font-family: var(--mp-font-main);
+      letter-spacing: .12em;
+      color: rgba(26, 26, 46, .3);
+      flex-shrink: 0;
+      padding-bottom: 4px;
+    }
+
+    &__counterCurrent {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--mp-color-primary);
+      line-height: 1;
+    }
+
+    &__counterSep {
+      font-size: .625rem;
+      margin: 0 3px;
+      color: rgba(26, 26, 46, .2);
+    }
+
+    &__counterTotal {
+      font-size: .625rem;
+      font-weight: 400;
     }
 
     &__bgText {
@@ -154,49 +203,49 @@ const slides = [
       white-space: nowrap;
     }
 
-    // Slider wrapper
+    // ── Slider ──
     &__sliderWrap {
       position: relative;
-      padding: 0 96px;
+      padding: 0 48px;
 
       @include mix.mq(sp) {
-        padding: 0 20px;
+        padding: 0;
       }
     }
 
-    // Splide overrides
-    .splide {
-      position: static;
-    }
+    .swiper {
+      overflow: hidden;
+      padding-bottom: 48px;
 
-    .splide__track {
-      overflow: visible;
-    }
-
-    .splide__arrows {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      @include mix.mq(sp) {
+        padding-bottom: 36px;
+      }
     }
 
     &__slide {
-      border: 1px solid var(--mp-color-border);
+      width: 27% !important;
       overflow: hidden;
-      transition: transform .4s ease, border-color .4s ease, opacity .4s ease;
-      opacity: .35;
+      border: 1px solid var(--mp-color-border);
+      transition: border-color .4s ease, box-shadow .4s ease;
+
+      @include mix.mq(sp) {
+        width: 72% !important;
+        border-color: transparent;
+      }
     }
 
-    &__slide.is-active {
+    &__slide.swiper-slide-active {
       border-color: var(--mp-color-primary);
-      opacity: 1;
-      transform: scale(1.06);
+      box-shadow: 0 16px 48px rgba(26, 26, 46, .14);
+
+      @include mix.mq(sp) {
+        box-shadow: 0 8px 32px rgba(26, 26, 46, .18);
+      }
     }
 
     &__slideInner {
       overflow: hidden;
+      position: relative;
     }
 
     &__slideImg {
@@ -204,109 +253,253 @@ const slides = [
       height: 100%;
       object-fit: cover;
       aspect-ratio: 4 / 5;
+      display: block;
+      transition: transform .6s cubic-bezier(.4, 0, .2, 1), filter .5s ease;
     }
 
-    .splide__arrow {
+    .swiper-slide:not(.swiper-slide-active) &__slideImg {
+      @include mix.mq(sp) {
+        filter: brightness(.65);
+      }
+    }
+
+    &__slideOverlay {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 48px;
-      height: 48px;
-      background-color: var(--mp-color-primary);
-      border: none;
-      border-radius: 0;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(26, 26, 46, .35) 0%,
+        transparent 40%
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+
+    .swiper-slide-active &__slideOverlay {
       opacity: 1;
+    }
+
+    &__slideNum {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-family: var(--mp-font-main);
+      font-size: .6875rem;
+      font-weight: 400;
+      letter-spacing: .15em;
+      color: rgba(255, 255, 255, .6);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .5s ease;
+
+      @include mix.mq(sp) {
+        opacity: 1;
+        bottom: 8px;
+        left: 10px;
+        font-size: .625rem;
+      }
+    }
+
+    .swiper-slide-active &__slideNum {
+      opacity: 1;
+    }
+
+    // ── Arrows ──
+    &__arrow {
+      position: absolute;
+      top: calc(50% - 24px);
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(26, 26, 46, .06);
+      border-radius: 0;
       cursor: pointer;
-      pointer-events: auto;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 2;
-
-      svg {
-        fill: #fff;
-        width: 16px;
-        height: 16px;
-      }
+      transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease, color .3s ease;
+      box-shadow: 0 1px 6px rgba(26, 26, 46, .04);
+      color: rgba(26, 26, 46, .45);
 
       @media (any-hover: hover) {
         &:hover {
-          opacity: .85;
+          background-color: var(--mp-color-primary);
+          border-color: var(--mp-color-primary);
+          box-shadow: 0 4px 16px rgba(232, 115, 42, .2);
+          color: #fff;
         }
       }
-    }
-
-    .splide__arrow--prev {
-      left: 0;
 
       @include mix.mq(sp) {
-        left: -4px;
+        display: none;
+      }
+
+      &--prev {
+        left: 0;
+      }
+
+      &--next {
+        right: 0;
       }
     }
 
-    .splide__arrow--next {
-      right: 0;
-
-      @include mix.mq(sp) {
-        right: -4px;
-      }
+    // Swiper theme color override
+    .swiper {
+      --swiper-theme-color: var(--mp-color-primary);
+      --swiper-pagination-color: var(--mp-color-primary);
     }
 
-    .splide__pagination {
+    // ── Pagination ──
+    &__pagination.swiper-pagination {
       position: relative;
       bottom: auto;
-      margin-top: 40px;
-      padding: 0 96px;
-      gap: 4px;
-
-      @include mix.mq(sp) {
-        padding: 0 20px;
-        margin-top: 24px;
-      }
+      margin-top: 16px;
     }
 
-    .splide__pagination__page {
-      width: 100%;
-      max-width: 130px;
-      height: 2px;
-      border-radius: 0;
+    // PC: progressbar
+    &__pagination.swiper-pagination-progressbar {
+      width: calc(100% - 96px);
+      margin-left: auto;
+      margin-right: auto;
+      height: 1px;
+      background-color: rgba(26, 26, 46, .08);
+    }
+
+    &__pagination .swiper-pagination-progressbar-fill {
+      background-color: var(--mp-color-primary);
+      opacity: .6;
+      transition: opacity .3s ease;
+    }
+
+    .swiper:hover &__pagination .swiper-pagination-progressbar-fill {
+      opacity: 1;
+    }
+
+    // SP: bullets
+    &__pagination.swiper-pagination-bullets {
+      width: auto;
+      height: auto;
+      margin-top: 12px;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    &__pagination .swiper-pagination-bullet {
+      width: 6px;
+      height: 6px;
       background-color: var(--mp-color-border);
       opacity: 1;
-      margin: 0;
-      flex: 1;
+      transition: background-color .3s ease, width .3s ease;
+      border-radius: 3px;
+    }
 
-      &.is-active {
-        background-color: rgba(232, 115, 42, .6);
-      }
+    &__pagination .swiper-pagination-bullet-active {
+      background-color: var(--mp-color-primary);
+      width: 20px;
     }
   }
+
 </style>
 
 <script>
-  import Splide from '@splidejs/splide';
-  import '@splidejs/splide/css/core';
+  import Swiper from 'swiper';
+  import { Autoplay, EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/effect-coverflow';
+  import 'swiper/css/pagination';
 
   document.addEventListener('DOMContentLoaded', () => {
-    const el = document.querySelector('.js-mp-gallery-splide');
+    const el = document.querySelector('.js-mp-gallery-swiper') as HTMLElement | null;
     if (!el) return;
 
-    new Splide(el as HTMLElement, {
-      type: 'loop',
-      perPage: 4,
-      perMove: 1,
-      gap: '4px',
-      focus: 'center',
-      pagination: true,
-      arrows: true,
-      autoplay: true,
-      interval: 4000,
-      pauseOnHover: true,
-      breakpoints: {
-        767: {
-          perPage: 1,
-          gap: '12px',
-        },
+    const counterEl = document.querySelector('.js-mp-gallery-current');
+    const mql = window.matchMedia('(max-width: 767px)');
+    let swiper: Swiper | null = null;
+
+    const shared: Swiper['params'] = {
+      modules: [Autoplay, EffectCoverflow, Pagination, Navigation],
+      centeredSlides: true,
+      loop: true,
+      speed: 700,
+      autoplay: {
+        delay: 4500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       },
-    }).mount();
+      navigation: {
+        prevEl: '.js-mp-gallery-prev',
+        nextEl: '.js-mp-gallery-next',
+      },
+    };
+
+    const pcConfig: Swiper['params'] = {
+      ...shared,
+      effect: 'coverflow',
+      slidesPerView: 'auto',
+      grabCursor: true,
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 80,
+        depth: 200,
+        modifier: 1,
+        slideShadows: false,
+      },
+      pagination: {
+        el: '.MpGallery__pagination',
+        type: 'progressbar',
+      },
+    };
+
+    const spConfig: Swiper['params'] = {
+      ...shared,
+      effect: 'coverflow',
+      slidesPerView: 'auto',
+      grabCursor: false,
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 40,
+        depth: 120,
+        modifier: 1,
+        slideShadows: false,
+      },
+      pagination: {
+        el: '.MpGallery__pagination',
+        type: 'bullets',
+        clickable: true,
+      },
+    };
+
+    const updateCounter = () => {
+      if (counterEl && swiper) {
+        counterEl.textContent = String(swiper.realIndex + 1).padStart(2, '0');
+      }
+    };
+
+    const paginationEl = el.querySelector('.MpGallery__pagination');
+
+    const createSwiper = (isSp: boolean) => {
+      if (swiper) {
+        swiper.destroy(true, true);
+        swiper = null;
+      }
+      if (paginationEl) {
+        paginationEl.innerHTML = '';
+        paginationEl.className = 'swiper-pagination MpGallery__pagination';
+      }
+      swiper = new Swiper(el, isSp ? spConfig : pcConfig);
+      updateCounter();
+      swiper.on('slideChange', updateCounter);
+    };
+
+    createSwiper(mql.matches);
+
+    mql.addEventListener('change', (e) => {
+      createSwiper(e.matches);
+    });
   });
 </script>

@@ -17,12 +17,12 @@
 
     <div class="MpAbout__body">
       <p class="MpAbout__text">
-        Victoria Maid Manorは、<br>
-        クラシカルな雰囲気の中でゆったりとした時間をお届けするメイド館。
+        桜草メイプロジェクトは、<br>
+        ロンドン郊外のカントリー・ハウスを舞台にした、ほのぼのキャラクターIPです。
       </p>
       <p class="MpAbout__text">
-        紅茶の淹れ方講座や古典の朗読会、ピアノの生演奏から、雑談やゲームまで——<br>
-        格式を大切にしながらも、使用人たちの意外な一面が見える配信をお届けしています。
+        古い屋敷の静けさに、手仕事の温かさが重なるとき——<br>
+        土の匂い、ティーカップの音、庭の新芽。暮らしは、手をかけたぶんだけやさしくなる。
       </p>
       <div class="MpAbout__divider"></div>
     </div>
@@ -33,7 +33,7 @@
   @use '../../styles/foundation/mixin' as mix;
 
   .MpAbout {
-    background-color: var(--mp-color-bg-warm);
+    background-color: color-mix(in srgb, var(--mp-color-bg-warm) 95%, transparent);
     padding: 112px 0;
     position: relative;
     overflow: hidden;
@@ -126,7 +126,6 @@
     &__titleJa {
       font-family: var(--mp-font-main);
       font-size: 2rem;
-      font-weight: 500;
       letter-spacing: .08em;
       color: var(--mp-color-dark);
 
@@ -143,7 +142,7 @@
       font-size: .875rem;
       line-height: 2.6;
       letter-spacing: .04em;
-      color: rgba(26, 26, 46, .8);
+      color: rgba(26, 26, 46, .9);
 
       & + & {
         margin-top: 0;
