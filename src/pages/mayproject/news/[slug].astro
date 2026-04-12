@@ -1,0 +1,148 @@
+---
+import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
+import { mpNewsItems, categoryColors, type MpNewsItem } from '../../../data/mp-news';
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+
+export const getStaticPaths = (() => {
+  return mpNewsItems.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { item } = Astro.props as Props;
+const color = categoryColors[item.category];
+const paragraphs = item.body.split('\n\n');
+---
+
+<MayprojectLayout
+  title={`${item.title} — 桜草メイプロジェクト | Maymai.dev`}
+  description={item.title}
+>
+  <article class="MpNewsDetail">
+    <div class="MpNewsDetail__inner">
+      <div class="MpNewsDetail__meta">
+        <time class="MpNewsDetail__date">{item.date}</time>
+        <span class="MpNewsDetail__badge" style={`background-color: ${color}`}>
+          {item.category}
+        </span>
+      </div>
+
+      <h1 class="MpNewsDetail__heading">{item.title}</h1>
+
+      <div class="MpNewsDetail__body">
+        {paragraphs.map((p) => (
+          <p class="MpNewsDetail__paragraph">{p}</p>
+        ))}
+      </div>
+
+      <div class="MpNewsDetail__nav">
+        <a href="/mayproject/news/" class="MpNewsDetail__navLink">&larr; お知らせ一覧に戻る</a>
+        <a href="/mayproject/" class="MpNewsDetail__navLink">&larr; トップに戻る</a>
+      </div>
+    </div>
+  </article>
+</MayprojectLayout>
+
+<style lang="scss">
+  @use '../../../styles/foundation/mixin' as mix;
+
+  .MpNewsDetail {
+    padding: 128px 0 96px;
+    background-color: #fff;
+    min-height: 100vh;
+
+    @include mix.mq(sp) {
+      padding: 88px 0 56px;
+    }
+
+    &__inner {
+      max-width: 720px;
+      margin-inline: auto;
+      padding-inline: 40px;
+
+      @include mix.mq(sp) {
+        padding-inline: 20px;
+      }
+    }
+
+    &__meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    &__date {
+      font-size: .75rem;
+      letter-spacing: .05em;
+      color: var(--mp-color-text-light);
+    }
+
+    &__badge {
+      display: inline-block;
+      padding: 2px 12px;
+      font-size: .625rem;
+      letter-spacing: .08em;
+      color: #fff;
+    }
+
+    &__heading {
+      font-family: var(--mp-font-main);
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1.6;
+      letter-spacing: .06em;
+      color: var(--mp-color-dark);
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--mp-color-border);
+
+      @include mix.mq(sp) {
+        font-size: 1.25rem;
+      }
+    }
+
+    &__body {
+      padding-top: 32px;
+    }
+
+    &__paragraph {
+      font-size: .9375rem;
+      line-height: 2.2;
+      letter-spacing: .04em;
+      color: rgba(26, 26, 46, .8);
+
+      & + & {
+        margin-top: 24px;
+      }
+    }
+
+    &__nav {
+      display: flex;
+      gap: 24px;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--mp-color-border);
+
+      @include mix.mq(sp) {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    &__navLink {
+      font-size: .8125rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-primary);
+      transition: opacity var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .7;
+        }
+      }
+    }
+  }
+</style>

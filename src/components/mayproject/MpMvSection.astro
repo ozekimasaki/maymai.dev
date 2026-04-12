@@ -1,0 +1,180 @@
+---
+import { Image } from 'astro:assets';
+import mvBg from '../../assets/images/mayproject/img_mv_bg.jpg';
+---
+
+<section class="MpMv" id="mv">
+  <div class="MpMv__bg">
+    <Image
+      src={mvBg}
+      alt=""
+      class="MpMv__bgImg"
+      widths={[640, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+    />
+    <div class="MpMv__overlay"></div>
+  </div>
+
+  <div class="MpMv__content">
+    <div class="MpMv__textWrap">
+      <div class="MpMv__accent"></div>
+      <h1 class="MpMv__heading">静謐と規律の館へ</h1>
+      <p class="MpMv__lead">
+        クラシカルな空間で、使用人たちが あなたをお待ちしております。<br>
+        紅茶と古典、そしてささやかな非日常を。
+      </p>
+      <a href="#gallery" class="MpMv__cta">
+        <span class="MpMv__ctaText">館内を見る</span>
+        <span class="MpMv__ctaArrow">&rarr;</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="MpMv__side pc-only">
+    <span class="MpMv__sideLine"></span>
+    <span class="MpMv__sideText">ヴィクトリアンメイド館</span>
+    <span class="MpMv__sideLine"></span>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .MpMv {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+
+    @include mix.mq(sp) {
+      height: 100svh;
+      min-height: 500px;
+    }
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    &__bgImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(26, 26, 46, .75) 0%,
+        rgba(26, 26, 46, .4) 50%,
+        transparent 100%
+      );
+    }
+
+    &__content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding-left: 96px;
+
+      @include mix.mq(sp) {
+        padding: 0 24px;
+        align-items: flex-end;
+        padding-bottom: 80px;
+      }
+    }
+
+    &__textWrap {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 560px;
+    }
+
+    &__accent {
+      width: 64px;
+      height: 2px;
+      background-color: var(--mp-color-primary);
+    }
+
+    &__heading {
+      font-family: var(--mp-font-main);
+      font-size: 3.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: .15em;
+      color: #fff;
+
+      @include mix.mq(sp) {
+        font-size: 2rem;
+      }
+    }
+
+    &__lead {
+      font-size: .875rem;
+      line-height: 2.2;
+      letter-spacing: .08em;
+      color: rgba(255, 255, 255, .85);
+
+      @include mix.mq(sp) {
+        font-size: .8125rem;
+      }
+    }
+
+    &__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 32px;
+      background-color: var(--mp-color-primary);
+      color: #fff;
+      width: fit-content;
+      transition: opacity var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .85;
+        }
+      }
+    }
+
+    &__ctaText {
+      font-size: .8125rem;
+      letter-spacing: .12em;
+    }
+
+    &__ctaArrow {
+      font-size: 1rem;
+      letter-spacing: .1em;
+    }
+
+    // Side vertical text
+    &__side {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &__sideLine {
+      width: 1px;
+      height: 64px;
+      background-color: rgba(255, 255, 255, .25);
+    }
+
+    &__sideText {
+      writing-mode: vertical-rl;
+      font-size: .875rem;
+      letter-spacing: .4em;
+      color: rgba(255, 255, 255, .25);
+    }
+  }
+</style>

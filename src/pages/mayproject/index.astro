@@ -1,0 +1,35 @@
+---
+import MayprojectLayout from '../../layouts/MayprojectLayout.astro';
+import MpMvSection from '../../components/mayproject/MpMvSection.astro';
+import MpNewsSection from '../../components/mayproject/MpNewsSection.astro';
+import MpAboutSection from '../../components/mayproject/MpAboutSection.astro';
+import MpGallerySection from '../../components/mayproject/MpGallerySection.astro';
+import MpCharacterSection from '../../components/mayproject/MpCharacterSection.astro';
+import MpContactSection from '../../components/mayproject/MpContactSection.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: '桜草メイプロジェクト — Victoria Maid Manor',
+  url: 'https://maymai.dev/mayproject/',
+  description: 'クラシカルな空間で、使用人たちがあなたをお待ちしております。紅茶と古典、そしてささやかな非日常を。',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Maymai.dev',
+    url: 'https://maymai.dev',
+  },
+};
+---
+
+<MayprojectLayout
+  title="桜草メイプロジェクト — Victoria Maid Manor | Maymai.dev"
+  description="クラシカルな空間で、使用人たちがあなたをお待ちしております。紅茶と古典、そしてささやかな非日常を。"
+  jsonLd={jsonLd}
+>
+  <MpMvSection />
+  <MpNewsSection />
+  <MpAboutSection />
+  <MpGallerySection />
+  <MpCharacterSection />
+  <MpContactSection />
+</MayprojectLayout>

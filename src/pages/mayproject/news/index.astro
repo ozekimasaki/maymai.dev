@@ -1,0 +1,230 @@
+---
+import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
+import { mpNewsItems, categoryColors } from '../../../data/mp-news';
+---
+
+<MayprojectLayout
+  title="お知らせ一覧 — 桜草メイプロジェクト | Maymai.dev"
+  description="Victoria Maid Manor のお知らせ一覧です。"
+>
+  <div class="MpNewsPage">
+    <div class="MpNewsPage__inner">
+      <div class="MpNewsPage__header">
+        <div class="MpNewsPage__titleBg">NEWS</div>
+        <div class="MpNewsPage__titleWrap">
+          <span class="MpNewsPage__titleBar"></span>
+          <div class="MpNewsPage__titleGroup">
+            <span class="MpNewsPage__titleEn">NEWS</span>
+            <h1 class="MpNewsPage__titleJa">お知らせ</h1>
+          </div>
+        </div>
+      </div>
+
+      <ul class="MpNewsPage__list">
+        {mpNewsItems.map((item) => (
+          <li class="MpNewsPage__item">
+            <a href={`/mayproject/news/${item.slug}/`} class="MpNewsPage__link">
+              <time class="MpNewsPage__date">{item.date}</time>
+              <span
+                class="MpNewsPage__badge"
+                style={`background-color: ${categoryColors[item.category]}`}
+              >
+                {item.category}
+              </span>
+              <span class="MpNewsPage__title">{item.title}</span>
+              <span class="MpNewsPage__arrow">&rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="MpNewsPage__back">
+        <a href="/mayproject/" class="MpNewsPage__backLink">&larr; トップに戻る</a>
+      </div>
+    </div>
+  </div>
+</MayprojectLayout>
+
+<style lang="scss">
+  @use '../../../styles/foundation/mixin' as mix;
+
+  .MpNewsPage {
+    padding: 128px 0 96px;
+    background-color: #fff;
+    min-height: 100vh;
+
+    @include mix.mq(sp) {
+      padding: 88px 0 56px;
+    }
+
+    &__inner {
+      max-width: 900px;
+      margin-inline: auto;
+      padding-inline: 40px;
+
+      @include mix.mq(sp) {
+        padding-inline: 20px;
+      }
+    }
+
+    &__header {
+      position: relative;
+      margin-bottom: 48px;
+    }
+
+    &__titleBg {
+      position: absolute;
+      top: -44px;
+      left: -12px;
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @include mix.mq(sp) {
+        font-size: 3.5rem;
+        top: -24px;
+      }
+    }
+
+    &__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    &__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    &__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @include mix.mq(sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      border-bottom: 1px solid var(--mp-color-border);
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      padding: 17px 12px;
+      transition: background-color var(--duration-base) ease;
+
+      @include mix.mq(sp) {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 14px 8px;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: rgba(232, 115, 42, .03);
+        }
+      }
+    }
+
+    &__date {
+      font-size: .75rem;
+      letter-spacing: .05em;
+      color: var(--mp-color-text-light);
+      flex-shrink: 0;
+      width: 80px;
+
+      @include mix.mq(sp) {
+        width: auto;
+      }
+    }
+
+    &__badge {
+      display: inline-block;
+      padding: 1px 12px;
+      font-size: .625rem;
+      letter-spacing: .08em;
+      color: #fff;
+      flex-shrink: 0;
+      margin-right: 16px;
+
+      @include mix.mq(sp) {
+        margin-right: 0;
+      }
+    }
+
+    &__title {
+      font-size: .8125rem;
+      letter-spacing: .1em;
+      color: var(--mp-color-text);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @include mix.mq(sp) {
+        width: 100%;
+        flex: none;
+        white-space: normal;
+      }
+    }
+
+    &__arrow {
+      font-size: .875rem;
+      color: var(--mp-color-text-muted);
+      flex-shrink: 0;
+      margin-left: auto;
+      padding-left: 16px;
+
+      @include mix.mq(sp) {
+        display: none;
+      }
+    }
+
+    &__back {
+      margin-top: 48px;
+    }
+
+    &__backLink {
+      font-size: .8125rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-primary);
+      transition: opacity var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .7;
+        }
+      }
+    }
+  }
+</style>

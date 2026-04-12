@@ -1,0 +1,148 @@
+---
+const year = new Date().getFullYear();
+
+const navItems = [
+  { label: 'ABOUT', href: '#about' },
+  { label: 'GALLERY', href: '#gallery' },
+  { label: 'CHARACTER', href: '#character' },
+  { label: 'CONTACT', href: '#contact' },
+];
+---
+
+<footer class="MpFooter">
+  <div class="MpFooter__accent"></div>
+  <div class="MpFooter__inner">
+    <div class="MpFooter__top">
+      <div class="MpFooter__brand">
+        <p class="MpFooter__brandName">Victoria Maid Manor</p>
+        <p class="MpFooter__brandSub">ヴィクトリアン・メイド館</p>
+      </div>
+      <nav class="MpFooter__nav" aria-label="フッターナビゲーション">
+        <ul class="MpFooter__navList">
+          {navItems.map((item) => (
+            <li>
+              <a href={item.href} class="MpFooter__navLink">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+    <div class="MpFooter__bottom">
+      <p class="MpFooter__copyright">
+        &copy; {year} Victoria Maid Manor. All rights reserved.
+      </p>
+      <p class="MpFooter__meta">This is a fictional project.</p>
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use '../../styles/foundation/mixin' as mix;
+
+  .MpFooter {
+    background-color: var(--mp-color-dark);
+    position: relative;
+
+    &__accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(232, 115, 42, .4) 50%,
+        transparent
+      );
+    }
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      padding: 64px 64px 48px;
+
+      @include mix.mq(sp) {
+        padding: 40px 20px 32px;
+        gap: 32px;
+      }
+    }
+
+    &__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      @include mix.mq(sp) {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+      }
+    }
+
+    &__brandName {
+      font-family: var(--mp-font-main);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: .15em;
+      color: rgba(255, 255, 255, .8);
+    }
+
+    &__brandSub {
+      margin-top: 8px;
+      font-size: .6875rem;
+      letter-spacing: .05em;
+      color: rgba(255, 255, 255, .4);
+    }
+
+    &__navList {
+      display: flex;
+      gap: 24px;
+
+      @include mix.mq(sp) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    &__navLink {
+      font-size: .6875rem;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .45);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: rgba(255, 255, 255, .8);
+        }
+      }
+    }
+
+    &__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+
+      @include mix.mq(sp) {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+
+    &__copyright {
+      font-size: .625rem;
+      letter-spacing: .05em;
+      color: rgba(255, 255, 255, .35);
+    }
+
+    &__meta {
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .2);
+    }
+  }
+</style>

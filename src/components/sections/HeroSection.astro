@@ -63,20 +63,38 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
       display: flex;
       align-items: center;
       justify-content: center;
-      will-change: transform, opacity;
+      --hero-bg-base-x: 14%;
+      --hero-bg-base-y: 2%;
+      --hero-bg-base-scale: .7;
 
-      :global(svg) {
-        width: 90%;
+      :global(.Hero__scene) {
+        width: 96%;
+        max-width: 980px;
+        opacity: .44;
+        filter: drop-shadow(0 28px 48px rgba(26, 27, 30, .12));
+        transform:
+          translateX(var(--hero-bg-base-x))
+          translateY(var(--hero-bg-base-y))
+          scale(var(--hero-bg-base-scale));
+        transform-origin: 56% 63%;
+      }
+
+      :global(.Hero__scene svg) {
+        display: block;
+        width: 100%;
         height: auto;
-        max-width: 800px;
-        opacity: .7;
+        overflow: visible;
       }
 
       @include mix.mq(sp) {
-        :global(svg) {
-          width: 95%;
+        --hero-bg-base-x: 12%;
+        --hero-bg-base-y: 18%;
+        --hero-bg-base-scale: .7;
+
+        :global(.Hero__scene) {
+          width: 104%;
           max-width: none;
-          opacity: .5;
+          opacity: .22;
         }
       }
     }

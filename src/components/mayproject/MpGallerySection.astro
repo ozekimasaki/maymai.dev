@@ -1,0 +1,312 @@
+---
+import { Image } from 'astro:assets';
+import img01 from '../../assets/images/mayproject/img_gallery_01.jpg';
+import img02 from '../../assets/images/mayproject/img_gallery_02.jpg';
+import img03 from '../../assets/images/mayproject/img_gallery_03.jpg';
+import img04 from '../../assets/images/mayproject/img_gallery_04.jpg';
+import img05 from '../../assets/images/mayproject/img_gallery_05.jpg';
+import img06 from '../../assets/images/mayproject/img_gallery_06.jpg';
+import img07 from '../../assets/images/mayproject/img_gallery_07.jpg';
+import img08 from '../../assets/images/mayproject/img_gallery_08.jpg';
+
+const slides = [
+  { src: img01, alt: 'ギャラリー画像 1' },
+  { src: img02, alt: 'ギャラリー画像 2' },
+  { src: img03, alt: 'ギャラリー画像 3' },
+  { src: img04, alt: 'ギャラリー画像 4' },
+  { src: img05, alt: 'ギャラリー画像 5' },
+  { src: img06, alt: 'ギャラリー画像 6' },
+  { src: img07, alt: 'ギャラリー画像 7' },
+  { src: img08, alt: 'ギャラリー画像 8' },
+];
+---
+
+<section class="MpGallery" id="gallery">
+  <div class="MpGallery__header">
+    <div class="MpGallery__titleBg">GALLERY</div>
+    <div class="MpGallery__titleWrap">
+      <span class="MpGallery__titleBar"></span>
+      <div class="MpGallery__titleGroup">
+        <span class="MpGallery__titleEn">GALLERY</span>
+        <h2 class="MpGallery__titleJa">展示室</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="MpGallery__bgText pc-only">GALLERY</div>
+
+  <div class="MpGallery__sliderWrap">
+    <div class="MpGallery__slider js-mp-gallery-splide splide" aria-label="ギャラリー">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {slides.map((slide) => (
+            <li class="splide__slide MpGallery__slide">
+              <div class="MpGallery__slideInner">
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  class="MpGallery__slideImg"
+                  width={400}
+                  height={500}
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss" is:global>
+  @use '../../styles/foundation/mixin' as mix;
+
+  .MpGallery {
+    background-color: #fff;
+    padding: 96px 0 80px;
+    position: relative;
+    overflow: hidden;
+
+    @include mix.mq(sp) {
+      padding: 56px 0 48px;
+    }
+
+    &__header {
+      position: relative;
+      padding-left: 96px;
+      margin-bottom: 48px;
+
+      @include mix.mq(sp) {
+        padding-left: 20px;
+        margin-bottom: 32px;
+      }
+    }
+
+    &__titleBg {
+      position: absolute;
+      top: -44px;
+      left: 84px;
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @include mix.mq(sp) {
+        font-size: 3.5rem;
+        left: 8px;
+        top: -24px;
+      }
+    }
+
+    &__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    &__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    &__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    &__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @include mix.mq(sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__bgText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--mp-font-main);
+      font-size: 8.75rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .03);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    // Slider wrapper
+    &__sliderWrap {
+      position: relative;
+      padding: 0 96px;
+
+      @include mix.mq(sp) {
+        padding: 0 20px;
+      }
+    }
+
+    // Splide overrides
+    .splide {
+      position: static;
+    }
+
+    .splide__track {
+      overflow: visible;
+    }
+
+    .splide__arrows {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    &__slide {
+      border: 1px solid var(--mp-color-border);
+      overflow: hidden;
+      transition: transform .4s ease, border-color .4s ease, opacity .4s ease;
+      opacity: .35;
+    }
+
+    &__slide.is-active {
+      border-color: var(--mp-color-primary);
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    &__slideInner {
+      overflow: hidden;
+    }
+
+    &__slideImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      aspect-ratio: 4 / 5;
+    }
+
+    .splide__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      border: none;
+      border-radius: 0;
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+
+      svg {
+        fill: #fff;
+        width: 16px;
+        height: 16px;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .85;
+        }
+      }
+    }
+
+    .splide__arrow--prev {
+      left: 0;
+
+      @include mix.mq(sp) {
+        left: -4px;
+      }
+    }
+
+    .splide__arrow--next {
+      right: 0;
+
+      @include mix.mq(sp) {
+        right: -4px;
+      }
+    }
+
+    .splide__pagination {
+      position: relative;
+      bottom: auto;
+      margin-top: 40px;
+      padding: 0 96px;
+      gap: 4px;
+
+      @include mix.mq(sp) {
+        padding: 0 20px;
+        margin-top: 24px;
+      }
+    }
+
+    .splide__pagination__page {
+      width: 100%;
+      max-width: 130px;
+      height: 2px;
+      border-radius: 0;
+      background-color: var(--mp-color-border);
+      opacity: 1;
+      margin: 0;
+      flex: 1;
+
+      &.is-active {
+        background-color: rgba(232, 115, 42, .6);
+      }
+    }
+  }
+</style>
+
+<script>
+  import Splide from '@splidejs/splide';
+  import '@splidejs/splide/css/core';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.querySelector('.js-mp-gallery-splide');
+    if (!el) return;
+
+    new Splide(el as HTMLElement, {
+      type: 'loop',
+      perPage: 4,
+      perMove: 1,
+      gap: '4px',
+      focus: 'center',
+      pagination: true,
+      arrows: true,
+      autoplay: true,
+      interval: 4000,
+      pauseOnHover: true,
+      breakpoints: {
+        767: {
+          perPage: 1,
+          gap: '12px',
+        },
+      },
+    }).mount();
+  });
+</script>
