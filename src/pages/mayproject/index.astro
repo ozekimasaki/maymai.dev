@@ -8,23 +8,67 @@ import MpCharacterSection from '../../components/mayproject/MpCharacterSection.a
 import MpReferenceSection from '../../components/mayproject/MpReferenceSection.astro';
 import MpContactSection from '../../components/mayproject/MpContactSection.astro';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: '桜草メイプロジェクト',
-  url: 'https://maymai.dev/mayproject/',
-  description: 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。',
-  isPartOf: {
-    '@type': 'WebSite',
-    name: 'Maymai.dev',
-    url: 'https://maymai.dev',
+const siteUrl = 'https://maymai.dev';
+const pageUrl = `${siteUrl}/mayproject/`;
+const pageDescription = 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: '桜草メイプロジェクト',
+    url: pageUrl,
+    description: pageDescription,
+    inLanguage: 'ja',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Maymai.dev',
+      url: siteUrl,
+    },
   },
-};
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'ホーム',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: '桜草メイプロジェクト',
+        item: pageUrl,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: '桜草メイプロジェクト',
+    url: pageUrl,
+    description: pageDescription,
+    genre: 'キャラクターIP',
+    inLanguage: 'ja',
+    author: {
+      '@type': 'Person',
+      name: 'Maymai',
+      url: siteUrl,
+    },
+    character: [
+      { '@type': 'Person', name: '桜草メイ' },
+      { '@type': 'Person', name: 'エレナ・グレース・アッシュフォード' },
+      { '@type': 'Person', name: 'アイリス・ウェインライト' },
+    ],
+  },
+];
 ---
 
 <MayprojectLayout
   title="桜草メイプロジェクト | Maymai.dev"
-  description="ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。"
+  description={pageDescription}
   jsonLd={jsonLd}
 >
   <MpMvSection />

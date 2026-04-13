@@ -3,6 +3,7 @@ import { mpNewsItems, categoryColors } from '../../data/mp-news';
 
 const newsItems = mpNewsItems.slice(0, 5).map((item) => ({
   date: item.date,
+  datetime: item.date.replace(/\./g, '-'),
   category: item.category,
   categoryColor: categoryColors[item.category],
   title: item.title,
@@ -27,7 +28,7 @@ const newsItems = mpNewsItems.slice(0, 5).map((item) => ({
       {newsItems.map((item) => (
         <li class="MpNews__item">
           <a href={item.href} class="MpNews__link">
-            <time class="MpNews__date">{item.date}</time>
+            <time class="MpNews__date" datetime={item.datetime}>{item.date}</time>
             <span
               class="MpNews__badge"
               style={`background-color: ${item.categoryColor}`}

@@ -2,11 +2,81 @@
 import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
 
 const lastUpdated = '2026.04.13';
+const siteUrl = 'https://maymai.dev';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: '桜草メイプロジェクト', item: `${siteUrl}/mayproject/` },
+      { '@type': 'ListItem', position: 3, name: '二次創作ガイドライン', item: `${siteUrl}/mayproject/guidelines/` },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'デジタル同人誌に任意価格/投げ銭は付けられますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'いいえ。デジタル配布物は無料のみです。SNS・動画配信は第3.1の条件内でプラットフォーム標準の収益機能を利用できます。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'YouTubeで広告や投げ銭は利用できますか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。第3.1の「表記」「申告基準」に従う限り可です。スポンサー契約・アフィリエイト等の外部商業導線は不可です。' },
+      },
+      {
+        '@type': 'Question',
+        name: '印刷物以外の物理グッズ（アクキー/衣類/立体物など）は作れますか？',
+        acceptedAnswer: { '@type': 'Answer', text: '個人利用（私的使用・非頒布/非販売）に限り作成可です。配布・販売は「印刷物」に限り許可しています。' },
+      },
+      {
+        '@type': 'Question',
+        name: '作ったグッズを友人に渡しても良いですか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。単発の無償譲渡は「個人利用」に含めて可です（転売や継続的な提供は不可）。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'R-18作品の投稿は可能ですか？',
+        acceptedAnswer: { '@type': 'Answer', text: '可能です。各プラットフォームのセンシティブ/年齢制限設定と適切なタグ付けを行い、プレビュー面での露骨な描写は避けてください。' },
+      },
+      {
+        '@type': 'Question',
+        name: '「非公式」表記はどこに入れればよいですか？',
+        acceptedAnswer: { '@type': 'Answer', text: '配布ページ（BOOTH/itch.io等）やリポジトリのREADME、印刷物の奥付/表紙に、キャラクター名入りで明記してください。SNSの単発投稿での明記は任意です。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'AI生成でイラストを作っても良いですか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。非営利の二次創作目的であれば、生成AIの利用を歓迎しています。公式配布素材（三面図等）はAIの入力・学習素材としても自由にお使いいただけます。公開時はAI生成である旨の明記を推奨します。' },
+      },
+      {
+        '@type': 'Question',
+        name: 'LoRAやモデルを作成・配布しても良いですか？',
+        acceptedAnswer: { '@type': 'Answer', text: 'はい。非営利・無料配布に限り可です。本ガイドラインの表記ルール・禁止事項に従い、他者の二次創作物を学習に使う場合はその作者の許諾を取得してください。' },
+      },
+      {
+        '@type': 'Question',
+        name: '作成した素材を配布/改変/再配布してもよいですか？',
+        acceptedAnswer: { '@type': 'Answer', text: '可能です。本ガイドラインと同一条件（非営利・表記必須・禁止事項順守）を付し、第三者素材のライセンスに従ってください。' },
+      },
+      {
+        '@type': 'Question',
+        name: '海外イベントや書店委託で頒布しても良いですか？',
+        acceptedAnswer: { '@type': 'Answer', text: '印刷物に限り可です。非営利・原価回収内で、各国法令/イベント規約に従ってください。規模が大きい場合は事前相談をお願いします。' },
+      },
+    ],
+  },
+];
 ---
 
 <MayprojectLayout
   title="二次創作ガイドライン — 桜草メイプロジェクト | Maymai.dev"
   description="桜草メイプロジェクトの二次創作ガイドラインです。キャラクターを使った創作活動のルールをご確認ください。"
+  jsonLd={jsonLd}
 >
   <article class="MpGuideline">
     <div class="MpGuideline__inner MpGrid">

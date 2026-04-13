@@ -1,11 +1,24 @@
 ---
 import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
 import { mpNewsItems, categoryColors } from '../../../data/mp-news';
+
+const siteUrl = 'https://maymai.dev';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'ホーム', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: '桜草メイプロジェクト', item: `${siteUrl}/mayproject/` },
+    { '@type': 'ListItem', position: 3, name: 'お知らせ', item: `${siteUrl}/mayproject/news/` },
+  ],
+};
 ---
 
 <MayprojectLayout
   title="お知らせ一覧 — 桜草メイプロジェクト | Maymai.dev"
-  description="Victoria Maid Manor のお知らせ一覧です。"
+  description="桜草メイプロジェクトのお知らせ一覧です。キャラクター情報、イベント、更新情報をお届けします。"
+  jsonLd={jsonLd}
 >
   <div class="MpNewsPage">
     <div class="MpNewsPage__inner">
@@ -24,7 +37,7 @@ import { mpNewsItems, categoryColors } from '../../../data/mp-news';
         {mpNewsItems.map((item) => (
           <li class="MpNewsPage__item">
             <a href={`/mayproject/news/${item.slug}/`} class="MpNewsPage__link">
-              <time class="MpNewsPage__date">{item.date}</time>
+              <time class="MpNewsPage__date" datetime={item.date.replace(/\./g, '-')}>{item.date}</time>
               <span
                 class="MpNewsPage__badge"
                 style={`background-color: ${categoryColors[item.category]}`}

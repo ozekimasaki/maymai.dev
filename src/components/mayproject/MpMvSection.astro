@@ -17,7 +17,9 @@ import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
     <div class="MpMv__overlay"></div>
   </div>
 
-  <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpMv__logo" width="320" height="172" />
+  <h1 class="MpMv__heading">
+    <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpMv__logo" width="320" height="172" />
+  </h1>
 
   <div class="MpMv__side pc-only">
     <span class="MpMv__sideLine"></span>
@@ -64,19 +66,26 @@ import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
       );
     }
 
-    &__logo {
+    &__heading {
       position: absolute;
       left: 48px;
       bottom: 48px;
-      width: 280px;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .25));
       z-index: 1;
+      margin: 0;
 
       @include mix.mq(sp) {
         left: 24px;
         bottom: 24px;
+      }
+    }
+
+    &__logo {
+      width: 280px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .25));
+
+      @include mix.mq(sp) {
         width: 180px;
       }
     }

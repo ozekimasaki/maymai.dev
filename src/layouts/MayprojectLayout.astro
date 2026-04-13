@@ -8,6 +8,8 @@ interface Props {
   description?: string;
   canonical?: string;
   ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -19,6 +21,8 @@ const {
   description = 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。',
   canonical = Astro.url.href,
   ogImage = '/og-image.png',
+  ogType = 'website',
+  publishedTime,
   jsonLd,
 } = Astro.props;
 
@@ -45,13 +49,14 @@ const jsonLdArray = jsonLd
 
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
-    <meta property="og:type" content="website">
+    <meta property="og:type" content={ogType}>
     <meta property="og:url" content={canonical}>
     <meta property="og:image" content={absoluteOgImage}>
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content={siteName}>
     <meta property="og:locale" content="ja_JP">
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@mei_999_">
@@ -82,9 +87,39 @@ const jsonLdArray = jsonLd
       <slot />
     </main>
     <MpFooter />
+
+    <button
+      class="MpPageTop"
+      id="js-page-top"
+      type="button"
+      aria-label="ページの先頭へ戻る"
+    >
+      <svg class="MpPageTop__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M10 4L3 12h5v4h4v-4h5L10 4z" fill="currentColor"/>
+      </svg>
+      <span class="MpPageTop__label">TOP</span>
+    </button>
+
     <script>
       import '../scripts/dissolve-scroll.ts';
       import '../scripts/scroll-fade.ts';
+    </script>
+    <script>
+      const btn = document.getElementById('js-page-top');
+
+      if (btn) {
+        const update = () => {
+          const pastMv = window.scrollY > window.innerHeight;
+          btn.classList.toggle('is-visible', pastMv);
+        };
+
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+
+        btn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
     </script>
   </body>
 </html>
@@ -126,5 +161,66 @@ const jsonLdArray = jsonLd
     position: relative;
     z-index: 1;
     margin-top: 100svh;
+  }
+
+  .MpPageTop {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--mp-color-primary);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px);
+    transition:
+      opacity .4s ease,
+      visibility .4s ease,
+      transform .4s ease,
+      background-color .25s ease;
+
+    @include mix.mq(sp) {
+      right: 16px;
+      bottom: 16px;
+      width: 44px;
+      height: 44px;
+    }
+
+    &.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: color-mix(in srgb, var(--mp-color-primary) 85%, #000);
+      }
+    }
+  }
+
+  .MpPageTop__icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .MpPageTop__label {
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1;
+    font-family: var(--mp-font-main);
   }
 </style>
