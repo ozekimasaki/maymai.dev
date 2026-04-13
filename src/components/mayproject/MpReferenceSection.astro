@@ -37,7 +37,7 @@ const sheets = [
 ---
 
 <section class="MpRef" id="reference">
-  <div class="MpRef__inner">
+  <div class="MpRef__inner MpGrid">
     <div class="MpRef__header">
       <div class="MpRef__titleBg">REFERENCE</div>
       <div class="MpRef__titleWrap">
@@ -90,8 +90,11 @@ const sheets = [
         <li>非営利の個人利用に限り、ご自由にお使いいただけます</li>
         <li>公序良俗に反する利用はご遠慮ください</li>
         <li>公開時は「桜草メイプロジェクト」のクレジット表記をお願いします</li>
-        <li>AI学習目的での使用はお控えください</li>
+        <li>生成AIを用いた二次創作も非営利の範囲で歓迎します</li>
       </ul>
+      <a href="/mayproject/guidelines/" class="MpRef__noticeLink">
+        ガイドラインの詳細を見る <span>&rarr;</span>
+      </a>
     </div>
   </div>
 </section>
@@ -109,19 +112,10 @@ const sheets = [
       padding: 56px 0;
     }
 
-    &__inner {
-      max-width: 1200px;
-      margin-inline: auto;
-      padding-inline: 64px;
-
-      @include mix.mq(sp) {
-        padding-inline: 20px;
-      }
-    }
-
     &__header {
       position: relative;
       margin-bottom: 32px;
+      grid-column: 1 / -1;
     }
 
     &__titleBg {
@@ -185,6 +179,7 @@ const sheets = [
       letter-spacing: .06em;
       color: rgba(26, 26, 46, .85);
       margin-bottom: 48px;
+      grid-column: 1 / -1;
 
       @include mix.mq(sp) {
         font-size: .8125rem;
@@ -201,6 +196,7 @@ const sheets = [
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 32px;
+      grid-column: 1 / -1;
 
       @include mix.mq(sp) {
         grid-template-columns: 1fr;
@@ -330,6 +326,7 @@ const sheets = [
       padding: 32px 40px;
       background-color: var(--mp-color-bg-warm);
       border-left: 3px solid var(--mp-color-primary);
+      grid-column: 1 / -1;
 
       @include mix.mq(sp) {
         margin-top: 40px;
@@ -367,6 +364,24 @@ const sheets = [
           height: 6px;
           border-radius: 50%;
           background-color: rgba(232, 115, 42, .4);
+        }
+      }
+    }
+
+    &__noticeLink {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      color: var(--mp-color-primary);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          border-bottom-color: var(--mp-color-primary);
         }
       }
     }

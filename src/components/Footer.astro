@@ -7,6 +7,9 @@ const year = new Date().getFullYear();
     <p class="Footer__copyright">
       &copy; {year} Maymai.dev All rights reserved.
     </p>
+    <nav class="Footer__links" aria-label="フッターリンク">
+      <a href="/mayproject/" class="Footer__link">桜草メイPJ</a>
+    </nav>
     <p class="Footer__meta">
       built_with: Astro + TypeScript | rendered: {new Date().toISOString().slice(0, 10)}
     </p>
@@ -40,6 +43,25 @@ const year = new Date().getFullYear();
       font-size: .625rem;
       line-height: 1.5;
       color: var(--color-label);
+    }
+
+    &__links {
+      display: flex;
+      gap: 16px;
+    }
+
+    &__link {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--color-text);
+        }
+      }
     }
   }
 </style>

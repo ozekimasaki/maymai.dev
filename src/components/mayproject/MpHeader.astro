@@ -5,12 +5,13 @@ const navItems = [
   { en: 'ABOUT', ja: 'プロジェクトについて', href: '#about' },
   { en: 'GALLERY', ja: '画像展示室', href: '#gallery' },
   { en: 'CHARACTER', ja: 'キャラクター紹介', href: '#character' },
+  { en: 'GUIDELINE', ja: 'ガイドライン', href: '/mayproject/guidelines/' },
   { en: 'CONTACT', ja: 'お手紙', href: '#contact' },
 ];
 ---
 
 <header class="MpHeader js-mp-header">
-  <div class="MpHeader__inner">
+  <div class="MpHeader__inner MpGrid">
     <a href="/mayproject/" class="MpHeader__logo">
       <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpHeader__logoImg" width="160" height="86" />
     </a>
@@ -72,14 +73,12 @@ const navItems = [
     box-shadow: 0 1px 8px rgba(26, 26, 46, .06);
 
     &__inner {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 64px;
       height: 96px;
 
       @include mix.mq(sp) {
-        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
         height: 72px;
       }
     }
@@ -88,6 +87,7 @@ const navItems = [
       display: flex;
       align-items: center;
       flex-shrink: 0;
+      grid-column: 1 / 4;
     }
 
     &__logoImg {
@@ -98,6 +98,12 @@ const navItems = [
       @include mix.mq(sp) {
         height: 50px;
       }
+    }
+
+    &__nav {
+      grid-column: 4 / -1;
+      display: flex;
+      justify-content: flex-end;
     }
 
     &__navList {
@@ -141,6 +147,7 @@ const navItems = [
       width: 28px;
       height: 20px;
       z-index: calc(var(--z-hamburger) + 1);
+      justify-self: end;
     }
 
     &__burgerLine {

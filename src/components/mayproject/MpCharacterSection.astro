@@ -67,7 +67,7 @@ const defaultIdx = 0;
 
 <section class="MpCharacter" id="character">
   <div class="MpCharacter__radial"></div>
-  <div class="MpCharacter__inner">
+  <div class="MpCharacter__inner MpGrid">
     <div class="MpCharacter__header">
       <div class="MpCharacter__titleBg">CHARACTER</div>
       <div class="MpCharacter__titleWrap">
@@ -184,19 +184,10 @@ const defaultIdx = 0;
       pointer-events: none;
     }
 
-    &__inner {
-      max-width: 1200px;
-      margin-inline: auto;
-      padding-inline: 64px;
-
-      @include mix.mq(sp) {
-        padding-inline: 20px;
-      }
-    }
-
     &__header {
       position: relative;
       margin-bottom: 48px;
+      grid-column: 1 / -1;
     }
 
     &__titleBg {
@@ -259,6 +250,7 @@ const defaultIdx = 0;
       display: flex;
       gap: 0;
       margin-bottom: 40px;
+      grid-column: 1 / -1;
 
       @include mix.mq(sp) {
         overflow-x: auto;
@@ -298,6 +290,7 @@ const defaultIdx = 0;
     // Content panels
     &__content {
       display: none;
+      grid-column: 1 / -1;
 
       &.is-active {
         display: grid;

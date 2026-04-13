@@ -22,7 +22,7 @@ const slides = [
 ---
 
 <section class="MpGallery" id="gallery">
-  <div class="MpGallery__header">
+  <div class="MpGallery__header MpGrid">
     <div class="MpGallery__titleBg">GALLERY</div>
     <div class="MpGallery__titleWrap">
       <span class="MpGallery__titleBar"></span>
@@ -89,16 +89,10 @@ const slides = [
 
     &__header {
       position: relative;
-      padding-left: 96px;
-      padding-right: 96px;
       margin-bottom: 48px;
-      display: flex;
       align-items: flex-end;
-      justify-content: space-between;
 
       @include mix.mq(sp) {
-        padding-left: 20px;
-        padding-right: 20px;
         margin-bottom: 32px;
       }
     }
@@ -106,7 +100,7 @@ const slides = [
     &__titleBg {
       position: absolute;
       top: -44px;
-      left: 84px;
+      left: 0;
       font-family: var(--mp-font-main);
       font-size: 6.25rem;
       font-weight: 400;
@@ -115,10 +109,10 @@ const slides = [
       line-height: 1;
       pointer-events: none;
       user-select: none;
+      grid-column: 1 / -1;
 
       @include mix.mq(sp) {
         font-size: 3.5rem;
-        left: 8px;
         top: -24px;
       }
     }
@@ -127,6 +121,7 @@ const slides = [
       display: flex;
       align-items: center;
       gap: 16px;
+      grid-column: 1 / 7;
     }
 
     &__titleBar {
@@ -162,12 +157,14 @@ const slides = [
     &__counter {
       display: flex;
       align-items: baseline;
+      justify-content: flex-end;
       gap: 4px;
       font-family: var(--mp-font-main);
       letter-spacing: .12em;
       color: rgba(26, 26, 46, .3);
       flex-shrink: 0;
       padding-bottom: 4px;
+      grid-column: 7 / -1;
     }
 
     &__counterCurrent {
