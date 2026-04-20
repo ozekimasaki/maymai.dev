@@ -1,3 +1,5 @@
+export {};
+
 const DURATION = 400;
 
 function dissolveScroll(targetId: string): void {

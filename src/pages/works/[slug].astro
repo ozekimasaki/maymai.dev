@@ -17,19 +17,20 @@ const { Content } = await render(work);
 
 const siteUrl = 'https://maymai.dev';
 const pageUrl = `${siteUrl}/works/${work.id}/`;
-const isoDate = work.data.date.replace(/\./g, '-');
+const isoDate = work.data.updated.replace(/\./g, '-');
 const ogImage = work.data.thumbnail.startsWith('http')
   ? work.data.thumbnail
   : `${siteUrl}${work.data.thumbnail}`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'CreativeWork',
+  '@type': 'SoftwareSourceCode',
   name: work.data.title,
   description: work.data.description,
   url: pageUrl,
   image: ogImage,
-  datePublished: isoDate,
+  codeRepository: work.data.repoUrl,
+  dateModified: isoDate,
   author: {
     '@type': 'Person',
     name: 'Masaki Ozeki',
@@ -40,11 +41,11 @@ const jsonLd = {
 ---
 
 <BaseLayout
-  title={`${work.data.title} | Works | Maymai.dev`}
+  title={`${work.data.title} | Products | Maymai.dev`}
   description={work.data.description}
   ogType="article"
   ogImage={work.data.thumbnail}
-  publishedTime={isoDate}
+  modifiedTime={isoDate}
   jsonLd={jsonLd}
 >
   <article class="WorkDetail">
@@ -57,12 +58,18 @@ const jsonLd = {
 
       <div class="WorkDetail__meta u-anime" style="--delay: .1s;">
         <div class="WorkDetail__metaItem">
-          <dt class="WorkDetail__metaKey">date:</dt>
-          <dd class="WorkDetail__metaValue">{work.data.date}</dd>
+          <dt class="WorkDetail__metaKey">updated:</dt>
+          <dd class="WorkDetail__metaValue">{work.data.updated}</dd>
         </div>
         <div class="WorkDetail__metaItem">
           <dt class="WorkDetail__metaKey">technologies:</dt>
           <dd class="WorkDetail__metaValue">{work.data.technologies.join(' / ')}</dd>
+        </div>
+        <div class="WorkDetail__metaItem">
+          <dt class="WorkDetail__metaKey">repository:</dt>
+          <dd class="WorkDetail__metaValue">
+            <a href={work.data.repoUrl} target="_blank" rel="noopener nofollow">{work.data.repoUrl}</a>
+          </dd>
         </div>
       </div>
 
@@ -80,12 +87,15 @@ const jsonLd = {
       </div>
 
       <div class="WorkDetail__actions u-anime" style="--delay: .2s;">
+        <a href={work.data.repoUrl} class="WorkDetail__repoLink" target="_blank" rel="noopener nofollow">
+          View on GitHub
+        </a>
         <ShareButtons url={Astro.url.href} title={work.data.title} />
         <LikeButton type="works" slug={work.id} />
       </div>
 
       <div class="WorkDetail__back">
-        <a href="/works/" class="WorkDetail__backLink">&larr; Works 一覧にもどる</a>
+        <a href="/works/" class="WorkDetail__backLink">&larr; Products 一覧にもどる</a>
       </div>
     </div>
   </article>
@@ -165,16 +175,27 @@ const jsonLd = {
       font-size: .875rem;
       line-height: 1.5;
       color: var(--color-text);
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
     }
 
     &__thumbnail {
       margin-bottom: 64px;
+      aspect-ratio: 1182 / 680;
+      overflow: hidden;
+      padding: 24px;
+      background-color: var(--color-bg);
 
       img {
         width: 100%;
-        height: auto;
-        aspect-ratio: 1182 / 680;
-        object-fit: cover;
+        height: 100%;
+        display: block;
+        object-fit: contain;
       }
     }
 
@@ -216,11 +237,41 @@ const jsonLd = {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
       max-width: 720px;
       margin-inline: auto;
       margin-top: 48px;
       padding-top: 32px;
       border-top: 1px solid var(--color-border);
+    }
+
+    &__repoLink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      height: 48px;
+      padding: 0 20px;
+      border: 1px solid var(--color-text);
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      color: var(--color-text);
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--color-text);
+          color: var(--color-bg);
+          text-decoration: none;
+        }
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-text);
+        outline-offset: 2px;
+      }
     }
 
     &__back {

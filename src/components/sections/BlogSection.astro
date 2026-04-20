@@ -1,36 +1,36 @@
 ---
-const posts = [
-  {
-    slug: 'whitespace-speaks',
-    date: '2026.03.15',
-    title: '記事タイトルが入ります ─ サンプル記事 01',
-  },
-  {
-    slug: 'react-server-components',
-    date: '2026.02.28',
-    title: '記事タイトルが入ります ─ サンプル記事 02',
-  },
-  {
-    slug: 'bespoke-component-design',
-    date: '2026.01.10',
-    title: '記事タイトルが入ります ─ サンプル記事 03',
-  },
-];
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .sort((a, b) => new Date(b.data.date.replace(/\./g, '-')).getTime() - new Date(a.data.date.replace(/\./g, '-')).getTime())
+  .slice(0, 3);
 ---
 
 <section id="blog" class="Blog">
   <div class="Blog__inner l-inner">
     <div class="Blog__header u-anime">
       <h2 class="Blog__heading">Blog</h2>
-      <span class="Blog__label">// Blog.latest(3)</span>
+      <span class="Blog__label">{`// Blog.latest(${posts.length})`}</span>
     </div>
 
     <ul class="Blog__list">
       {posts.map((post, i) => (
         <li class="Blog__item u-anime" style={`--delay: ${i * .08}s;`}>
-          <a href={`/blog/${post.slug}/`} class="Blog__link">
-            <time class="Blog__date" datetime={post.date.replace(/\./g, '-')}>{post.date}</time>
-            <span class="Blog__title">{post.title}</span>
+          <a href={`/blog/${post.id}/`} class="Blog__link">
+            <div class="Blog__thumb">
+              <img
+                src={post.data.thumbnail ?? '/og-image.png'}
+                alt={post.data.title}
+                width="1200"
+                height="630"
+                loading="lazy"
+              />
+            </div>
+            <div class="Blog__content">
+              <time class="Blog__date" datetime={post.data.date.replace(/\./g, '-')}>{post.data.date}</time>
+              <span class="Blog__title">{post.data.title}</span>
+            </div>
           </a>
         </li>
       ))}
@@ -93,14 +93,14 @@ const posts = [
 
     &__link {
       display: flex;
-      align-items: baseline;
-      gap: 40px;
+      align-items: center;
+      gap: 24px;
       padding: 24px 0;
       transition: opacity var(--duration-base) ease;
 
       @include mix.mq(sp) {
-        flex-direction: column;
-        gap: 8px;
+        align-items: flex-start;
+        gap: 12px;
         padding: 20px 0;
       }
 
@@ -111,16 +111,42 @@ const posts = [
       }
     }
 
+    &__thumb {
+      width: 160px;
+      flex-shrink: 0;
+      aspect-ratio: 1200 / 630;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg);
+
+      @include mix.mq(sp) {
+        width: 100%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+    }
+
+    &__content {
+      min-width: 0;
+    }
+
     &__date {
       font-family: var(--font-mono);
       font-size: .625rem;
       line-height: 1.5;
       color: var(--color-label);
-      flex-shrink: 0;
       white-space: nowrap;
+      display: block;
     }
 
     &__title {
+      display: block;
+      margin-top: 4px;
       font-size: .875rem;
       line-height: 1.8;
       color: var(--color-text);

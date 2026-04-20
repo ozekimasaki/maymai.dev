@@ -2,7 +2,7 @@
 const navItems = [
   { label: 'About', href: '/#about' },
   { label: 'Skills', href: '/#skills' },
-  { label: 'Works', href: '/#works' },
+  { label: 'Products', href: '/#works' },
   { label: 'Blog', href: '/#blog' },
   { label: '桜草メイPJ', href: '/mayproject/' },
   { label: 'Contact', href: '/#contact' },
@@ -183,27 +183,14 @@ const navItems = [
 </style>
 
 <script>
-  const header = document.querySelector('.js-header');
-  const burger = document.querySelector('.js-header-burger');
-  const menuLinks = document.querySelectorAll('.js-menu-link');
+  import { initMenuToggle } from '../scripts/menu-toggle.ts';
 
-  if (burger && header) {
-    burger.addEventListener('click', () => {
-      const isOpen = header.classList.toggle('is-open');
-      burger.setAttribute('aria-expanded', String(isOpen));
-      burger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
-      document.querySelector('#sp-menu')?.setAttribute('aria-hidden', String(!isOpen));
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-
-    menuLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        header.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-        burger.setAttribute('aria-label', 'メニューを開く');
-        document.querySelector('#sp-menu')?.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      });
-    });
-  }
+  initMenuToggle({
+    rootSelector: '.js-header',
+    buttonSelector: '.js-header-burger',
+    panelSelector: '#sp-menu',
+    linkSelector: '.js-menu-link',
+    openLabel: 'メニューを開く',
+    closeLabel: 'メニューを閉じる',
+  });
 </script>

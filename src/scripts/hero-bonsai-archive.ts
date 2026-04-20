@@ -1,3 +1,4 @@
+// Archived hero bonsai implementation kept as reference for the previous MV direction.
 // @ts-nocheck — heerich has no type declarations
 
 const IS_SP = window.matchMedia('(max-width: 767px)').matches;

@@ -33,7 +33,30 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
 </section>
 
 <script>
-  import '../../scripts/hero-voxel-bg.ts';
+  const heroBackground = document.querySelector<HTMLElement>('.js-hero-bg');
+  const heroSection = heroBackground?.closest<HTMLElement>('.Hero');
+
+  const loadHeroBackground = () => {
+    window.requestAnimationFrame(() => {
+      void import('../../scripts/hero-pixi-bg.ts');
+    });
+  };
+
+  if (heroBackground && heroSection && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+
+        observer.disconnect();
+        loadHeroBackground();
+      },
+      { rootMargin: '200px 0px' },
+    );
+
+    observer.observe(heroSection);
+  } else if (heroBackground) {
+    loadHeroBackground();
+  }
 </script>
 
 <style lang="scss">
@@ -52,50 +75,28 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
     }
 
     // ===========================================
-    // Voxel Background
+    // Hero Background
     // ===========================================
 
     &__bg {
       position: absolute;
       inset: 0;
       z-index: 0;
+      overflow: hidden;
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      --hero-bg-base-x: 14%;
-      --hero-bg-base-y: 2%;
-      --hero-bg-base-scale: .7;
+      background:
+        linear-gradient(90deg, rgba(252, 250, 245, .96) 0%, rgba(252, 250, 245, .82) 28%, rgba(252, 250, 245, .36) 56%, rgba(252, 250, 245, .08) 100%);
 
-      :global(.Hero__scene) {
-        width: 96%;
-        max-width: 980px;
-        opacity: .44;
-        filter: drop-shadow(0 28px 48px rgba(26, 27, 30, .12));
-        transform:
-          translateX(var(--hero-bg-base-x))
-          translateY(var(--hero-bg-base-y))
-          scale(var(--hero-bg-base-scale));
-        transform-origin: 56% 63%;
-      }
-
-      :global(.Hero__scene svg) {
+      :global(.Hero__pixiCanvas) {
         display: block;
         width: 100%;
-        height: auto;
-        overflow: visible;
+        height: 100%;
+        opacity: .96;
       }
 
       @include mix.mq(sp) {
-        --hero-bg-base-x: 12%;
-        --hero-bg-base-y: 18%;
-        --hero-bg-base-scale: .7;
-
-        :global(.Hero__scene) {
-          width: 104%;
-          max-width: none;
-          opacity: .22;
-        }
+        background:
+          linear-gradient(180deg, rgba(252, 250, 245, .92) 0%, rgba(252, 250, 245, .62) 30%, rgba(252, 250, 245, .18) 100%);
       }
     }
 
@@ -116,10 +117,14 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
     }
 
     &__content {
+      position: relative;
       padding-top: 80px;
+      max-width: 34rem;
+      text-shadow: 0 10px 30px rgba(252, 250, 245, .42);
 
       @include mix.mq(sp) {
         padding-top: 40px;
+        max-width: 100%;
       }
     }
 
@@ -152,6 +157,7 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
       line-height: 2;
       color: var(--color-text);
       opacity: .7;
+      max-width: 30rem;
     }
 
     &__scroll {
@@ -234,6 +240,12 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
       opacity: 1;
       transform: none;
       animation: none;
+    }
+
+    .Hero__scrollLine {
+      animation: none;
+      transform: scaleY(1);
+      transform-origin: top;
     }
   }
 

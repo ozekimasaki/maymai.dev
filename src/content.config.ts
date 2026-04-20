@@ -8,8 +8,9 @@ const works = defineCollection({
     category: z.string(),
     description: z.string(),
     technologies: z.array(z.string()),
-    date: z.string(),
+    updated: z.string(),
     thumbnail: z.string(),
+    repoUrl: z.string(),
     order: z.number().optional(),
   }),
 });
@@ -19,6 +20,7 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.string(),
+    thumbnail: z.string().optional(),
     description: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),

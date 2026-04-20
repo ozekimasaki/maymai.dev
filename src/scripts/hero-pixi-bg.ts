@@ -72,22 +72,27 @@ const HERO_BG_SELECTOR = '.js-hero-bg';
 const TAU = Math.PI * 2;
 const HALF_PI = Math.PI * 0.5;
 const CLICK_PULSE_DURATION = 1.4;
-const CLICK_PULSE_STRENGTH = 0.8;
-const COLLISION_SOFTNESS = 0.35;
+const CLICK_PULSE_STRENGTH = 1.0;
+const COLLISION_SOFTNESS = 0.64;
 
-// Desktop: 1 bold hero, 1 medium, 1 medium-small, 1 small accent
+// Desktop: denser grouping so collisions occur naturally
 const DESKTOP_PRESETS: JellyfishPreset[] = [
-  { x: 0.72, y: 0.36, baseSize: 215, depth: 1.0, hueShift: 0, phase: 0.0 },
-  { x: 0.56, y: 0.13, baseSize: 118, depth: 0.36, hueShift: 0.3, phase: 2.1 },
-  { x: 0.88, y: 0.58, baseSize: 158, depth: 0.72, hueShift: -0.15, phase: 4.0 },
-  { x: 0.93, y: 0.82, baseSize: 90, depth: 0.28, hueShift: 0.5, phase: 5.5 },
+  { x: 0.68, y: 0.34, baseSize: 222, depth: 1.0, hueShift: 0, phase: 0.0 },
+  { x: 0.58, y: 0.16, baseSize: 146, depth: 0.54, hueShift: 0.24, phase: 1.6 },
+  { x: 0.81, y: 0.22, baseSize: 126, depth: 0.42, hueShift: -0.05, phase: 2.9 },
+  { x: 0.88, y: 0.52, baseSize: 166, depth: 0.74, hueShift: -0.18, phase: 4.0 },
+  { x: 0.73, y: 0.70, baseSize: 118, depth: 0.46, hueShift: 0.38, phase: 5.2 },
+  { x: 0.84, y: 0.78, baseSize: 106, depth: 0.34, hueShift: 0.16, phase: 5.7 },
+  { x: 0.94, y: 0.82, baseSize: 96, depth: 0.28, hueShift: 0.52, phase: 6.1 },
 ];
 
-// Mobile: 1 bold hero, 1 medium, 1 small
+// Mobile: keep density up without crowding the copy
 const MOBILE_PRESETS: JellyfishPreset[] = [
-  { x: 0.66, y: 0.30, baseSize: 168, depth: 1.0, hueShift: 0, phase: 0.0 },
-  { x: 0.84, y: 0.60, baseSize: 122, depth: 0.65, hueShift: -0.15, phase: 2.8 },
-  { x: 0.74, y: 0.86, baseSize: 84, depth: 0.30, hueShift: 0.4, phase: 4.7 },
+  { x: 0.64, y: 0.28, baseSize: 176, depth: 1.0, hueShift: 0, phase: 0.0 },
+  { x: 0.82, y: 0.40, baseSize: 114, depth: 0.54, hueShift: -0.08, phase: 1.9 },
+  { x: 0.80, y: 0.62, baseSize: 132, depth: 0.72, hueShift: -0.18, phase: 3.8 },
+  { x: 0.70, y: 0.84, baseSize: 92, depth: 0.34, hueShift: 0.42, phase: 5.0 },
+  { x: 0.88, y: 0.78, baseSize: 78, depth: 0.24, hueShift: 0.2, phase: 5.7 },
 ];
 
 // ===========================================
@@ -205,14 +210,14 @@ function buildBell(center: Vec2, w: number, h: number, pulse: number, tilt: numb
 
 function createPalette(): Palette {
   return {
-    bell: '#ccc6f0',
-    inner: '#e0dcff',
-    vein: '#8ec8d4',
-    core: '#e8e2ff',
-    highlight: '#ffffff',
-    rim: '#9890c0',
-    glow: '#beb6f0',
-    tentacle: '#c4bef0',
+    bell: '#ddd2c7',
+    inner: '#f1ebe2',
+    vein: '#9b8e80',
+    core: '#f6efe6',
+    highlight: '#fffaf3',
+    rim: '#b07a4f',
+    glow: '#dbcbbc',
+    tentacle: '#b29a88',
   };
 }
 
@@ -233,7 +238,7 @@ class Jellyfish {
   private pulse = 0;
 
   get collisionRadius(): number {
-    return (this.bellW + this.bellH) * 0.38;
+    return (this.bellW + this.bellH) * 0.46;
   }
 
   get depth(): number {
@@ -272,18 +277,18 @@ class Jellyfish {
     const pulsed = smoothstep(cycle);
 
     const driftX =
-      Math.sin(sec * 0.10 + phase) * vp.width * 0.030
-      + Math.sin(sec * 0.23 + phase * 1.7) * vp.width * 0.012;
+      Math.sin(sec * 0.12 + phase) * vp.width * 0.048
+      + Math.sin(sec * 0.29 + phase * 1.7) * vp.width * 0.022;
     const driftY =
-      Math.cos(sec * 0.14 + phase * 1.3) * vp.height * 0.025
-      + Math.cos(sec * 0.31 + phase * 0.6) * vp.height * 0.010;
-    const propLift = (0.5 - pulsed) * this.bellH * 0.32;
+      Math.cos(sec * 0.16 + phase * 1.3) * vp.height * 0.040
+      + Math.cos(sec * 0.35 + phase * 0.6) * vp.height * 0.018;
+    const propLift = (0.5 - pulsed) * this.bellH * 0.42;
 
     const pdx = (ptr.x - this.pos.x) / Math.max(vp.width, 1);
     const pdy = (ptr.y - this.pos.y) / Math.max(vp.height, 1);
     const pdist = Math.hypot(pdx, pdy);
     const pInf = ptr.active
-      ? clamp(1 - pdist * 2, 0, 1) * ptr.energy * lerp(0.35, 0.65, this.preset.depth)
+      ? clamp(1 - pdist * 1.55, 0, 1) * ptr.energy * lerp(0.62, 1.02, this.preset.depth)
       : 0;
 
     let pulseForceX = 0;
@@ -310,21 +315,21 @@ class Jellyfish {
       pulseForceY += (cpy / cdist) * force;
     }
 
-    const targetX =
+      const targetX =
       vp.width * this.preset.x + driftX
-      + pdx * vp.width * 0.12 * pInf
+      + pdx * vp.width * 0.22 * pInf
       + pulseForceX * dt;
     const targetY =
       vp.height * this.preset.y + driftY + propLift
-      - pdy * vp.height * 0.06 * pInf
+      - pdy * vp.height * 0.11 * pInf
       + pulseForceY * dt;
-    const follow = 1 - Math.exp(-dt * (1.2 + this.preset.depth * 0.5));
+    const follow = 1 - Math.exp(-dt * (1.55 + this.preset.depth * 0.82));
 
     const nx = lerp(this.pos.x, targetX, follow) + this.nudgeVel.x;
     const ny = lerp(this.pos.y, targetY, follow) + this.nudgeVel.y;
 
-    this.nudgeVel.x *= 0.88;
-    this.nudgeVel.y *= 0.88;
+    this.nudgeVel.x *= 0.93;
+    this.nudgeVel.y *= 0.93;
 
     if (Math.abs(this.nudgeVel.x) < 0.01) this.nudgeVel.x = 0;
     if (Math.abs(this.nudgeVel.y) < 0.01) this.nudgeVel.y = 0;
@@ -334,11 +339,11 @@ class Jellyfish {
     this.pulse = lerp(this.pulse, pulsed, 0.15);
     this.tilt = lerp(
       this.tilt,
-      Math.sin(sec * 0.18 + phase) * 0.12
-        + Math.sin(sec * 0.37 + phase * 2.1) * 0.04
-        + this.vel.x * 0.03
-        + pdx * pInf * 0.18,
-      0.08,
+        Math.sin(sec * 0.18 + phase) * 0.12
+        + Math.sin(sec * 0.41 + phase * 2.1) * 0.06
+        + this.vel.x * 0.04
+        + pdx * pInf * 0.22,
+      0.1,
     );
   }
 
@@ -669,9 +674,9 @@ class HeroJellyfishBackground {
       const dt = clamp((time - this.lastTime) / 1000, 0.001, 0.04);
 
       this.lastTime = time;
-      this.pointer.x = lerp(this.pointer.x, this.pointer.targetX, 0.06);
-      this.pointer.y = lerp(this.pointer.y, this.pointer.targetY, 0.06);
-      this.pointer.energy = lerp(this.pointer.energy, this.pointer.active ? 1 : 0, 0.08);
+      this.pointer.x = lerp(this.pointer.x, this.pointer.targetX, 0.12);
+      this.pointer.y = lerp(this.pointer.y, this.pointer.targetY, 0.12);
+      this.pointer.energy = lerp(this.pointer.energy, this.pointer.active ? 1 : 0, 0.14);
 
       this.clickPulses = this.clickPulses.filter(
         (p) => (time - p.birth) * 0.001 < CLICK_PULSE_DURATION,

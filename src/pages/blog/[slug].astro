@@ -18,6 +18,10 @@ const { Content } = await render(post);
 const siteUrl = 'https://maymai.dev';
 const pageUrl = `${siteUrl}/blog/${post.id}/`;
 const isoDate = post.data.date.replace(/\./g, '-');
+const postThumbnail = post.data.thumbnail ?? '/og-image.png';
+const absoluteThumbnail = postThumbnail.startsWith('http')
+  ? postThumbnail
+  : `${siteUrl}${postThumbnail}`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -25,6 +29,7 @@ const jsonLd = {
   headline: post.data.title,
   description: post.data.description,
   url: pageUrl,
+  image: absoluteThumbnail,
   datePublished: isoDate,
   author: {
     '@type': 'Person',
@@ -45,6 +50,7 @@ const jsonLd = {
   title={`${post.data.title} | Blog | Maymai.dev`}
   description={post.data.description}
   ogType="article"
+  ogImage={postThumbnail}
   publishedTime={isoDate}
   jsonLd={jsonLd}
 >
@@ -62,6 +68,15 @@ const jsonLd = {
             ))}
           </ul>
         )}
+      </div>
+
+      <div class="BlogPost__thumbnail u-anime" style="--delay: .08s;">
+        <img
+          src={postThumbnail}
+          alt={post.data.title}
+          width="1200"
+          height="630"
+        />
       </div>
 
       <div class="BlogPost__body u-anime" style="--delay: .1s;">
@@ -132,6 +147,29 @@ const jsonLd = {
       color: var(--color-label);
       padding: 2px 10px;
       border: 1px solid var(--color-border);
+    }
+
+    &__thumbnail {
+      max-width: 960px;
+      margin-inline: auto;
+      margin-bottom: 64px;
+      aspect-ratio: 1200 / 630;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg);
+
+      img {
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 100%;
+        display: block;
+        object-fit: contain;
+      }
     }
 
     &__body {

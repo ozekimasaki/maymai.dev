@@ -1,60 +1,35 @@
 ---
-import { Image } from 'astro:assets';
-import imgWork01 from '../../assets/images/works/img_work_01.jpg';
-import imgWork02 from '../../assets/images/works/img_work_02.jpg';
-import imgWork03 from '../../assets/images/works/img_work_03.jpg';
-import imgWork04 from '../../assets/images/works/img_work_04.jpg';
+import { getCollection } from 'astro:content';
 
-const works = [
-  {
-    slug: 'spatial-margin',
-    title: 'タイトルが入ります 01',
-    category: 'カテゴリー ─ 準備中',
-    image: imgWork01,
-  },
-  {
-    slug: 'night-dashboard',
-    title: 'タイトルが入ります 02',
-    category: 'カテゴリー ─ 準備中',
-    image: imgWork02,
-  },
-  {
-    slug: 'garden-of-type',
-    title: 'タイトルが入ります 03',
-    category: 'カテゴリー ─ 準備中',
-    image: imgWork03,
-  },
-  {
-    slug: 'still-life-ec',
-    title: 'タイトルが入ります 04',
-    category: 'カテゴリー ─ 準備中',
-    image: imgWork04,
-  },
-];
+const allWorks = await getCollection('works');
+const works = allWorks
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .slice(0, 2);
 ---
 
 <section id="works" class="Works">
   <div class="Works__inner l-inner">
     <div class="Works__header u-anime">
-      <h2 class="Works__heading">Works</h2>
-      <span class="Works__label">// Works.filter(selected)</span>
+      <h2 class="Works__heading">Products</h2>
+      <span class="Works__label">// Products.shipped()</span>
     </div>
 
     <div class="Works__grid">
       {works.map((work, i) => (
-        <a href={`/works/${work.slug}/`} class="Works__card u-anime" style={`--delay: ${i * .1}s;`}>
+        <a href={`/works/${work.id}/`} class="Works__card u-anime" style={`--delay: ${i * .1}s;`}>
           <div class="Works__cardImage">
-            <Image
-              src={work.image}
-              alt={work.title}
-              width={580}
-              height={360}
+            <img
+              src={work.data.thumbnail}
+              alt={work.data.title}
+              width="580"
+              height="360"
               loading="lazy"
             />
           </div>
           <div class="Works__cardInfo">
-            <h3 class="Works__cardTitle">{work.title}</h3>
-            <p class="Works__cardCategory">{work.category}</p>
+            <h3 class="Works__cardTitle">{work.data.title}</h3>
+            <p class="Works__cardCategory">{work.data.category}</p>
+            <p class="Works__cardDescription">{work.data.description}</p>
           </div>
         </a>
       ))}
@@ -124,21 +99,24 @@ const works = [
 
       img {
         width: 100%;
-        height: auto;
-        aspect-ratio: 580 / 360;
-        object-fit: cover;
+        height: 100%;
+        display: block;
+        object-fit: contain;
         transition: transform var(--duration-base) ease;
       }
 
       @media (any-hover: hover) {
         &:hover img {
-          transform: scale(1.03);
+          transform: scale(1.01);
         }
       }
     }
 
     &__cardImage {
+      aspect-ratio: 580 / 360;
       overflow: hidden;
+      padding: 16px;
+      background-color: var(--color-bg);
     }
 
     &__cardInfo {
@@ -158,6 +136,13 @@ const works = [
       font-family: var(--font-mono);
       font-size: .625rem;
       line-height: 1.5;
+      color: var(--color-label);
+    }
+
+    &__cardDescription {
+      margin-top: 8px;
+      font-size: .8125rem;
+      line-height: 1.8;
       color: var(--color-label);
     }
 
