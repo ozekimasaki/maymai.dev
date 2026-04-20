@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import imgCharacter03 from '../../assets/images/mayproject/img_character_03.jpg';
+import imgCharacterMay from '../../assets/images/mayproject/img_character_may.avif';
+import imgCharacterElena from '../../assets/images/mayproject/img_character_elena.avif';
+import imgCharacterIris from '../../assets/images/mayproject/img_character_iris.avif';
 
 const characters = [
   {
@@ -20,7 +22,7 @@ const characters = [
     ],
     imageColor: '#6B8E5A',
     number: '001',
-    image: imgCharacter03,
+    image: imgCharacterMay,
   },
   {
     id: '02',
@@ -39,7 +41,7 @@ const characters = [
     ],
     imageColor: '#7F90A6',
     number: '002',
-    image: imgCharacter03,
+    image: imgCharacterElena,
   },
   {
     id: '03',
@@ -58,7 +60,7 @@ const characters = [
     ],
     imageColor: '#5C7E86',
     number: '003',
-    image: imgCharacter03,
+    image: imgCharacterIris,
   },
 ];
 
@@ -109,10 +111,7 @@ const defaultIdx = 0;
               src={char.image}
               alt={char.name}
               class="MpCharacter__image"
-              width={516}
-              height={687}
             />
-            <div class="MpCharacter__imageOverlay"></div>
           </div>
           <div class="MpCharacter__progress">
             <span class="MpCharacter__progressFill"></span>
@@ -343,8 +342,6 @@ const defaultIdx = 0;
 
     &__imageFrame {
       position: relative;
-      border: 1px solid var(--mp-color-border);
-      background-color: #fff;
       overflow: hidden;
     }
 
@@ -352,17 +349,6 @@ const defaultIdx = 0;
       width: 100%;
       height: auto;
       display: block;
-    }
-
-    &__imageOverlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(26, 26, 46, .5) 0%,
-        transparent 50%
-      );
-      pointer-events: none;
     }
 
     &__progress {
@@ -487,7 +473,6 @@ const defaultIdx = 0;
       width: 24px;
       height: 24px;
       border: 1px solid #fff;
-      box-shadow: 0 0 12px rgba(91, 122, 94, .19);
     }
 
     &__colorText {

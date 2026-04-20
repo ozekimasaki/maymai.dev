@@ -1,10 +1,10 @@
 ---
 import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
-import { mpNewsItems, categoryColors, type MpNewsItem } from '../../../data/mp-news';
+import { publishedMpNewsItems, categoryColors } from '../../../data/mp-news';
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 
 export const getStaticPaths = (() => {
-  return mpNewsItems.map((item) => ({
+  return publishedMpNewsItems.map((item) => ({
     params: { slug: item.slug },
     props: { item },
   }));

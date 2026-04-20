@@ -1,19 +1,22 @@
 ---
-import { Image } from 'astro:assets';
 import mvBg from '../../assets/images/mayproject/img_mv_bg.avif';
+import mvBgSp from '../../assets/images/mayproject/img_mv_bg_sp.avif';
 import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
 ---
 
 <section class="MpMv" id="mv">
   <div class="MpMv__bg">
-    <Image
-      src={mvBg}
-      alt=""
-      class="MpMv__bgImg"
-      widths={[640, 1280, 1920]}
-      sizes="100vw"
-      loading="eager"
-    />
+    <picture class="MpMv__bgPicture">
+      <source media="(max-width: 767px)" srcset={mvBgSp.src} />
+      <img
+        src={mvBg.src}
+        alt=""
+        class="MpMv__bgImg"
+        width={mvBg.width}
+        height={mvBg.height}
+        loading="eager"
+      />
+    </picture>
     <div class="MpMv__overlay"></div>
   </div>
 
@@ -50,6 +53,12 @@ import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
       @include mix.mq(pc){
         top:96px;
       }
+    }
+
+    &__bgPicture {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
 
     &__bgImg {

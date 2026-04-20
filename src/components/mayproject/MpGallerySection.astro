@@ -1,24 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import img01 from '../../assets/images/mayproject/img_gallery_01.jpg';
-import img02 from '../../assets/images/mayproject/img_gallery_02.jpg';
-import img03 from '../../assets/images/mayproject/img_gallery_03.jpg';
-import img04 from '../../assets/images/mayproject/img_gallery_04.jpg';
-import img05 from '../../assets/images/mayproject/img_gallery_05.jpg';
-import img06 from '../../assets/images/mayproject/img_gallery_06.jpg';
-import img07 from '../../assets/images/mayproject/img_gallery_07.jpg';
-import img08 from '../../assets/images/mayproject/img_gallery_08.jpg';
+import slides from '../../data/generated/mp-gallery-manifest.json';
 
-const slides = [
-  { src: img01, alt: '桜草メイ — 温室でハーブの手入れをする姿' },
-  { src: img02, alt: '桜草メイ — 庭園で花に水をやる朝の風景' },
-  { src: img03, alt: 'エレナ — 窓辺で読書をする穏やかなひととき' },
-  { src: img04, alt: 'エレナ — ブルーポピーの写真を眺める横顔' },
-  { src: img05, alt: 'アイリス — 屋敷の設備を点検する静かな巡回' },
-  { src: img06, alt: 'メイとエレナ — 庭のテーブルでティータイム' },
-  { src: img07, alt: 'アッシュフォード邸 — 春の庭園と古い屋敷の外観' },
-  { src: img08, alt: '屋敷の温室 — 陽光に照らされた植物たち' },
-];
+const initialCounter = slides.length > 0 ? '01' : '00';
 ---
 
 <section class="MpGallery" id="gallery">
@@ -32,7 +15,7 @@ const slides = [
       </div>
     </div>
     <p class="MpGallery__counter pc-only">
-      <span class="MpGallery__counterCurrent js-mp-gallery-current">01</span>
+      <span class="MpGallery__counterCurrent js-mp-gallery-current">{initialCounter}</span>
       <span class="MpGallery__counterSep">/</span>
       <span class="MpGallery__counterTotal">{String(slides.length).padStart(2, '0')}</span>
     </p>
@@ -46,12 +29,14 @@ const slides = [
         {slides.map((slide, i) => (
           <div class="swiper-slide MpGallery__slide">
             <div class="MpGallery__slideInner">
-              <Image
+              <img
                 src={slide.src}
                 alt={slide.alt}
                 class="MpGallery__slideImg"
-                width={480}
-                height={600}
+                width={slide.width}
+                height={slide.height}
+                loading="lazy"
+                decoding="async"
               />
               <div class="MpGallery__slideOverlay"></div>
               <span class="MpGallery__slideNum">{String(i + 1).padStart(2, '0')}</span>
@@ -243,13 +228,23 @@ const slides = [
     &__slideInner {
       overflow: hidden;
       position: relative;
+      aspect-ratio: 4 / 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .94) 0%, rgba(251, 246, 239, .98) 100%);
+
+      @include mix.mq(sp) {
+        padding: 12px;
+      }
     }
 
     &__slideImg {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      aspect-ratio: 4 / 5;
+      object-fit: contain;
       display: block;
       transition: transform .6s cubic-bezier(.4, 0, .2, 1), filter .5s ease;
     }

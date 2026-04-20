@@ -1,12 +1,16 @@
 ---
 import logoSvg from '../../assets/images/mayproject/logo_mei.svg';
 
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isMayprojectTop = currentPath === '/mayproject';
+const toSectionHref = (sectionId: string) => isMayprojectTop ? `#${sectionId}` : `/mayproject/#${sectionId}`;
+
 const navItems = [
-  { en: 'ABOUT', ja: 'プロジェクトについて', href: '#about' },
-  { en: 'GALLERY', ja: '画像展示室', href: '#gallery' },
-  { en: 'CHARACTER', ja: 'キャラクター紹介', href: '#character' },
-  { en: 'GUIDELINE', ja: 'ガイドライン', href: '/mayproject/guidelines/' },
-  { en: 'CONTACT', ja: 'お問い合わせ', href: '#contact' },
+  { en: 'ABOUT', ja: 'プロジェクトについて', href: toSectionHref('about') },
+  { en: 'GALLERY', ja: '画像展示室', href: toSectionHref('gallery') },
+  { en: 'CHARACTER', ja: 'キャラクター紹介', href: toSectionHref('character') },
+  { en: 'GUIDELINE', ja: 'ガイドライン', href: '/mayproject/guidelines/', isCurrent: currentPath === '/mayproject/guidelines' },
+  { en: 'CONTACT', ja: 'お問い合わせ', href: toSectionHref('contact') },
 ];
 ---
 
@@ -20,7 +24,7 @@ const navItems = [
       <ul class="MpHeader__navList">
         {navItems.map((item) => (
           <li class="MpHeader__navItem">
-            <a href={item.href} class="MpHeader__navLink">
+            <a href={item.href} class={`MpHeader__navLink ${item.isCurrent ? 'is-current' : ''}`} aria-current={item.isCurrent ? 'page' : undefined}>
               <span class="MpHeader__navEn">{item.en}</span>
               <span class="MpHeader__navJa">{item.ja}</span>
             </a>
@@ -47,7 +51,7 @@ const navItems = [
       <ul class="MpHeader__menuList">
         {navItems.map((item) => (
           <li class="MpHeader__menuItem">
-            <a href={item.href} class="MpHeader__menuLink js-mp-menu-link">
+            <a href={item.href} class={`MpHeader__menuLink js-mp-menu-link ${item.isCurrent ? 'is-current' : ''}`} aria-current={item.isCurrent ? 'page' : undefined}>
               <span class="MpHeader__menuEn">{item.en}</span>
               <span class="MpHeader__menuJa">{item.ja}</span>
             </a>
@@ -94,6 +98,16 @@ const navItems = [
       height: 75px;
       width: auto;
       display: block;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity var(--duration-base) ease,
+        transform var(--duration-base) ease;
+
+      &.is-hidden {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
 
       @include mix.mq(sp) {
         height: 50px;
@@ -121,6 +135,10 @@ const navItems = [
       padding: 0 20px;
       border-bottom: 1px solid transparent;
       transition: border-color var(--duration-base) ease;
+
+      &.is-current {
+        border-bottom-color: var(--mp-color-primary);
+      }
     }
 
     &__navEn {
@@ -206,6 +224,10 @@ const navItems = [
       flex-direction: column;
       align-items: center;
       gap: 4px;
+
+      &.is-current .MpHeader__menuEn {
+        color: var(--mp-color-primary);
+      }
     }
 
     &__menuEn {
@@ -223,6 +245,7 @@ const navItems = [
 
 <script>
   import { initMenuToggle } from '../../scripts/menu-toggle.ts';
+  import { initMpHeaderLogoVisibility } from '../../scripts/mp-header-logo-visibility.ts';
 
   initMenuToggle({
     rootSelector: '.js-mp-header',
@@ -231,5 +254,10 @@ const navItems = [
     linkSelector: '.js-mp-menu-link',
     openLabel: 'メニューを開く',
     closeLabel: 'メニューを閉じる',
+  });
+
+  initMpHeaderLogoVisibility({
+    headingSelector: '.MpMv__heading',
+    logoSelector: '.MpHeader__logoImg',
   });
 </script>

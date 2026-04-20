@@ -4,6 +4,7 @@ export interface MpNewsItem {
   category: 'INFO' | 'EVENT' | 'UPDATE';
   title: string;
   body: string;
+  isPublished: boolean;
 }
 
 export const categoryColors: Record<MpNewsItem['category'], string> = {
@@ -23,6 +24,7 @@ export const mpNewsItems: MpNewsItem[] = [
 二次創作ガイドラインの範囲内で、ご自由にご活用ください。各キャラクターの配色、アクセサリー、衣装の詳細を記載した資料となっております。
 
 ダウンロードはキャラクターページの「三面図・資料配布」セクションよりどうぞ。`,
+    isPublished: false,
   },
   {
     slug: 'mei-greenhouse-diary',
@@ -34,6 +36,7 @@ export const mpNewsItems: MpNewsItem[] = [
 今回は春の芽吹きをテーマに、冬を越えた植物たちの変化や、新しく植えたハーブの生育記録をお届けします。メイの観察眼と手仕事の温かさが伝わる内容です。
 
 次回は初夏の庭園整備編を予定しております。`,
+    isPublished: false,
   },
   {
     slug: 'iris-facility-report',
@@ -45,6 +48,7 @@ export const mpNewsItems: MpNewsItem[] = [
 春先の気温変化に合わせた空調設定の微調整や、清掃ロボの動線見直し、温室の湿度管理システムのアップデートについて報告しています。
 
 暮らしの裏側を静かに支える、アイリスの仕事の一端をご覧いただけます。`,
+    isPublished: false,
   },
   {
     slug: 'elena-blue-poppy',
@@ -56,6 +60,7 @@ export const mpNewsItems: MpNewsItem[] = [
 「実物はまだ見たことがない」というエレナが集めてきた写真の数々と、それぞれの写真にまつわるエレナ自身の短いコメントを添えました。
 
 静かで穏やかなエレナの世界を、少しだけ覗いていただけます。`,
+    isPublished: false,
   },
   {
     slug: 'teatime-spring-blend',
@@ -67,6 +72,7 @@ export const mpNewsItems: MpNewsItem[] = [
 温室で育てたカモミールやレモンバーム、ラベンダーを使った3種のブレンドをご紹介。エレナとのティータイムで実際にお出ししているレシピです。
 
 ご自宅でも再現できるよう、分量と淹れ方を丁寧にまとめています。`,
+    isPublished: false,
   },
   {
     slug: 'project-world-setting',
@@ -78,6 +84,7 @@ export const mpNewsItems: MpNewsItem[] = [
 ロンドン郊外に佇む古い屋敷の外観・内観、主要ロケーション、日常のトラブル、季節と自然の扱いなど、作品の空気感を形づくる要素を網羅しています。
 
 制作のブレを防ぐための"合言葉"もご紹介しております。`,
+    isPublished: false,
   },
   {
     slug: 'character-iris-reveal',
@@ -89,16 +96,20 @@ export const mpNewsItems: MpNewsItem[] = [
 屋敷の設備と制御を預かる技術者であり、メイのアナログな手仕事の価値を理解し尊重する存在。静けさを壊さずに日常を支える"調律役"です。
 
 スチールグレーの瞳と非対称レイヤーのアッシュネイビーの髪が特徴の、知的で静かなキャラクターです。`,
+    isPublished: false,
   },
   {
     slug: 'website-open',
-    date: '2026.02.15',
+    date: '2026-04-21',
     category: 'UPDATE',
     title: '桜草メイプロジェクト 公式サイトを公開しました',
-    body: `桜草メイプロジェクトの公式サイトを公開いたしました。
+    body: `桜草メイプロジェクトの公式サイトを公開しました。
 
-キャラクター紹介、ギャラリー、世界観設定、お知らせなど、プロジェクトの情報をまとめてご覧いただけます。三面図・設定資料の配布も順次進めてまいります。
+本サイトでは、メイ・エレナ・アイリスのキャラクター紹介をはじめ、ギャラリー、三面図・資料配布、二次創作ガイドライン、お知らせをまとめてご覧いただけます。作品の空気感と創作に必要な情報の両方へアクセスしやすい、入口となるサイトを目指して整えました。
 
-今後とも桜草メイプロジェクトをよろしくお願いいたします。`,
+今回の公開時点では、各キャラクターのプロフィールとビジュアル、配布用の三面図、ガイドライン、最新のお知らせまでご確認いただけます。今後も、公開できる情報から少しずつ内容を充実させてまいりますので、気になる更新があればぜひ覗いてみてください。`,
+    isPublished: true,
   },
 ];
+
+export const publishedMpNewsItems = mpNewsItems.filter((item) => item.isPublished);

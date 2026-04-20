@@ -1,6 +1,6 @@
 ---
 import MayprojectLayout from '../../../layouts/MayprojectLayout.astro';
-import { mpNewsItems, categoryColors } from '../../../data/mp-news';
+import { publishedMpNewsItems, categoryColors } from '../../../data/mp-news';
 
 const siteUrl = 'https://maymai.dev';
 
@@ -34,7 +34,7 @@ const jsonLd = {
       </div>
 
       <ul class="MpNewsPage__list">
-        {mpNewsItems.map((item) => (
+        {publishedMpNewsItems.map((item) => (
           <li class="MpNewsPage__item">
             <a href={`/mayproject/news/${item.slug}/`} class="MpNewsPage__link">
               <time class="MpNewsPage__date" datetime={item.date.replace(/\./g, '-')}>{item.date}</time>

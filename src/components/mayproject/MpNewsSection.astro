@@ -1,7 +1,7 @@
 ---
-import { mpNewsItems, categoryColors } from '../../data/mp-news';
+import { publishedMpNewsItems, categoryColors } from '../../data/mp-news';
 
-const newsItems = mpNewsItems.slice(0, 5).map((item) => ({
+const newsItems = publishedMpNewsItems.slice(0, 5).map((item) => ({
   date: item.date,
   datetime: item.date.replace(/\./g, '-'),
   category: item.category,
