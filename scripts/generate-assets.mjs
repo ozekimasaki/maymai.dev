@@ -64,7 +64,9 @@ const GALLERY_PRESETS = {
 };
 const GALLERY_SORTER = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 const cliArgs = process.argv.slice(2);
-const shouldGenerateGallery = !cliArgs.includes('--no-gallery');
+const shouldGenerateGallery = cliArgs.includes('--gallery')
+  || cliArgs.includes('--only-gallery')
+  || process.env.GENERATE_GALLERY === '1';
 const shouldGenerateOnlyGallery = cliArgs.includes('--only-gallery');
 
 const BRAND = {
