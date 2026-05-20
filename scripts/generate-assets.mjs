@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import { copyFile, mkdir, readdir, rm, writeFile } from 'fs/promises';
+import { mkdir, readdir, readFile, rm, stat, writeFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { basename, dirname, extname, resolve } from 'path';
 
@@ -9,13 +9,63 @@ const gallerySourceDir = resolve(__dirname, '..', 'Gallery');
 const galleryOutputDir = resolve(publicDir, 'gallery');
 const galleryManifestDir = resolve(__dirname, '..', 'src', 'data', 'generated');
 const galleryManifestPath = resolve(galleryManifestDir, 'mp-gallery-manifest.json');
+const galleryCacheDir = resolve(__dirname, '..', '.astro', 'cache');
+const galleryCachePath = resolve(galleryCacheDir, 'mp-gallery-cache.json');
 const GALLERY_SOURCE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.avif']);
-const GALLERY_AVIF_OPTIONS = {
-  quality: 58,
-  effort: 6,
-  chromaSubsampling: '4:4:4',
+const GALLERY_OUTPUT_EXTENSIONS = new Set(['.avif', '.webp']);
+const DEFAULT_GALLERY_PRESET = 'webp-light';
+const GALLERY_PRESETS = {
+  'webp-light': {
+    format: 'webp',
+    extension: '.webp',
+    maxDimension: 1600,
+    options: {
+      quality: 82,
+      effort: 1,
+    },
+    jobs: 1,
+    sharpConcurrency: 1,
+  },
+  'webp-medium': {
+    format: 'webp',
+    extension: '.webp',
+    maxDimension: 1600,
+    options: {
+      quality: 86,
+      effort: 2,
+    },
+    jobs: 1,
+    sharpConcurrency: 1,
+  },
+  'avif-light': {
+    format: 'avif',
+    extension: '.avif',
+    maxDimension: 1600,
+    options: {
+      quality: 58,
+      effort: 2,
+      chromaSubsampling: '4:2:0',
+    },
+    jobs: 1,
+    sharpConcurrency: 1,
+  },
+  'avif-quality': {
+    format: 'avif',
+    extension: '.avif',
+    maxDimension: 1600,
+    options: {
+      quality: 58,
+      effort: 6,
+      chromaSubsampling: '4:4:4',
+    },
+    jobs: 1,
+    sharpConcurrency: 1,
+  },
 };
 const GALLERY_SORTER = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+const cliArgs = process.argv.slice(2);
+const shouldGenerateGallery = !cliArgs.includes('--no-gallery');
+const shouldGenerateOnlyGallery = cliArgs.includes('--only-gallery');
 
 const BRAND = {
   bg: '#1a1b1e',
@@ -65,9 +115,108 @@ async function generateIcon(size, filename) {
   console.log(`Generated: public/${filename}`);
 }
 
-async function generateGalleryAvif() {
+function hasErrorCode(error, code) {
+  return typeof error === 'object'
+    && error !== null
+    && 'code' in error
+    && error.code === code;
+}
+
+function getCliOption(name) {
+  const prefix = `--${name}=`;
+  return cliArgs.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
+}
+
+function getPositiveInteger(value, fallback, name) {
+  if (!value) return fallback;
+
+  const parsed = Number.parseInt(value, 10);
+
+  if (!Number.isInteger(parsed) || parsed < 1) {
+    throw new Error(`${name} must be a positive integer.`);
+  }
+
+  return parsed;
+}
+
+function resolveGalleryPreset() {
+  const presetName = getCliOption('preset')
+    ?? process.env.GALLERY_PRESET
+    ?? DEFAULT_GALLERY_PRESET;
+  const basePreset = GALLERY_PRESETS[presetName];
+
+  if (!basePreset) {
+    throw new Error(`Unknown gallery preset "${presetName}". Available presets: ${Object.keys(GALLERY_PRESETS).join(', ')}`);
+  }
+
+  return {
+    ...basePreset,
+    name: presetName,
+    jobs: getPositiveInteger(process.env.GALLERY_JOBS, basePreset.jobs, 'GALLERY_JOBS'),
+    maxDimension: getPositiveInteger(process.env.GALLERY_MAX_DIMENSION, basePreset.maxDimension, 'GALLERY_MAX_DIMENSION'),
+    sharpConcurrency: getPositiveInteger(process.env.SHARP_CONCURRENCY, basePreset.sharpConcurrency, 'SHARP_CONCURRENCY'),
+  };
+}
+
+function getGalleryCacheVersion(preset) {
+  return JSON.stringify({
+    format: preset.format,
+    maxDimension: preset.maxDimension,
+    options: preset.options,
+    rotate: true,
+    version: 2,
+  });
+}
+
+async function readJsonFile(path, fallback) {
+  try {
+    return JSON.parse(await readFile(path, 'utf8'));
+  } catch (error) {
+    if (hasErrorCode(error, 'ENOENT')) return fallback;
+    throw error;
+  }
+}
+
+async function getFileStat(path) {
+  try {
+    return await stat(path);
+  } catch (error) {
+    if (hasErrorCode(error, 'ENOENT')) return null;
+    throw error;
+  }
+}
+
+async function mapWithConcurrency(items, concurrency, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+      results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+    }
+  }
+
+  await Promise.all(
+    Array.from(
+      { length: Math.min(concurrency, items.length) },
+      () => worker(),
+    ),
+  );
+
+  return results;
+}
+
+async function generateGalleryImages() {
+  const preset = resolveGalleryPreset();
+  const cacheVersion = getGalleryCacheVersion(preset);
+  const previousSharpConcurrency = sharp.concurrency();
+  sharp.concurrency(preset.sharpConcurrency);
+
   await mkdir(galleryOutputDir, { recursive: true });
   await mkdir(galleryManifestDir, { recursive: true });
+  await mkdir(galleryCacheDir, { recursive: true });
 
   const sourceEntries = (await readdir(gallerySourceDir, { withFileTypes: true }))
     .filter((entry) => entry.isFile())
@@ -82,59 +231,146 @@ async function generateGalleryAvif() {
     outputEntries.map(async (entry) => {
       const extension = extname(entry.name).toLowerCase();
       const stem = basename(entry.name, extension);
-      const shouldDeleteOriginal = sourceStems.has(stem) && extension !== '.avif';
-      const shouldDeleteStaleAvif = extension === '.avif' && !sourceStems.has(stem);
+      const isGeneratedOutput = GALLERY_OUTPUT_EXTENSIONS.has(extension);
+      const shouldDeleteOtherFormat = sourceStems.has(stem)
+        && isGeneratedOutput
+        && extension !== preset.extension;
+      const shouldDeleteStaleOutput = isGeneratedOutput && !sourceStems.has(stem);
 
-      if (!shouldDeleteOriginal && !shouldDeleteStaleAvif) return;
+      if (!shouldDeleteOtherFormat && !shouldDeleteStaleOutput) return;
 
       await rm(resolve(galleryOutputDir, entry.name));
       console.log(`Removed: public/gallery/${entry.name}`);
     }),
   );
 
-  const slides = await Promise.all(
-    sourceEntries.map(async (entry) => {
-      const sourcePath = resolve(gallerySourceDir, entry.name);
-      const stem = basename(entry.name, extname(entry.name));
-      const outputName = `${stem}.avif`;
-      const outputPath = resolve(galleryOutputDir, outputName);
-      const sourceExtension = extname(entry.name).toLowerCase();
-      const image = sharp(sourcePath).rotate();
-      const metadata = await image.metadata();
-
-      if (sourceExtension === '.avif') {
-        await copyFile(sourcePath, outputPath);
-      } else {
-        await image.avif(GALLERY_AVIF_OPTIONS).toFile(outputPath);
-      }
-
-      console.log(`Generated: public/gallery/${outputName} (${metadata.width}x${metadata.height})`);
-
-      return {
-        src: `/gallery/${outputName}`,
-        width: metadata.width ?? 1,
-        height: metadata.height ?? 1,
-      };
-    }),
+  const galleryCache = await readJsonFile(galleryCachePath, { version: '', entries: {} });
+  const cacheEntries = galleryCache.version === cacheVersion
+    ? galleryCache.entries ?? {}
+    : {};
+  const previousManifest = await readJsonFile(galleryManifestPath, []);
+  const previousManifestBySrc = new Map(
+    previousManifest.map((slide) => [slide.src, slide]),
   );
 
+  const generatedItems = await mapWithConcurrency(
+    sourceEntries,
+    preset.jobs,
+    async (entry) => {
+      const startedAt = Date.now();
+      const sourcePath = resolve(gallerySourceDir, entry.name);
+      const stem = basename(entry.name, extname(entry.name));
+      const outputName = `${stem}${preset.extension}`;
+      const outputPath = resolve(galleryOutputDir, outputName);
+      const sourceStats = await stat(sourcePath);
+      const outputStats = await getFileStat(outputPath);
+      const cached = cacheEntries[entry.name];
+      const src = `/gallery/${outputName}`;
+      const previousSlide = previousManifestBySrc.get(src);
+      const canReuseCache = cached
+        && outputStats
+        && cached.outputName === outputName
+        && cached.outputSize === outputStats.size
+        && cached.sourceSize === sourceStats.size
+        && cached.sourceMtimeMs === sourceStats.mtimeMs;
+      const canReuseExistingOutput = outputStats
+        && previousSlide
+        && typeof previousSlide.width === 'number'
+        && typeof previousSlide.height === 'number'
+        && outputStats.mtimeMs >= sourceStats.mtimeMs;
+
+      if (canReuseCache || canReuseExistingOutput) {
+        const width = canReuseCache ? cached.width : previousSlide.width;
+        const height = canReuseCache ? cached.height : previousSlide.height;
+
+        console.log(`Skipped: public/gallery/${outputName} (unchanged, ${Date.now() - startedAt}ms)`);
+
+        return {
+          slide: { src, width, height },
+          cacheEntry: {
+            outputName,
+            outputSize: outputStats.size,
+            sourceSize: sourceStats.size,
+            sourceMtimeMs: sourceStats.mtimeMs,
+            width,
+            height,
+          },
+        };
+      }
+
+      const image = sharp(sourcePath)
+        .rotate()
+        .resize({
+          width: preset.maxDimension,
+          height: preset.maxDimension,
+          fit: 'inside',
+          withoutEnlargement: true,
+        });
+      const info = await image[preset.format](preset.options).toFile(outputPath);
+
+      console.log(`Generated: public/gallery/${outputName} (${info.width}x${info.height}, ${info.size} bytes, ${Date.now() - startedAt}ms)`);
+
+      return {
+        slide: {
+          src,
+          width: info.width,
+          height: info.height,
+        },
+        cacheEntry: {
+          outputName,
+          outputSize: info.size,
+          sourceSize: sourceStats.size,
+          sourceMtimeMs: sourceStats.mtimeMs,
+          width: info.width,
+          height: info.height,
+        },
+      };
+    },
+  );
+
+  const slides = generatedItems.map((item) => item.slide);
   const manifest = slides.map((slide, index) => ({
     ...slide,
     alt: `MAY PROJECT ギャラリーイラスト ${String(index + 1).padStart(2, '0')}`,
   }));
+  const nextCache = {
+    version: cacheVersion,
+    entries: Object.fromEntries(
+      generatedItems.map((item, index) => [
+        sourceEntries[index].name,
+        item.cacheEntry,
+      ]),
+    ),
+  };
 
   await writeFile(galleryManifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
-  console.log('Generated: src/data/generated/mp-gallery-manifest.json');
+  await writeFile(galleryCachePath, `${JSON.stringify(nextCache, null, 2)}\n`, 'utf8');
+  sharp.concurrency(previousSharpConcurrency);
+  console.log(`Generated: src/data/generated/mp-gallery-manifest.json (${preset.name}, ${preset.format}, jobs=${preset.jobs}, sharp.concurrency=${preset.sharpConcurrency})`);
 }
 
 async function main() {
-  await Promise.all([
-    generateOgImage(),
-    generateIcon(180, 'apple-touch-icon.png'),
-    generateIcon(192, 'icon-192.png'),
-    generateIcon(512, 'icon-512.png'),
-    generateGalleryAvif(),
-  ]);
+  const generators = [];
+
+  if (!shouldGenerateOnlyGallery) {
+    generators.push(
+      generateOgImage(),
+      generateIcon(180, 'apple-touch-icon.png'),
+      generateIcon(192, 'icon-192.png'),
+      generateIcon(512, 'icon-512.png'),
+    );
+  }
+
+  if (shouldGenerateGallery) {
+    generators.push(generateGalleryImages());
+  }
+
+  await Promise.all(generators);
+
+  if (!shouldGenerateGallery) {
+    console.log('Skipped: gallery conversion.');
+  }
+
   console.log('All assets generated.');
 }
 

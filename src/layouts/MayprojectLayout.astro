@@ -8,6 +8,8 @@ interface Props {
   description?: string;
   canonical?: string;
   ogImage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   ogType?: 'website' | 'article';
   publishedTime?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
@@ -15,16 +17,26 @@ interface Props {
 
 const siteUrl = 'https://maymai.dev';
 const siteName = 'Maymai.dev';
+const mayprojectOgTitle = '桜草メイプロジェクト | Maymai.dev';
+const mayprojectOgDescription = 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。';
+const mayprojectGuidelinesPath = '/mayproject/guidelines';
 
 const {
   title = '桜草メイプロジェクト | Maymai.dev',
   description = 'ロンドン郊外の古い屋敷で紡がれる、静かで温かい日々の物語。暮らしは、手をかけたぶんだけやさしくなる。',
   canonical = Astro.url.href,
-  ogImage = '/og-image.png',
+  ogImage = '/mayproject/og-image.png',
+  ogTitle,
+  ogDescription,
   ogType = 'website',
   publishedTime,
   jsonLd,
 } = Astro.props;
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const useMayprojectSharedOg = currentPath === mayprojectGuidelinesPath;
+const resolvedOgTitle = ogTitle ?? (useMayprojectSharedOg ? mayprojectOgTitle : title);
+const resolvedOgDescription = ogDescription ?? (useMayprojectSharedOg ? mayprojectOgDescription : description);
 
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
@@ -47,8 +59,8 @@ const jsonLdArray = jsonLd
     <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#fff6f0">
 
-    <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
+    <meta property="og:title" content={resolvedOgTitle}>
+    <meta property="og:description" content={resolvedOgDescription}>
     <meta property="og:type" content={ogType}>
     <meta property="og:url" content={canonical}>
     <meta property="og:image" content={absoluteOgImage}>
@@ -60,8 +72,8 @@ const jsonLdArray = jsonLd
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@mei_999_">
-    <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
+    <meta name="twitter:title" content={resolvedOgTitle}>
+    <meta name="twitter:description" content={resolvedOgDescription}>
     <meta name="twitter:image" content={absoluteOgImage}>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
