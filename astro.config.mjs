@@ -5,7 +5,12 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://maymai.dev',
-  adapter: cloudflare(),
+  experimental: {
+    rustCompiler: true,
+  },
+  adapter: cloudflare({
+    imageService: 'compile',
+  }),
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/api/'),

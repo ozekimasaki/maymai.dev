@@ -8,9 +8,9 @@ technologies:
   - Pug
   - Vitest
 updated: "2026.03.14"
-thumbnail: https://opengraph.githubassets.com/1/ozekimasaki/vite-pug-static-builder
+thumbnail: /works/vite-pug-static-builder.webp
 repoUrl: https://github.com/ozekimasaki/vite-pug-static-builder
-order: 3
+order: 8
 ---
 
 ## 概要

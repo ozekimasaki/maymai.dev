@@ -3,7 +3,6 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
 ---
 
 <section id="hero" class="Hero">
-  <div class="Hero__bg js-hero-bg"></div>
   <div class="Hero__inner">
     <div class="Hero__content">
       <p class="Hero__label Hero__fadeItem" style="--hero-order: 0;">// portfolio_v1.0</p>
@@ -32,33 +31,6 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
   </div>
 </section>
 
-<script>
-  const heroBackground = document.querySelector<HTMLElement>('.js-hero-bg');
-  const heroSection = heroBackground?.closest<HTMLElement>('.Hero');
-
-  const loadHeroBackground = () => {
-    window.requestAnimationFrame(() => {
-      void import('../../scripts/hero-ink-bg.ts');
-    });
-  };
-
-  if (heroBackground && heroSection && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0]?.isIntersecting) return;
-
-        observer.disconnect();
-        loadHeroBackground();
-      },
-      { rootMargin: '200px 0px' },
-    );
-
-    observer.observe(heroSection);
-  } else if (heroBackground) {
-    loadHeroBackground();
-  }
-</script>
-
 <style lang="scss">
   @use '../../styles/foundation/mixin' as mix;
 
@@ -72,32 +44,6 @@ const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
 
     @include mix.mq(sp) {
       padding-top: 56px;
-    }
-
-    // ===========================================
-    // Hero Background
-    // ===========================================
-
-    &__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-      background:
-        linear-gradient(90deg, rgba(252, 250, 245, .96) 0%, rgba(252, 250, 245, .82) 28%, rgba(252, 250, 245, .36) 56%, rgba(252, 250, 245, .08) 100%);
-
-      :global(.Hero__pixiCanvas) {
-        display: block;
-        width: 100%;
-        height: 100%;
-        opacity: .96;
-      }
-
-      @include mix.mq(sp) {
-        background:
-          linear-gradient(180deg, rgba(252, 250, 245, .92) 0%, rgba(252, 250, 245, .62) 30%, rgba(252, 250, 245, .18) 100%);
-      }
     }
 
     &__inner {

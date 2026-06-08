@@ -8,9 +8,9 @@ technologies:
   - Workers AI
   - Discord
 updated: "2026.04.19"
-thumbnail: https://opengraph.githubassets.com/1/ozekimasaki/release-discord-watcher
+thumbnail: /works/release-discord-watcher.webp
 repoUrl: https://github.com/ozekimasaki/release-discord-watcher
-order: 1
+order: 6
 ---
 
 ## 概要

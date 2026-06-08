@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import { mkdir, readdir, readFile, rm, stat, writeFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { basename, dirname, extname, resolve } from 'path';
+import { generateWorksThumbnails } from './generate-works-thumbnails.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(__dirname, '..', 'public');
@@ -360,6 +361,7 @@ async function main() {
       generateIcon(180, 'apple-touch-icon.png'),
       generateIcon(192, 'icon-192.png'),
       generateIcon(512, 'icon-512.png'),
+      generateWorksThumbnails(),
     );
   }
 

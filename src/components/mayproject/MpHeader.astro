@@ -6,6 +6,7 @@ const isMayprojectTop = currentPath === '/mayproject';
 const toSectionHref = (sectionId: string) => isMayprojectTop ? `#${sectionId}` : `/mayproject/#${sectionId}`;
 
 const navItems = [
+  { en: 'MAYMAI.DEV', ja: 'ポートフォリオTOP', href: '/' },
   { en: 'ABOUT', ja: 'プロジェクトについて', href: toSectionHref('about') },
   { en: 'GALLERY', ja: '画像展示室', href: toSectionHref('gallery') },
   { en: 'CHARACTER', ja: 'キャラクター紹介', href: toSectionHref('character') },
@@ -14,7 +15,10 @@ const navItems = [
 ];
 ---
 
-<header class="MpHeader js-mp-header">
+<header
+  class={`MpHeader js-mp-header${isMayprojectTop ? ' is-mv-active' : ''}`}
+  data-first-view-header={isMayprojectTop ? 'true' : 'false'}
+>
   <div class="MpHeader__inner MpGrid">
     <a href="/mayproject/" class="MpHeader__logo">
       <img src={logoSvg.src} alt="桜草メイプロジェクト" class="MpHeader__logoImg" width="160" height="86" />
@@ -71,12 +75,47 @@ const navItems = [
     left: 0;
     width: 100%;
     z-index: var(--z-header);
+    isolation: isolate;
     background-color: rgba(255, 255, 255, .8);
     border-bottom: 1px solid var(--mp-color-border);
     backdrop-filter: blur(12px);
     box-shadow: 0 1px 8px rgba(26, 26, 46, .06);
+    transition:
+      background-color var(--duration-base) ease,
+      border-color var(--duration-base) ease,
+      backdrop-filter var(--duration-base) ease,
+      box-shadow var(--duration-base) ease;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, .44) 0%,
+        rgba(0, 0, 0, .24) 58%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      transition: opacity var(--duration-base) ease;
+    }
+
+    &.is-mv-active {
+      background-color: transparent;
+      border-bottom-color: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+
+      &::before {
+        opacity: 1;
+      }
+    }
 
     &__inner {
+      position: relative;
+      z-index: 1;
       align-items: center;
       height: 96px;
 
@@ -145,17 +184,39 @@ const navItems = [
       font-size: .6875rem;
       letter-spacing: .12em;
       color: var(--mp-color-dark);
+      text-shadow: none;
+      transition:
+        color var(--duration-base) ease,
+        text-shadow var(--duration-base) ease;
+
+      .MpHeader.is-mv-active & {
+        color: #fff;
+        text-shadow: none;
+      }
     }
 
     &__navJa {
       font-size: .5625rem;
       letter-spacing: .05em;
       color: rgba(26, 26, 46, .7);
+      text-shadow: none;
+      transition:
+        color var(--duration-base) ease,
+        text-shadow var(--duration-base) ease;
+
+      .MpHeader.is-mv-active & {
+        color: rgba(255, 255, 255, .8);
+        text-shadow: none;
+      }
     }
 
     @media (any-hover: hover) {
       &__navLink:hover {
         border-bottom-color: var(--mp-color-primary);
+      }
+
+      &.is-mv-active &__navLink:hover {
+        border-bottom-color: rgba(255, 255, 255, .85);
       }
     }
 
@@ -175,7 +236,14 @@ const navItems = [
       width: 100%;
       height: 1px;
       background-color: var(--mp-color-dark);
-      transition: transform var(--duration-base) ease, opacity var(--duration-base) ease;
+      transition:
+        transform var(--duration-base) ease,
+        opacity var(--duration-base) ease,
+        background-color var(--duration-base) ease;
+
+      .MpHeader.is-mv-active:not(.is-open) & {
+        background-color: #fff;
+      }
 
       &:nth-child(1) { top: 0; }
       &:nth-child(2) { top: 50%; }
@@ -198,6 +266,7 @@ const navItems = [
       width: 100vw;
       height: 100dvh;
       z-index: var(--z-hamburger);
+      isolation: isolate;
       background-color: #fff;
       display: flex;
       align-items: center;
@@ -245,6 +314,7 @@ const navItems = [
 
 <script>
   import { initMenuToggle } from '../../scripts/menu-toggle.ts';
+  import { initMpHeaderFirstView } from '../../scripts/mp-header-first-view.ts';
   import { initMpHeaderLogoVisibility } from '../../scripts/mp-header-logo-visibility.ts';
 
   initMenuToggle({
@@ -254,6 +324,11 @@ const navItems = [
     linkSelector: '.js-mp-menu-link',
     openLabel: 'メニューを開く',
     closeLabel: 'メニューを閉じる',
+  });
+
+  initMpHeaderFirstView({
+    rootSelector: '.js-mp-header',
+    boundarySelector: '.MpSections',
   });
 
   initMpHeaderLogoVisibility({

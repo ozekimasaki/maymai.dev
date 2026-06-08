@@ -10,9 +10,9 @@ technologies:
   - Tailwind CSS
   - Leaflet
 updated: "2026.03.30"
-thumbnail: https://opengraph.githubassets.com/1/ozekimasaki/find-after-pill
+thumbnail: /works/find-after-pill.webp
 repoUrl: https://github.com/ozekimasaki/find-after-pill
-order: 5
+order: 7
 ---
 
 ## 概要

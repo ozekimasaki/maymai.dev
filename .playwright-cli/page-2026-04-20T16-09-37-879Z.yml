@@ -1,0 +1,276 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "桜草メイプロジェクト" [ref=e4] [cursor=pointer]:
+        - /url: /mayproject/
+        - img "桜草メイプロジェクト" [ref=e5]
+      - navigation "メインナビゲーション" [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "ABOUT プロジェクトについて" [ref=e9] [cursor=pointer]:
+              - /url: "#about"
+              - generic [ref=e10]: ABOUT
+              - generic [ref=e11]: プロジェクトについて
+          - listitem [ref=e12]:
+            - link "GALLERY 画像展示室" [ref=e13] [cursor=pointer]:
+              - /url: "#gallery"
+              - generic [ref=e14]: GALLERY
+              - generic [ref=e15]: 画像展示室
+          - listitem [ref=e16]:
+            - link "CHARACTER キャラクター紹介" [ref=e17] [cursor=pointer]:
+              - /url: "#character"
+              - generic [ref=e18]: CHARACTER
+              - generic [ref=e19]: キャラクター紹介
+          - listitem [ref=e20]:
+            - link "GUIDELINE ガイドライン" [ref=e21] [cursor=pointer]:
+              - /url: /mayproject/guidelines/
+              - generic [ref=e22]: GUIDELINE
+              - generic [ref=e23]: ガイドライン
+          - listitem [ref=e24]:
+            - link "CONTACT お問い合わせ" [ref=e25] [cursor=pointer]:
+              - /url: "#contact"
+              - generic [ref=e26]: CONTACT
+              - generic [ref=e27]: お問い合わせ
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - heading "桜草メイプロジェクト" [level=1] [ref=e33]:
+        - img "桜草メイプロジェクト" [ref=e34]
+      - generic [ref=e37]: 桜草メイプロジェクト
+    - generic [ref=e39]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic: NEWS
+          - generic [ref=e45]:
+            - generic [ref=e46]: NEWS
+            - heading "お知らせ" [level=2] [ref=e47]
+        - list [ref=e48]:
+          - listitem [ref=e49]:
+            - link "2026-04-21 UPDATE 桜草メイプロジェクト 公式サイトを公開しました →" [ref=e50] [cursor=pointer]:
+              - /url: /mayproject/news/website-open/
+              - time [ref=e51]: 2026-04-21
+              - generic [ref=e52]: UPDATE
+              - generic [ref=e53]: 桜草メイプロジェクト 公式サイトを公開しました
+              - generic [ref=e54]: →
+        - link "VIEW ALL →" [ref=e56] [cursor=pointer]:
+          - /url: /mayproject/news/
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - generic: ABOUT
+          - generic [ref=e62]:
+            - generic [ref=e63]: ABOUT
+            - heading "プロジェクトについて" [level=2] [ref=e64]
+        - generic [ref=e65]:
+          - paragraph [ref=e66]:
+            - text: 桜草メイプロジェクトは、
+            - text: ロンドン郊外のカントリー・ハウスを舞台にした、ほのぼのキャラクターIPです。
+          - paragraph [ref=e67]:
+            - text: 古い屋敷の静けさに、手仕事の温かさが重なるとき——
+            - text: 土の匂い、ティーカップの音、庭の新芽。暮らしは、手をかけたぶんだけやさしくなる。
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - generic: GALLERY
+          - generic [ref=e73]:
+            - generic [ref=e74]: GALLERY
+            - heading "画像展示室" [level=2] [ref=e75]
+          - paragraph [ref=e76]:
+            - generic [ref=e77]: "01"
+            - generic [ref=e78]: /
+            - generic [ref=e79]: "09"
+        - generic: GALLERY
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e84]:
+              - img "MAY PROJECT ギャラリーイラスト 03" [ref=e85]
+              - generic: "03"
+            - generic [ref=e87]:
+              - img "MAY PROJECT ギャラリーイラスト 04" [ref=e88]
+              - generic: "04"
+            - generic [ref=e90]:
+              - img "MAY PROJECT ギャラリーイラスト 05" [ref=e91]
+              - generic: "05"
+            - generic [ref=e93]:
+              - img "MAY PROJECT ギャラリーイラスト 06" [ref=e94]
+              - generic: "06"
+            - generic [ref=e96]:
+              - img "MAY PROJECT ギャラリーイラスト 07" [ref=e97]
+              - generic: "07"
+            - generic [ref=e99]:
+              - img "MAY PROJECT ギャラリーイラスト 08" [ref=e100]
+              - generic: "08"
+            - generic [ref=e102]:
+              - img "MAY PROJECT ギャラリーイラスト 09" [ref=e103]
+              - generic: "09"
+            - generic [ref=e105]:
+              - img "MAY PROJECT ギャラリーイラスト 01" [ref=e106]
+              - generic: "01"
+            - generic [ref=e108]:
+              - img "MAY PROJECT ギャラリーイラスト 02" [ref=e109]
+              - generic: "02"
+          - button "前のスライド" [ref=e112] [cursor=pointer]:
+            - img [ref=e113]
+          - button "次のスライド" [ref=e115] [cursor=pointer]:
+            - img [ref=e116]
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - generic: CHARACTER
+          - generic [ref=e123]:
+            - generic [ref=e124]: CHARACTER
+            - heading "キャラクター紹介" [level=2] [ref=e125]
+        - tablist "キャラクター選択" [ref=e126]:
+          - tab "01 メイ" [selected] [ref=e127] [cursor=pointer]:
+            - generic [ref=e128]: "01"
+            - generic [ref=e129]: メイ
+          - tab "02 エレナ" [ref=e130] [cursor=pointer]:
+            - generic [ref=e131]: "02"
+            - generic [ref=e132]: エレナ
+          - tab "03 アイリス" [ref=e133] [cursor=pointer]:
+            - generic [ref=e134]: "03"
+            - generic [ref=e135]: アイリス
+        - tabpanel [ref=e136]:
+          - generic [ref=e137]:
+            - generic: "001"
+            - img "桜草メイ" [ref=e139]
+          - generic [ref=e144]:
+            - generic [ref=e145]: ハウスキーパー
+            - heading "桜草メイ" [level=3] [ref=e146]
+            - paragraph [ref=e147]: Mei Sakurakusa
+            - paragraph [ref=e148]: アッシュフォード家の住み込みハウスキーパー兼ガーデナー・アシスタント。北海道出身の努力家で、失敗しても「勉強になります！」と前を向く。手仕事と対面の温かさを大切にする、屋敷の暮らしを温める存在。
+            - generic [ref=e149]:
+              - generic [ref=e150]: "#園芸"
+              - generic [ref=e151]: "#ハーブティー"
+              - generic [ref=e152]: "#アナログ"
+              - generic [ref=e153]: "#努力型"
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - term [ref=e156]: 年齢
+                - definition [ref=e157]: 20歳
+              - generic [ref=e158]:
+                - term [ref=e159]: 出身
+                - definition [ref=e160]: 日本・北海道
+              - generic [ref=e161]:
+                - term [ref=e162]: 好きなもの
+                - definition [ref=e163]: 園芸、料理、手紙、対面の会話
+              - generic [ref=e164]:
+                - term [ref=e165]: 苦手なもの
+                - definition [ref=e166]: デジタル操作、人混み、雷
+            - generic [ref=e169]: "IMAGE COLOR — #6B8E5A"
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - generic: REFERENCE
+          - generic [ref=e175]:
+            - generic [ref=e176]: REFERENCE SHEET
+            - heading "三面図・資料配布" [level=2] [ref=e177]
+        - paragraph [ref=e178]:
+          - text: 二次創作にご活用いただける三面図・設定資料をご用意しました。
+          - text: ガイドラインの範囲内でご自由にお使いください。
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - generic [ref=e182]:
+              - img "桜草メイ 三面図" [ref=e183]
+              - generic: "01"
+            - generic [ref=e184]:
+              - generic [ref=e185]: ハウスキーパー
+              - heading "桜草メイ" [level=3] [ref=e186]
+              - paragraph [ref=e187]: Mei Sakurakusa
+              - link "DOWNLOAD" [ref=e188] [cursor=pointer]:
+                - /url: /mayproject/assets/ref_mei.jpg
+                - img [ref=e189]
+                - generic [ref=e191]: DOWNLOAD
+          - generic [ref=e192]:
+            - generic [ref=e194]:
+              - img "エレナ・グレース・アッシュフォード 三面図" [ref=e195]
+              - generic: "02"
+            - generic [ref=e196]:
+              - generic [ref=e197]: お嬢様
+              - heading "エレナ・グレース・アッシュフォード" [level=3] [ref=e198]
+              - paragraph [ref=e199]: Elena Grace Ashford
+              - link "DOWNLOAD" [ref=e200] [cursor=pointer]:
+                - /url: /mayproject/assets/ref_elena.jpg
+                - img [ref=e201]
+                - generic [ref=e203]: DOWNLOAD
+          - generic [ref=e204]:
+            - generic [ref=e206]:
+              - img "アイリス・ウェインライト 三面図" [ref=e207]
+              - generic: "03"
+            - generic [ref=e208]:
+              - generic [ref=e209]: 設備・制御管理担当
+              - heading "アイリス・ウェインライト" [level=3] [ref=e210]
+              - paragraph [ref=e211]: Iris Wainwright
+              - link "DOWNLOAD" [ref=e212] [cursor=pointer]:
+                - /url: /mayproject/assets/ref_iris.jpg
+                - img [ref=e213]
+                - generic [ref=e215]: DOWNLOAD
+        - generic [ref=e216]:
+          - heading "二次創作ガイドライン" [level=3] [ref=e217]
+          - list [ref=e218]:
+            - listitem [ref=e219]: 非営利の個人利用に限り、ご自由にお使いいただけます
+            - listitem [ref=e220]: 公序良俗に反する利用はご遠慮ください
+            - listitem [ref=e221]: 公開時は「桜草メイ」のクレジット表記をお願いします
+            - listitem [ref=e222]: 生成AIを用いた二次創作も非営利の範囲で歓迎します
+          - link "ガイドラインの詳細を見る →" [ref=e223] [cursor=pointer]:
+            - /url: /mayproject/guidelines/
+            - text: ガイドラインの詳細を見る
+            - generic [ref=e224]: →
+      - generic [ref=e225]:
+        - generic: CONTACT
+        - generic [ref=e226]:
+          - generic [ref=e227]:
+            - generic: CONTACT
+            - generic [ref=e230]:
+              - generic [ref=e231]: CONTACT
+              - heading "お問い合わせ" [level=2] [ref=e232]
+          - generic [ref=e233]:
+            - paragraph [ref=e234]: ご連絡はSNSからお気軽にどうぞ。
+            - generic [ref=e235]:
+              - link "X (Twitter)" [ref=e236] [cursor=pointer]:
+                - /url: https://x.com/mei_999_
+                - img [ref=e238]
+                - generic [ref=e240]: X (Twitter)
+              - link "GitHub" [ref=e241] [cursor=pointer]:
+                - /url: https://github.com/ozekimasaki
+                - img [ref=e243]
+                - generic [ref=e245]: GitHub
+  - contentinfo [ref=e246]:
+    - generic [ref=e248]:
+      - generic [ref=e249]:
+        - generic [ref=e250]:
+          - img "桜草メイプロジェクト" [ref=e251]
+          - paragraph [ref=e252]: Sakurakusa Mei Project
+        - navigation "フッターナビゲーション" [ref=e253]:
+          - list [ref=e254]:
+            - listitem [ref=e255]:
+              - link "ABOUT" [ref=e256] [cursor=pointer]:
+                - /url: "#about"
+            - listitem [ref=e257]:
+              - link "GALLERY" [ref=e258] [cursor=pointer]:
+                - /url: "#gallery"
+            - listitem [ref=e259]:
+              - link "CHARACTER" [ref=e260] [cursor=pointer]:
+                - /url: "#character"
+            - listitem [ref=e261]:
+              - link "GUIDELINE" [ref=e262] [cursor=pointer]:
+                - /url: /mayproject/guidelines/
+            - listitem [ref=e263]:
+              - link "CONTACT" [ref=e264] [cursor=pointer]:
+                - /url: "#contact"
+      - generic [ref=e265]:
+        - paragraph [ref=e266]: © 2026 Sakurakusa Mei Project. All rights reserved.
+        - paragraph [ref=e267]: This is a fictional project.
+  - button "ページの先頭へ戻る" [ref=e268] [cursor=pointer]:
+    - img [ref=e269]
+    - generic [ref=e271]: TOP
+  - generic [ref=e274]:
+    - button "Menu" [ref=e275]:
+      - img [ref=e277]
+      - generic: Menu
+    - button "Inspect" [ref=e281]:
+      - img [ref=e283]
+      - generic: Inspect
+    - button "Audit" [ref=e285]:
+      - generic [ref=e286]:
+        - img [ref=e287]
+        - img [ref=e290]
+      - generic: Audit
+    - button "Settings" [ref=e293]:
+      - img [ref=e295]
+      - generic: Settings
