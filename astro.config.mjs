@@ -5,9 +5,10 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://maymai.dev',
-  experimental: {
-    rustCompiler: true,
-  },
+  // Preserve Astro 6 whitespace behavior between inline elements.
+  compressHTML: true,
+  // Project does not use Astro.session; avoid auto-injected SESSION KV.
+  session: false,
   adapter: cloudflare({
     imageService: 'compile',
   }),
