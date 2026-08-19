@@ -15,6 +15,31 @@
 - 対象タスク: コーディング支援、リファクタリング、デバッグ、開発関連ドキュメント作成
 - 対象技術: Astro / SCSS / TypeScript or JavaScript / Vite ワークフロー
 
+## 0-1. プロジェクト概要とセットアップ
+
+`portfolio_maymai`（[https://maymai.dev](https://maymai.dev)）は Astro 製のポートフォリオサイトで、Cloudflare Workers（`@astrojs/cloudflare` + Wrangler）上で配信する。
+
+### 技術スタック
+
+- Astro 6 / TypeScript（`astro/tsconfigs/strict` を継承）/ SCSS（Sass）
+- 画像処理: `sharp`、カルーセル: `@splidejs/splide` / `swiper`
+- サイトマップ: `@astrojs/sitemap`（`/api/` は除外）
+- `astro.config.mjs` で `experimental.rustCompiler`（`@astrojs/compiler-rs`）を有効化
+
+### 主なエントリポイント / ディレクトリ
+
+- `src/pages/`: ルーティング起点。`index.astro` のほか `works/`, `blog/`, `mayproject/`（特設ページ群）を持つ
+- `src/pages/api/likes.ts`: いいね API。`prerender = false` のサーバーエンドポイントで、本番は Cloudflare KV（`LIKES_KV`）、開発時はインメモリ Map にフォールバック
+- `src/content.config.ts`: コンテンツコレクション定義（`works` / `blog`。Markdown を `src/content/` から読み込む）
+- `src/layouts/BaseLayout.astro` / `src/layouts/MayprojectLayout.astro`: 共通レイアウト
+- `scripts/generate-assets.mjs`: OG 画像・アイコン・Works サムネイル・ギャラリー画像を生成するアセット生成のエントリポイント（`dev` / `build` / `preview` の前に必ず実行される）
+- `wrangler.jsonc`: Cloudflare Workers 設定（`LIKES_KV` バインディング、`./dist` の静的アセットなど）
+
+### セットアップ
+
+- Node.js は `>=22.12.0`（`package.json` の `engines`）。バージョンが古いと `@astrojs/compiler-rs` のネイティブバインディング読み込みでビルドが失敗し得るため、Node 22 系を使う。
+- 依存インストール: `npm install`
+
 ## 1. ファイル基本仕様（`file-encoding.mdc`）
 
 - 文字コード: UTF-8（BOMなし）
@@ -35,18 +60,31 @@
 ### 開発コマンド
 
 ```bash
-# 開発サーバー
+# 依存インストール
+npm install
+
+# 開発サーバー（http://localhost:4321）
 npm run dev
 
-# 本番ビルド
+# 本番ビルド（出力先: ./dist）
 npm run build
 
 # ビルド済み成果物の確認
 npm run preview
 
-# 型・テンプレート検証
+# 型・テンプレート検証（typecheck）
 npx astro check
+
+# Cloudflare Workers へデプロイ（build 後に wrangler deploy）
+npm run deploy
+
+# ギャラリー画像生成（プリセット指定版もあり）
+npm run generate:gallery
 ```
+
+- `dev` / `build` / `preview` / `deploy` は実行前に `scripts/generate-assets.mjs` を走らせる。
+- **typecheck**: `npx astro check`（`build` は型エラーで停止しないため、型検証は明示的に実行する）。
+- **テスト / lint**: 専用のテストランナーや ESLint / Prettier は導入されていない。品質確認は `npx astro check` と手動の Chrome DevTools 検証（§9）で行う。新たにツールを追加する場合はユーザーに確認する。
 
 ### 基本構成
 
