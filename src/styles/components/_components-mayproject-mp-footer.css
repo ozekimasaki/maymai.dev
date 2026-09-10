@@ -1,0 +1,112 @@
+.MpFooter {
+    background-color: var(--mp-color-dark);
+    position: relative;
+
+    .MpFooter__accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(232, 115, 42, .4) 50%,
+        transparent
+      );
+    }
+
+    .MpFooter__inner {
+      row-gap: 48px;
+      padding-top: 64px;
+      padding-bottom: 48px;
+
+      @media (--sp) {
+        padding-top: 40px;
+        padding-bottom: 32px;
+        row-gap: 32px;
+      }
+    }
+
+    .MpFooter__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+      }
+    }
+
+    .MpFooter__brandLogo {
+      height: 60px;
+      width: auto;
+      display: block;
+      opacity: 1;
+
+      @media (--sp) {
+        height: 40px;
+        margin-inline: auto;
+      }
+    }
+
+    .MpFooter__brandSub {
+      margin-top: 8px;
+      font-size: .6875rem;
+      letter-spacing: .05em;
+      color: rgba(255, 255, 255, .55);
+    }
+
+    .MpFooter__navList {
+      display: flex;
+      gap: 24px;
+
+      @media (--sp) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    .MpFooter__navLink {
+      font-size: .6875rem;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .6);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: rgba(255, 255, 255, .9);
+        }
+      }
+    }
+
+    .MpFooter__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+
+    .MpFooter__copyright {
+      font-size: .625rem;
+      letter-spacing: .05em;
+      color: rgba(255, 255, 255, .5);
+    }
+
+    .MpFooter__meta {
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .35);
+    }
+  }

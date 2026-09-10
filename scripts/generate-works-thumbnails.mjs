@@ -4,7 +4,7 @@ import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const worksContentDir = resolve(__dirname, '..', 'src', 'content', 'works');
+const worksContentDir = resolve(__dirname, '..', 'content', 'works');
 const worksOutputDir = resolve(__dirname, '..', 'public', 'works');
 const GITHUB_USER = 'ozekimasaki';
 const FETCH_DELAY_MS = 1500;
@@ -49,7 +49,7 @@ export async function generateWorksThumbnails({ force = false } = {}) {
   await mkdir(worksOutputDir, { recursive: true });
 
   const files = (await readdir(worksContentDir))
-    .filter((file) => file.endsWith('.md'))
+    .filter((file) => file.endsWith('.md') && file !== 'index.md')
     .sort();
 
   let generated = 0;

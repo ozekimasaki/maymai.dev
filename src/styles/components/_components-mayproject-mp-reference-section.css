@@ -1,0 +1,284 @@
+.MpRef {
+    background-color: rgba(255, 255, 255, .95);
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+
+    @media (--sp) {
+      padding: 56px 0;
+    }
+
+    .MpRef__header {
+      position: relative;
+      margin-bottom: 32px;
+      grid-column: 1 / -1;
+    }
+
+    .MpRef__titleBg {
+      position: absolute;
+      top: -44px;
+      left: -12px;
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @media (--sp) {
+        font-size: 3.5rem;
+        top: -24px;
+      }
+    }
+
+    .MpRef__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .MpRef__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    .MpRef__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .MpRef__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    .MpRef__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @media (--sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .MpRef__lead {
+      font-size: .875rem;
+      line-height: 2.2;
+      letter-spacing: .06em;
+      color: rgba(26, 26, 46, .85);
+      margin-bottom: 48px;
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        font-size: .8125rem;
+        margin-bottom: 32px;
+
+        br {
+          display: none;
+        }
+      }
+    }
+
+    /* Card grid */
+    .MpRef__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    .MpRef__card {
+      position: relative;
+      border: 1px solid var(--mp-color-border);
+      background-color: #fff;
+      transition: box-shadow .3s ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          box-shadow: 0 8px 32px rgba(26, 26, 46, .08);
+        }
+      }
+    }
+
+    .MpRef__cardAccent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 2;
+    }
+
+    .MpRef__cardVisual {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+
+    .MpRef__cardImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .MpRef__cardOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(26, 26, 46, .45) 0%,
+        transparent 35%
+      );
+      pointer-events: none;
+    }
+
+    .MpRef__cardNum {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-family: var(--mp-font-main);
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      color: rgba(255, 255, 255, .15);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .MpRef__cardBody {
+      padding: 20px 24px 24px;
+
+      @media (--sp) {
+        padding: 16px 20px 20px;
+      }
+    }
+
+    .MpRef__cardRole {
+      display: inline-block;
+      padding: 2px 12px;
+      font-size: .625rem;
+      letter-spacing: .1em;
+      color: #fff;
+    }
+
+    .MpRef__cardName {
+      font-family: var(--mp-font-main);
+      font-size: 1rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+      margin-top: 10px;
+    }
+
+    .MpRef__cardNameEn {
+      font-size: .6875rem;
+      letter-spacing: .06em;
+      color: rgba(26, 26, 46, .6);
+      margin-top: 4px;
+    }
+
+    .MpRef__cardDl {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: 1px solid var(--mp-color-primary);
+      color: var(--mp-color-primary);
+      font-size: .6875rem;
+      letter-spacing: .15em;
+      transition: background-color .3s ease, color .3s ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--mp-color-primary);
+          color: #fff;
+        }
+      }
+    }
+
+    .MpRef__cardDlIcon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Notice */
+    .MpRef__notice {
+      margin-top: 64px;
+      padding: 32px 40px;
+      background-color: var(--mp-color-bg-warm);
+      border-left: 3px solid var(--mp-color-primary);
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        margin-top: 40px;
+        padding: 24px 20px;
+      }
+    }
+
+    .MpRef__noticeTitle {
+      font-family: var(--mp-font-main);
+      font-size: .8125rem;
+      letter-spacing: .12em;
+      color: var(--mp-color-dark);
+      margin-bottom: 16px;
+    }
+
+    .MpRef__noticeList {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      li {
+        position: relative;
+        padding-left: 16px;
+        font-size: .8125rem;
+        line-height: 1.8;
+        letter-spacing: .04em;
+        color: rgba(26, 26, 46, .85);
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: .7em;
+          left: 0;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: rgba(232, 115, 42, .4);
+        }
+      }
+    }
+
+    .MpRef__noticeLink {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      color: var(--mp-color-primary);
+      border-bottom: 1px solid transparent;
+      transition: border-color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          border-bottom-color: var(--mp-color-primary);
+        }
+      }
+    }
+  }

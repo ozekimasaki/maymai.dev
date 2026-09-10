@@ -10,19 +10,20 @@ alwaysApply: true
 |---|---|---|
 | 共有ブラウザスクリプト | kebab-case の `.ts` を優先 | `scroll-header.ts`, `form-validation.ts` |
 | 補助ユーティリティ | kebab-case | `focus-trap.ts`, `clamp-text.ts` |
-| フレームワーク UI | PascalCase | `Carousel.tsx`, `Accordion.jsx` |
+| テーマ UI | PascalCase | `Header.tsx`, `HeroSection.tsx` |
 
 ## ディレクトリ構成
 
 ```text
 src/
+├── client.ts
 ├── scripts/
-│   ├── dom/
-│   │   └── scroll-header.ts
-│   └── lib/
-│       └── focus-trap.ts
+│   └── menu-toggle.ts
+└── lib/
+    └── likes.ts
+theme/
 └── components/
-    └── Accordion.tsx
+    └── Header.tsx
 ```
 
 ## 命名規則
@@ -36,6 +37,7 @@ src/
 ## 運用ルール
 
 - 共有スクリプトは `src/scripts/` に集約する
-- そのコンポーネント専用の処理は `.astro` の `<script>` または同名近接ファイルに閉じる
-- `src/` 配下から import したスクリプトは Astro / Vite がバンドルする
+- テーマ専用の処理は `theme/` に閉じ、ブラウザ API は置かない
+- `src/client.ts` から import したスクリプトは Vite がバンドルする
 - `public/` 配下の JS は素通しで配信されるため、最適化や依存解決を期待しない
+- 相対 import には拡張子（`.ts` / `.tsx`）を付ける

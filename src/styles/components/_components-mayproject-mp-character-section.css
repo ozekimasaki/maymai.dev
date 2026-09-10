@@ -1,0 +1,322 @@
+.MpCharacter {
+    background-color: color-mix(in srgb, var(--mp-color-bg-warm) 95%, transparent);
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+
+    @media (--sp) {
+      padding: 56px 0;
+    }
+
+    .MpCharacter__radial {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(
+        ellipse at 70% 50%,
+        rgba(91, 122, 94, .06) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .MpCharacter__header {
+      position: relative;
+      margin-bottom: 48px;
+      grid-column: 1 / -1;
+    }
+
+    .MpCharacter__titleBg {
+      position: absolute;
+      top: -44px;
+      left: -12px;
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @media (--sp) {
+        font-size: 3.5rem;
+        top: -24px;
+      }
+    }
+
+    .MpCharacter__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .MpCharacter__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    .MpCharacter__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .MpCharacter__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    .MpCharacter__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @media (--sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Tabs */
+    .MpCharacter__tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 40px;
+      grid-column: 1 / -1;
+
+      @media (--sp) {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    .MpCharacter__tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background-color: #fff;
+      font-family: var(--mp-font-main);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      color: rgba(26, 26, 46, .8);
+      white-space: nowrap;
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover:not(.MpCharacter__tab--active) {
+          background-color: rgba(232, 115, 42, .06);
+        }
+      }
+    }
+
+    .MpCharacter__tab--active {
+      background-color: var(--mp-color-primary);
+      color: #fff;
+    }
+
+    .MpCharacter__tabNum {
+      opacity: .5;
+    }
+
+    /* Content panels */
+    .MpCharacter__content {
+      display: none;
+      grid-column: 1 / -1;
+
+      &.is-active {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        animation: mpCharFadeIn .4s ease;
+
+        @media (--sp) {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+      }
+    }
+
+    /* Image side */
+    .MpCharacter__imageWrap {
+      position: relative;
+    }
+
+    .MpCharacter__number {
+      position: absolute;
+      top: -24px;
+      left: -16px;
+      font-family: var(--mp-font-main);
+      font-size: 11.25rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+
+      @media (--sp) {
+        font-size: 5rem;
+        top: -12px;
+      }
+    }
+
+    .MpCharacter__imageFrame {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .MpCharacter__image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .MpCharacter__progress {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 14px;
+    }
+
+    .MpCharacter__progressFill {
+      flex: 1;
+      height: 2px;
+      background-color: var(--mp-color-primary);
+    }
+
+    .MpCharacter__progressDot {
+      width: 32px;
+      height: 2px;
+      background-color: var(--mp-color-border);
+    }
+
+    .MpCharacter__progressDotSm {
+      width: 16px;
+      height: 2px;
+      background-color: rgba(238, 232, 239, .5);
+    }
+
+    /* Profile side */
+    .MpCharacter__profile {
+      padding-top: 16px;
+    }
+
+    .MpCharacter__roleBadge {
+      display: inline-block;
+      padding: 3px 16px;
+      font-size: .6875rem;
+      letter-spacing: .1em;
+      color: #fff;
+    }
+
+    .MpCharacter__name {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .12em;
+      color: var(--mp-color-dark);
+      margin-top: 16px;
+
+      @media (--sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .MpCharacter__nameEn {
+      font-size: .75rem;
+      letter-spacing: .08em;
+      color: rgba(26, 26, 46, .65);
+      margin-top: 8px;
+    }
+
+    .MpCharacter__desc {
+      font-size: .875rem;
+      line-height: 2.2;
+      letter-spacing: .08em;
+      color: rgba(26, 26, 46, .9);
+      margin-top: 24px;
+    }
+
+    /* Tags */
+    .MpCharacter__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .MpCharacter__tag {
+      display: inline-block;
+      padding: 3px 12px;
+      font-size: .6875rem;
+      letter-spacing: .04em;
+      color: var(--mp-color-primary);
+      background-color: rgba(232, 115, 42, .05);
+      border: 1px solid rgba(232, 115, 42, .25);
+    }
+
+    /* Specs */
+    .MpCharacter__specs {
+      margin-top: 24px;
+      border-top: 1px solid var(--mp-color-border);
+    }
+
+    .MpCharacter__specRow {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--mp-color-border);
+    }
+
+    .MpCharacter__specLabel {
+      width: 120px;
+      font-size: .75rem;
+      letter-spacing: .1em;
+      color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    .MpCharacter__specValue {
+      font-size: .8125rem;
+      letter-spacing: .1em;
+      color: rgba(26, 26, 46, .9);
+    }
+
+    /* Color info */
+    .MpCharacter__colorInfo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .MpCharacter__colorSwatch {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #fff;
+    }
+
+    .MpCharacter__colorText {
+      font-size: .6875rem;
+      letter-spacing: .05em;
+      color: rgba(26, 26, 46, .65);
+    }
+  }
+
+@keyframes mpCharFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

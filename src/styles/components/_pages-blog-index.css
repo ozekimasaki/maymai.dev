@@ -1,0 +1,117 @@
+.BlogPage {
+    padding: 128px 0 80px;
+
+    @media (--sp) {
+      padding: 100px 0 60px;
+    }
+
+    .BlogPage__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      @media (--sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    .BlogPage__heading {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 3.2rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      @media (--sp) {
+        font-size: 2rem;
+      }
+    }
+
+    .BlogPage__label {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    .BlogPage__list {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .BlogPage__item {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .BlogPage__link {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      transition: opacity var(--duration-base) ease;
+
+      @media (--sp) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 20px 0;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .6;
+        }
+      }
+    }
+
+    .BlogPage__thumb {
+      width: 220px;
+      flex-shrink: 0;
+      aspect-ratio: 1200 / 630;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg);
+
+      @media (--sp) {
+        width: 100%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+    }
+
+    .BlogPage__content {
+      min-width: 0;
+    }
+
+    .BlogPage__date {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      white-space: nowrap;
+      display: block;
+    }
+
+    .BlogPage__title {
+      display: block;
+      margin-top: 4px;
+      font-size: .875rem;
+      line-height: 1.8;
+      color: var(--color-text);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .BlogPage__excerpt {
+      margin-top: 4px;
+      font-size: .75rem;
+      line-height: 1.6;
+      color: var(--color-label);
+    }
+  }

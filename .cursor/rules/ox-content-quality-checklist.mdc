@@ -1,0 +1,69 @@
+---
+description: ox-content テーマとコンテンツ作成時の品質チェックリスト
+globs: theme/**/*.tsx, content/**/*.md, content/**/*.mdx
+alwaysApply: false
+---
+
+# ox-content 品質チェックリスト
+
+テーマまたはコンテンツを作成・修正する際は、以下を必ず確認すること。
+
+## h1 要素
+
+- `h1` はページ内に 1 つだけ
+- PC / SP で見せ方を変える場合も、見出し自体は 1 つに保つ
+
+## 画像
+
+| 項目 | ルール |
+|---|---|
+| 公開画像 | `public/` からルート相対パスで参照する |
+| `alt` | 必須（装飾画像は `alt=""`） |
+| `width` / `height` | `<img>` 利用時は必須 |
+| `loading="lazy"` | ファーストビュー外に付与 |
+| `role="img"` | SVG を `<img>` で使う場合に付与 |
+
+## OGP / メタ情報
+
+シェル（`SiteShell` / `MpShell`）で以下をそろえる:
+
+| 必須項目 | 例 |
+|---|---|
+| `og:title` | ページタイトル |
+| `og:description` | ページ説明 |
+| `og:type` | `website` / `article` |
+| `og:url` | 正規 URL（末尾スラッシュ） |
+| `og:image` | OGP 画像 URL |
+| `og:site_name` | サイト名 |
+| `twitter:card` | `summary_large_image` |
+
+## `format-detection`
+
+```html
+<meta name="format-detection" content="telephone=no">
+```
+
+## JS 操作対象の要素
+
+- DOM 操作用の要素には `js-` プレフィックスクラスを付与する
+- スタイル用クラスと分離する
+
+## `nav` 要素の `aria-label`
+
+- すべての `nav` に `aria-label` を設定する
+
+## `section` 要素の `id`
+
+- すべての `section` に `id` を付与する
+- 見出しを持たないブロックは `div` を使う
+
+## 外部リンク
+
+- `target="_blank"` を使うリンクには必ず `rel="noopener nofollow"`
+
+## ox-content 固有チェック
+
+- 公開 URL は末尾スラッシュを維持する
+- `permalink` と `layout` を frontmatter に付ける
+- 共通 CSS / JS はシェルから `/assets/client.css` と `/assets/client.js` を読む
+- React / Vue 島を追加しない

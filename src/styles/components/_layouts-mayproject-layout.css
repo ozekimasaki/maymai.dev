@@ -1,0 +1,96 @@
+.MpGrid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: 40px;
+
+    @media (--sp) {
+      display: block;
+      padding-inline: 20px;
+    }
+  }
+
+  .MpBody {
+    --mp-color-primary: #e8732a;
+    --mp-color-dark: #1a1a2e;
+    --mp-color-bg-warm: #fff6f0;
+    --mp-color-border: #eee8ef;
+    --mp-color-text: rgba(26, 26, 46, 1);
+    --mp-color-text-light: rgba(26, 26, 46, .7);
+    --mp-color-text-muted: rgba(26, 26, 46, .48);
+    --mp-font-main: 'Zen Maru Gothic', serif;
+
+    font-family: var(--mp-font-main);
+    font-weight: 500;
+    color: var(--mp-color-dark);
+    background-color: #fff;
+  }
+
+  .MpSections {
+    position: relative;
+    z-index: 1;
+    margin-top: 100svh;
+  }
+
+  .MpPageTop {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--mp-color-primary);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px);
+    transition:
+      opacity .4s ease,
+      visibility .4s ease,
+      transform .4s ease,
+      background-color .25s ease;
+
+    @media (--sp) {
+      right: 16px;
+      bottom: 16px;
+      width: 44px;
+      height: 44px;
+    }
+
+    &.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    @media (any-hover: hover) {
+      &:hover {
+        background-color: color-mix(in srgb, var(--mp-color-primary) 85%, #000);
+      }
+    }
+  }
+
+  .MpPageTop__icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .MpPageTop__label {
+    font-size: .5rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1;
+    font-family: var(--mp-font-main);
+  }

@@ -30,14 +30,16 @@ alwaysApply: true
 ## 配置ルール
 
 ```text
-src/assets/images/        # Astro に最適化させる画像
 public/images/            # 素通しで配信する画像
+public/mayproject/        # Mayproject 用画像
+public/gallery/           # generate-assets が出力するギャラリー
+public/works/             # 作品サムネイル
 public/favicon.svg
 public/apple-touch-icon.png
 ```
 
-- 最適化対象のローカル画像は `src/assets/images/`
-- そのまま URL 配信したい画像は `public/images/`
+- 公開する画像は `public/` に置き、ルート相対パスで参照する
+- ギャラリー最適化は `scripts/generate-assets.mjs`（キャッシュは `.cache/`）
 - favicon, og-image, webmanifest 関連は `public/` に置く
 
 ## フォーマット方針
@@ -48,9 +50,3 @@ public/apple-touch-icon.png
 | `.webp` | 写真・ヒーロー画像の代替候補 |
 | `.svg` | アイコン・ロゴ |
 | `.png` | 透過が必要な画像、スクリーンショット |
-
-## Astro での扱い
-
-- `src/assets/` の画像は import して `astro:assets` で使う
-- `public/` の画像はルート相対パスで参照する
-- 画像最適化を受けたい画像を `public/` に置かない

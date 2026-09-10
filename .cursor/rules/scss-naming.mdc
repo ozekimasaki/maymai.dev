@@ -2,38 +2,43 @@
 alwaysApply: true
 ---
 
-# SCSS 命名規則
+# CSS 命名規則（Lightning CSS）
 
 ## 基本方針
 
 - 共有スタイルは `src/styles/` に配置する
-- コンポーネント固有スタイルは `.astro` 内の `<style lang="scss">` を優先する
-- パーシャルは `_` プレフィックスで管理する
+- コンポーネント固有スタイルは `src/styles/components/` に BEM のまま集約する
+- パーシャルは `_` プレフィックスの `.css` で管理する
+- Dart Sass は使わない。ネストと `@custom-media` は Lightning CSS が処理する
 
 ## ファイル命名
 
 | 種別 | 規則 | 例 |
 |---|---|---|
-| グローバルエントリー | 用途が分かる名前 | `global.scss`, `editor.scss` |
-| パーシャル | `_` プレフィックス | `_variables.scss`, `_mixin.scss`, `_header.scss` |
-| 複合名 | kebab-case | `_hero-section.scss` |
+| グローバルエントリー | 用途が分かる名前 | `main.css` |
+| トークン / reset | 用途が分かる名前 | `tokens.css`, `reset.css` |
+| パーシャル | `_` プレフィックス | `_header.css`, `_hero-section.css` |
+| 複合名 | kebab-case | `_hero-section.css` |
 
-```scss
-@use 'sass:math';
-@use './foundation/variables' as vars;
-@use './foundation/mixin' as mix;
+```css
+@layer reset, tokens, components, utilities;
+
+@import './reset.css' layer(reset);
+@import './tokens.css';
+@import './utilities.css' layer(utilities);
+@import './components/_header.css' layer(components);
 ```
 
 ## 推奨ディレクトリ構成
 
 ```text
 src/styles/
-├── foundation/
-│   ├── _variables.scss
-│   └── _mixin.scss
+├── tokens.css
+├── reset.css
+├── utilities.css
 ├── components/
-│   └── _button.scss
-└── global.scss
+│   └── _header.css
+└── main.css
 ```
 
 ## BEM 命名規則
@@ -44,9 +49,11 @@ src/styles/
 | Element | camelCase | `.Header__navLink`, `.Footer__btnText` |
 | Modifier | kebab-case | `.Header__btn--filled`, `.FooterEntry__btn--primary` |
 
+Modifier はブロック直下で `&__btn--filled` のように書く。`&--filled` は Lightning CSS がカスタムプロパティとして解釈するため使わない。
+
 ### 状態クラス
 
-```scss
+```css
 .is-visible
 .is-active
 .is-hidden
@@ -56,7 +63,7 @@ src/styles/
 
 ### ユーティリティクラス
 
-```scss
+```css
 .pc-only
 .sp-only
 .u-anime
@@ -67,7 +74,7 @@ src/styles/
 - 色、フォント、z-index、トランジション時間は CSS 変数化する
 - 余白や要素固有の寸法は原則ベタ書きにする
 
-```scss
+```css
 :root {
   --color-text: #222;
   --color-background: #fff;
@@ -79,18 +86,23 @@ src/styles/
 ## メディアクエリ
 
 - ホバー演出は必ず `@media (any-hover: hover)` で囲む
-- ブレークポイント用 mixin を使う場合は名前空間付きで呼び出す
+- ブレークポイントは `@custom-media` を使う（`tokens.css` のトップレベル。`@layer` の中に置かない）
 
-```scss
-@media (any-hover: hover) {
-  .Button:hover {
-    opacity: .7;
+```css
+@custom-media --pc (min-width: 768px);
+@custom-media --sp (max-width: 767px);
+
+.l-inner {
+  padding-inline: 40px;
+
+  @media (--sp) {
+    padding-inline: 20px;
   }
 }
 
-@include mix.mq(pc) {
-  .Header {
-    padding-inline: 40px;
+@media (any-hover: hover) {
+  .Header__navLink:hover {
+    opacity: .7;
   }
 }
 ```

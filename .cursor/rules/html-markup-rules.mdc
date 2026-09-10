@@ -1,25 +1,20 @@
 ---
-description: HTML / Astro マークアップ規約（セマンティクス、アクセシビリティ、属性）
-globs: **/*.astro, **/*.html, **/*.mdx
+description: HTML / テーマ JSX マークアップ規約（セマンティクス、アクセシビリティ、属性）
+globs: **/*.tsx, **/*.html, **/*.mdx
 alwaysApply: false
 ---
 
-# HTML / Astro マークアップ規約
+# HTML / テーマ マークアップ規約
 
 ## パス指定
 
 - 内部リンクと `public/` 配下の参照はルート相対パスを使用する
-- Astro に最適化させたいローカル画像は `src/assets/` から import して使う
+- 公開画像は `public/` からルート相対で参照する
+- 公開 URL は末尾スラッシュを維持する
 
-```astro
----
-import { Image } from 'astro:assets';
-import heroImage from '../assets/images/hero/img_hero_01.webp';
----
-
-<Image src={heroImage} alt="メインビジュアル" />
-<a href="/about/">About</a>
-<img src="/images/logo/logo_mark.svg" alt="ロゴ" width="48" height="48">
+```tsx
+<img src="/mayproject/logo_mei.svg" alt="桜草メイプロジェクト" width="160" height="86" />
+<a href="/works/">Products</a>
 ```
 
 ## 区分コンテンツ
@@ -29,14 +24,10 @@ import heroImage from '../assets/images/hero/img_hero_01.webp';
 - `id` の値はブロッククラス名の kebab-case 版と一致させる
 - **見出しを持たないブロックは `section` ではなく `div` を使う**
 
-```astro
-<section id="mv" class="Mv js-mv">
-  <h1 class="Mv__headline">Your Potential, Our Edge.</h1>
+```tsx
+<section id="hero" class="Hero">
+  <h1 class="Hero__heading">Code with AI,</h1>
 </section>
-
-<div id="footer-entry" class="FooterEntry">
-  ...
-</div>
 ```
 
 ## `nav` 要素の `aria-label`
@@ -61,9 +52,9 @@ import heroImage from '../assets/images/hero/img_hero_01.webp';
 
 | 項目 | ルール |
 |---|---|
-| ローカル画像 | `astro:assets` の `<Image />` / `<Picture />` を優先 |
+| 公開画像 | `public/` のルート相対パス |
 | `alt` | 必須（装飾画像は `alt=""`） |
-| `width` / `height` | 素の `<img>` を使う場合は必須 |
+| `width` / `height` | `<img>` を使う場合は必須 |
 | `role="img"` | SVG を `<img>` で使う場合に付与 |
 | `loading="lazy"` | ファーストビュー外の `<img>` に付与 |
 
@@ -71,7 +62,7 @@ import heroImage from '../assets/images/hero/img_hero_01.webp';
 
 `target="_blank"` を指定するリンクには、**必ず `rel="noopener nofollow"`** を設定する。
 
-```astro
+```tsx
 <a href="https://example.com" target="_blank" rel="noopener nofollow">
   外部リンク
 </a>
@@ -79,19 +70,8 @@ import heroImage from '../assets/images/hero/img_hero_01.webp';
 
 ## `<script>` の扱い
 
-- `.astro` 内の自作 `<script>` は Astro に処理させる
-- `is:inline` は生のスニペットが必要な場合のみ
-- サイト共通の処理はレイアウトまたは共通コンポーネント側に寄せる
-
-```astro
-<script>
-  import { initHeader } from '../scripts/scroll-header.ts';
-
-  initHeader();
-</script>
-
-<script is:inline async src="https://example.com/analytics.js"></script>
-```
+- サイト共通の処理は `src/client.ts` / `src/scripts/` に寄せる
+- レイアウトは `/assets/client.js` をモジュールとして読む
 
 ## フォーム
 
@@ -105,5 +85,4 @@ import heroImage from '../assets/images/hero/img_hero_01.webp';
 | 小文字タグ | `div` | `DIV` |
 | ダブルクォーテーション | `class="foo"` | `class='foo'` |
 | 終了タグ省略しない | `</p>` | 省略 |
-| 空要素に終端スラッシュなし | `<hr>` | `<hr />` |
 | ID は小文字ケバブ | `id="main-content"` | `id="MainContent"` |

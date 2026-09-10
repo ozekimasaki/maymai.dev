@@ -1,0 +1,162 @@
+.MpContact {
+    background-color: rgba(255, 255, 255, .95);
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+
+    @media (--sp) {
+      padding: 56px 0;
+    }
+
+    .MpContact__bgText {
+      position: absolute;
+      top: 62px;
+      right: 0;
+      font-family: var(--mp-font-main);
+      font-size: 8.75rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .03);
+      writing-mode: vertical-rl;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .MpContact__header {
+      position: relative;
+      margin-bottom: 48px;
+      grid-column: 1 / -1;
+      padding-left: calc((100% + 16px) * 2 / 12);
+
+      @media (--sp) {
+        padding-left: 0;
+      }
+    }
+
+    .MpContact__titleBg {
+      position: absolute;
+      top: -44px;
+      left: calc((100% + 16px) * 2 / 12 - 12px);
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+
+      @media (--sp) {
+        font-size: 3.5rem;
+        top: -24px;
+        left: -12px;
+      }
+    }
+
+    .MpContact__titleWrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .MpContact__titleBar {
+      width: 4px;
+      height: 48px;
+      background-color: var(--mp-color-primary);
+      flex-shrink: 0;
+    }
+
+    .MpContact__titleGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .MpContact__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    .MpContact__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @media (--sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .MpContact__body {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .MpContact__description {
+      font-family: var(--mp-font-main);
+      font-size: .9375rem;
+      letter-spacing: .06em;
+      line-height: 1.8;
+      color: rgba(26, 26, 46, .7);
+      text-align: center;
+    }
+
+    .MpContact__links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+
+      @media (--sp) {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+      }
+    }
+
+    .MpContact__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 200px;
+      padding: 14px 32px;
+      border: 1px solid var(--mp-color-border);
+      font-family: var(--mp-font-main);
+      font-size: .8125rem;
+      letter-spacing: .12em;
+      color: var(--mp-color-dark);
+      transition:
+        background-color var(--duration-base) ease,
+        color var(--duration-base) ease,
+        border-color var(--duration-base) ease;
+
+      @media (--sp) {
+        width: 100%;
+        padding: 14px 24px;
+        font-size: .8125rem;
+      }
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--mp-color-primary);
+          border-color: var(--mp-color-primary);
+          color: #fff;
+        }
+      }
+    }
+
+    .MpContact__linkIcon {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .MpContact__linkLabel {
+      white-space: nowrap;
+    }
+  }
