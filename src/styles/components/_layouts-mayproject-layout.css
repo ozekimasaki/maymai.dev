@@ -34,6 +34,19 @@
     margin-top: 100svh;
   }
 
+  .MpNews,
+  .MpAbout,
+  .MpGallery,
+  .MpCharacter,
+  .MpRef,
+  .MpContact,
+  .MpNewsPage,
+  .MpNewsDetail,
+  .MpGuideline {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+  }
+
   .MpPageTop {
     position: fixed;
     right: 32px;

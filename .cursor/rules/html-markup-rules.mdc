@@ -70,8 +70,8 @@ alwaysApply: false
 
 ## `<script>` の扱い
 
-- サイト共通の処理は `src/client.ts` / `src/scripts/` に寄せる
-- レイアウトは `/assets/client.js` をモジュールとして読む
+- サイト共通の処理は `src/site-client.ts` / `src/mp-client.ts` / `src/scripts/` に寄せる
+- レイアウトはサイト別のクライアント JS をモジュールとして読む
 
 ## フォーム
 

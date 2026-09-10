@@ -1,6 +1,12 @@
 @custom-media --pc (min-width: 768px);
 @custom-media --sp (max-width: 767px);
 
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 @layer tokens {
   :root {
   --color-bg: #fcfaf5;

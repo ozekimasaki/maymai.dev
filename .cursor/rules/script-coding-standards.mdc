@@ -16,7 +16,7 @@ alwaysApply: false
 ## 実行コンテキスト
 
 - `theme/` の JSX はビルド時の Node 描画。ブラウザ API は使わない
-- `window`, `document`, `localStorage`, `matchMedia` などのブラウザ API は `src/scripts/` または `src/client.ts` 経由でのみ扱う
+- `window`, `document`, `localStorage`, `matchMedia` などのブラウザ API は `src/scripts/` または `src/site-client.ts` / `src/mp-client.ts` 経由でのみ扱う
 
 ```ts
 const button = document.querySelector('.js-menu-button');

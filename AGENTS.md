@@ -31,8 +31,8 @@
 - `content/`: ルーティング起点。`layout` と `permalink` を付ける Markdown / MDX
 - `theme/layouts/` / `theme/components/`: ox-content の静的 JSX テーマ
 - `workers/likes.ts`: いいね API。本番は Cloudflare KV（`LIKES_KV`）、開発・preview 時は Vite プラグインのインメモリ Map
-- `src/client.ts`: クライアント CSS / JS のエントリ
-- `scripts/generate-assets.mjs`: OG 画像・アイコン・Works サムネイル・ギャラリー画像を生成するアセット生成のエントリポイント（`dev` / `build` / `preview` の前に必ず実行される）
+- `src/site-client.ts` / `src/mp-client.ts`: ポートフォリオ / Mayproject それぞれのクライアント CSS / JS エントリ
+- `scripts/generate-assets.mjs`: OG 画像・アイコン・Works サムネイル・Mayproject フォント・ギャラリー画像を生成するアセット生成のエントリポイント（`dev` / `build` の前に実行。`preview` はビルド済み `dist` を使う）
 - `wrangler.jsonc`: Cloudflare Workers 設定（`LIKES_KV` バインディング、`./dist` の静的アセットなど）
 
 ### セットアップ
@@ -79,7 +79,7 @@ npm run deploy
 npm run generate:gallery
 ```
 
-- `dev` / `build` / `preview` / `deploy` は実行前に `scripts/generate-assets.mjs` を走らせる。
+- `dev` / `build` / `deploy` は実行前に `scripts/generate-assets.mjs` を走らせる。`preview` はビルド済み `dist` を使う。
 - **テスト / lint**: 専用のテストランナーや ESLint / Prettier は導入されていない。品質確認は `npm run build` と手動の Chrome DevTools 検証（§9）で行う。新たにツールを追加する場合はユーザーに確認する。
 
 ### 基本構成
@@ -90,7 +90,8 @@ npm run generate:gallery
 ├── theme/                # ox-content JSX テーマ（layouts / components）
 ├── public/               # そのまま配信するアセット
 ├── src/
-│   ├── client.ts         # クライアント CSS / JS のエントリ
+│   ├── site-client.ts    # ポートフォリオのクライアント CSS / JS
+│   ├── mp-client.ts      # Mayproject のクライアント CSS / JS
 │   ├── scripts/          # 共有ブラウザスクリプト
 │   ├── styles/           # Lightning CSS で処理する素の CSS
 │   └── lib/              # 共有ロジック（likes API など）
@@ -126,7 +127,7 @@ npm run generate:gallery
 ### 3-2. CSS 命名（`scss-naming.mdc`）
 
 - 共有スタイル: `src/styles/`
-- エントリーファイル: `main.css`
+- エントリーファイル: `site.css` / `mp.css`
 - パーシャル: `_` プレフィックスの `.css`
   - 例: `tokens.css`, `_header.css`
 - コンポーネント固有スタイルは `src/styles/components/` に BEM のまま集約する
@@ -182,7 +183,7 @@ npm run generate:gallery
 
 ### script / style ルール
 
-- サイト共通 CSS / JS は `src/client.ts` から読み、レイアウトで `/assets/client.css` と `/assets/client.js` をリンクする
+- サイト共通 CSS / JS は `src/site-client.ts` / `src/mp-client.ts` から読み、シェルで `/assets/site.css` / `/assets/mp.css` と対応する JS をリンクする（本番ではハッシュ付きファイル名に置換する）
 - `public/` 配下の CSS / JS は最適化されない前提で使う
 - ox-content テーマは静的 JSX。属性は `class` を使う
 
@@ -222,7 +223,7 @@ npm run generate:gallery
 - ES Modules を使用
 - `var` 禁止（`const` / `let`）
 - 共有ロジックは TypeScript 優先
-- テーマ JSX はビルド時の Node 描画。ブラウザ API は `src/scripts/` または `src/client.ts` 経由でのみ使う
+- テーマ JSX はビルド時の Node 描画。ブラウザ API は `src/scripts/` または `src/site-client.ts` / `src/mp-client.ts` 経由でのみ使う
 - DOM 操作対象は `js-` プレフィックスクラスで分離する
 - 対話 UI はバニラ JS を維持し、不要な hydrate を追加しない
 
@@ -271,6 +272,7 @@ npm run generate:gallery
 - `section` 内に見出しがない場合は `div`
 - `target="_blank"` は `rel="noopener nofollow"`
 - 公開 URL は末尾スラッシュを維持する
+- 共通 CSS / JS はシェルからサイト別のバンドルを読む
 - レイアウト側で読み込み済みの CSS / JS を各ページで重複 import しない
 
 ## 12. レイアウトテンプレートルール（`ox-content-layout-template.mdc`）

@@ -28,7 +28,8 @@ npm run deploy
 ├── theme/                # ox-content 静的 JSX
 ├── public/               # そのまま配信するファイル
 ├── src/
-│   ├── client.ts         # CSS / JS エントリ
+│   ├── site-client.ts    # ポートフォリオの CSS / JS エントリ
+│   ├── mp-client.ts       # Mayproject の CSS / JS エントリ
 │   ├── scripts/          # 共有ブラウザスクリプト
 │   ├── styles/           # Lightning CSS
 │   └── lib/
@@ -49,6 +50,6 @@ npm run deploy
 
 ## クライアント資産
 
-- CSS とブラウザ JS は `src/client.ts` から読み込む
-- レイアウトは `/assets/client.css` と `/assets/client.js` をリンクする
+- CSS とブラウザ JS は `src/site-client.ts` / `src/mp-client.ts` から読み込む
+- レイアウトは `/assets/site.css` / `/assets/mp.css` と対応する JS をリンクする（本番ではハッシュ付き）
 - likes API は開発時 Vite プラグイン、本番は `workers/likes.ts`

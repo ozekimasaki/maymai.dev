@@ -65,5 +65,5 @@ alwaysApply: false
 
 - 公開 URL は末尾スラッシュを維持する
 - `permalink` と `layout` を frontmatter に付ける
-- 共通 CSS / JS はシェルから `/assets/client.css` と `/assets/client.js` を読む
+- 共通 CSS / JS はシェルからサイト別の `/assets/site.css` / `/assets/mp.css` と対応する JS を読む
 - React / Vue 島を追加しない

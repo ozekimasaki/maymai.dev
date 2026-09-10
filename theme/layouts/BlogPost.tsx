@@ -72,7 +72,7 @@ export function BlogPostLayout({ children }: ThemeProps): JSXNode {
           </div>
 
           <div class="BlogPost__thumbnail u-anime" style="--delay: .08s;">
-            <img src={thumbnail} alt={page.title} width="1200" height="630" />
+            <img src={thumbnail} alt={page.title} width="1200" height="630" decoding="async" />
           </div>
 
           <div class="BlogPost__body u-anime" style="--delay: .1s;">

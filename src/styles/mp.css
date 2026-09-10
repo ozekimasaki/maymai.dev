@@ -4,10 +4,9 @@
 @import './tokens.css';
 @import './utilities.css' layer(utilities);
 
-@import './components/_components-footer.css' layer(components);
-@import './components/_components-header.css' layer(components);
 @import './components/_components-like-button.css' layer(components);
-@import './components/_components-loading.css' layer(components);
+@import './components/_components-share-buttons.css' layer(components);
+@import './components/_layouts-mayproject-layout.css' layer(components);
 @import './components/_components-mayproject-mp-about-section.css' layer(components);
 @import './components/_components-mayproject-mp-character-section.css' layer(components);
 @import './components/_components-mayproject-mp-contact-section.css' layer(components);
@@ -17,18 +16,6 @@
 @import './components/_components-mayproject-mp-mv-section.css' layer(components);
 @import './components/_components-mayproject-mp-news-section.css' layer(components);
 @import './components/_components-mayproject-mp-reference-section.css' layer(components);
-@import './components/_components-sections-about-section.css' layer(components);
-@import './components/_components-sections-blog-section.css' layer(components);
-@import './components/_components-sections-contact-section.css' layer(components);
-@import './components/_components-sections-hero-section.css' layer(components);
-@import './components/_components-sections-skills-section.css' layer(components);
-@import './components/_components-sections-works-section.css' layer(components);
-@import './components/_components-share-buttons.css' layer(components);
-@import './components/_layouts-mayproject-layout.css' layer(components);
-@import './components/_pages-blog-index.css' layer(components);
-@import './components/_pages-blog-slug.css' layer(components);
 @import './components/_pages-mayproject-guidelines-index.css' layer(components);
 @import './components/_pages-mayproject-news-index.css' layer(components);
 @import './components/_pages-mayproject-news-slug.css' layer(components);
-@import './components/_pages-works-index.css' layer(components);
-@import './components/_pages-works-slug.css' layer(components);

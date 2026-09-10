@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "node scripts/generate-assets.mjs && vite",
     "build": "node scripts/generate-assets.mjs && vite build",
-    "preview": "node scripts/generate-assets.mjs && vite preview",
+    "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy",
+    "generate:assets": "node scripts/generate-assets.mjs --force",
     "generate:gallery": "node scripts/generate-assets.mjs --only-gallery",
     "generate:gallery:webp": "node scripts/generate-assets.mjs --only-gallery --preset=webp-light",
     "generate:gallery:avif": "node scripts/generate-assets.mjs --only-gallery --preset=avif-light",

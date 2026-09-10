@@ -120,10 +120,31 @@ export function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [];
 }
 
+export type ClientBundle = 'site' | 'mp';
+
 export function isProdBuild(): boolean {
   return process.env.NODE_ENV === 'production';
 }
 
-export function clientScriptSrc(): string {
-  return isProdBuild() ? '/assets/client.js' : '/src/client.ts';
+export function clientScriptSrc(bundle: ClientBundle): string {
+  return isProdBuild() ? `/assets/${bundle}.js` : `/src/${bundle}-client.ts`;
 }
+
+export function clientStylesheetHref(bundle: ClientBundle): string {
+  return `/assets/${bundle}.css`;
+}
+
+export const SPECULATION_RULES_JSON = JSON.stringify({
+  prerender: [
+    {
+      where: {
+        and: [
+          { href_matches: '/*' },
+          { not: { href_matches: '/api/*' } },
+          { not: { selector_matches: '[target=_blank]' } },
+        ],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+});

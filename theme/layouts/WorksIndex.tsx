@@ -40,6 +40,7 @@ export function WorksIndexLayout(_props: ThemeProps): JSXNode {
                     width="580"
                     height="360"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div class="WorksPage__cardInfo">

@@ -63,6 +63,7 @@ export function MayprojectHomeLayout(_props: ThemeProps): JSXNode {
       canonical={pageUrl}
       jsonLd={jsonLd}
       currentPath={pagePath(page)}
+      preloadHero={true}
     >
       <MpMvSection />
       <div class="MpSections">

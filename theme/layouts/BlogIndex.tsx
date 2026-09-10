@@ -44,6 +44,7 @@ export function BlogIndexLayout(_props: ThemeProps): JSXNode {
                         width="1200"
                         height="630"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div class="BlogPage__content">

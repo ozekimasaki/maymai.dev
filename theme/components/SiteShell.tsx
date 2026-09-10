@@ -3,13 +3,16 @@ import { raw, when, type JSXNode } from '@ox-content/vite-plugin';
 import { Header } from './Header.tsx';
 import { Footer } from './Footer.tsx';
 import { Loading } from './Loading.tsx';
+import { LOADING_CRITICAL_CSS } from '../lib/loading-critical.ts';
 import {
   DEFAULT_DESCRIPTION,
   DEFAULT_TITLE,
   SITE_NAME,
   SITE_URL,
+  SPECULATION_RULES_JSON,
   type JsonLd,
   clientScriptSrc,
+  clientStylesheetHref,
   isProdBuild,
 } from '../lib/site.ts';
 
@@ -75,8 +78,10 @@ export function SiteShell({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        {when(isProdBuild(), <link rel="stylesheet" href="/assets/client.css" />)}
+        {raw(`<style>${LOADING_CRITICAL_CSS}</style>`)}
+        {when(isProdBuild(), <link rel="stylesheet" href={clientStylesheetHref('site')} />)}
         {when(!isProdBuild(), <script type="module" src="/@vite/client"></script>)}
+        {raw(`<script type="speculationrules">${SPECULATION_RULES_JSON}</script>`)}
         {raw(jsonLdArray.map((ld) => `<script type="application/ld+json">${JSON.stringify(ld)}</script>`).join(''))}
       </head>
       <body>
@@ -84,7 +89,7 @@ export function SiteShell({
         <Header />
         <main>{children}</main>
         <Footer />
-        <script type="module" src={clientScriptSrc()}></script>
+        <script type="module" src={clientScriptSrc('site')}></script>
       </body>
     </html>
   );

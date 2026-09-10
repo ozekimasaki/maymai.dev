@@ -27,10 +27,12 @@ theme/
 └── components/
     └── SiteShell.tsx
 src/
-├── client.ts
+├── site-client.ts
+├── mp-client.ts
 ├── scripts/
 └── styles/
-    └── main.css
+    ├── site.css
+    └── mp.css
 ```
 
 ## 再利用の考え方

@@ -24,6 +24,7 @@ export function WorksSection(): JSXNode {
                   width="580"
                   height="360"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div class="Works__cardInfo">

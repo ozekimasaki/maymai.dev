@@ -15,7 +15,16 @@ const loadingScript = `(function() {
     return;
   }
   document.body.style.overflow = 'hidden';
-  try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+  function markShown() {
+    try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+  }
+  if (document.prerendering) {
+    document.addEventListener('prerenderingchange', function() {
+      if (!document.prerendering) markShown();
+    }, { once: true });
+  } else {
+    markShown();
+  }
   el.addEventListener('animationend', function(e) {
     if (e.animationName === 'loadingFadeOut') {
       el.remove();

@@ -16,7 +16,8 @@ alwaysApply: true
 
 ```text
 src/
-├── client.ts
+├── site-client.ts
+├── mp-client.ts
 ├── scripts/
 │   └── menu-toggle.ts
 └── lib/
@@ -38,6 +39,6 @@ theme/
 
 - 共有スクリプトは `src/scripts/` に集約する
 - テーマ専用の処理は `theme/` に閉じ、ブラウザ API は置かない
-- `src/client.ts` から import したスクリプトは Vite がバンドルする
+- `src/site-client.ts` / `src/mp-client.ts` から import したスクリプトは Vite がバンドルする
 - `public/` 配下の JS は素通しで配信されるため、最適化や依存解決を期待しない
 - 相対 import には拡張子（`.ts` / `.tsx`）を付ける

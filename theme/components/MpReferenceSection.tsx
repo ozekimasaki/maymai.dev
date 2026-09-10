@@ -74,6 +74,8 @@ export function MpReferenceSection(): JSXNode {
                   class="MpRef__cardImg"
                   width={sheet.width}
                   height={sheet.height}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="MpRef__cardOverlay"></div>
                 <span class="MpRef__cardNum">{sheet.id}</span>

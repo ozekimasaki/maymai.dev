@@ -45,10 +45,10 @@ function boot(): void {
   initMpPageTop();
 
   if (document.querySelector('.js-mp-gallery-splide')) {
-    void import('./init-mp-gallery');
+    void import('./init-mp-gallery').catch(() => {});
   }
 
-  void import('./layout-interactions');
+  void import('./layout-interactions').catch(() => {});
 }
 
 if (document.readyState === 'loading') {

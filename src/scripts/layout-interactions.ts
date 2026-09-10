@@ -26,5 +26,5 @@ if (hasSamePageHashLinks()) {
 }
 
 if (imports.length > 0) {
-  void Promise.all(imports);
+  void Promise.all(imports).catch(() => {});
 }

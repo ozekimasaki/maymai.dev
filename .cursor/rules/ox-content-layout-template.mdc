@@ -22,7 +22,7 @@ alwaysApply: false
 
 - グローバル CSS、共通 Web フォント、サイト共通 JS はシェルに集約する
 - ページ側で重複 import しない
-- クライアント資産は `/assets/client.css` と `/assets/client.js`
+- クライアント資産は `/assets/site.css` / `/assets/mp.css` と対応する JS（本番ではハッシュ付き）
 
 ## 必須メタ情報
 

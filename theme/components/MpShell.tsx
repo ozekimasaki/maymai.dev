@@ -7,8 +7,10 @@ import {
   MAYPROJECT_TITLE,
   SITE_NAME,
   SITE_URL,
+  SPECULATION_RULES_JSON,
   type JsonLd,
   clientScriptSrc,
+  clientStylesheetHref,
   isProdBuild,
 } from '../lib/site.ts';
 
@@ -24,6 +26,7 @@ type MpShellProps = {
   jsonLd?: JsonLd | JsonLd[];
   shareOgWithProject?: boolean;
   currentPath?: string;
+  preloadHero?: boolean;
   children?: JSXNode;
 };
 
@@ -39,6 +42,7 @@ export function MpShell({
   jsonLd,
   shareOgWithProject = false,
   currentPath = '/mayproject/',
+  preloadHero = false,
   children,
 }: MpShellProps): JSXNode {
   const resolvedOgTitle = ogTitle ?? (shareOgWithProject ? MAYPROJECT_TITLE : title);
@@ -81,14 +85,12 @@ export function MpShell({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap"
-          rel="stylesheet"
-        />
-        {when(isProdBuild(), <link rel="stylesheet" href="/assets/client.css" />)}
+        <link rel="stylesheet" href="/fonts/zen-maru-gothic/fonts.css" />
+        {when(preloadHero, <link rel="preload" as="image" href="/mayproject/img_mv_bg.avif" type="image/avif" media="(min-width: 768px)" fetchpriority="high" />)}
+        {when(preloadHero, <link rel="preload" as="image" href="/mayproject/img_mv_bg_sp.avif" type="image/avif" media="(max-width: 767px)" fetchpriority="high" />)}
+        {when(isProdBuild(), <link rel="stylesheet" href={clientStylesheetHref('mp')} />)}
         {when(!isProdBuild(), <script type="module" src="/@vite/client"></script>)}
+        {raw(`<script type="speculationrules">${SPECULATION_RULES_JSON}</script>`)}
         {raw(jsonLdArray.map((ld) => `<script type="application/ld+json">${JSON.stringify(ld)}</script>`).join(''))}
       </head>
       <body class="MpBody">
@@ -107,7 +109,7 @@ export function MpShell({
           </svg>
           <span class="MpPageTop__label">TOP</span>
         </button>
-        <script type="module" src={clientScriptSrc()}></script>
+        <script type="module" src={clientScriptSrc('mp')}></script>
       </body>
     </html>
   );

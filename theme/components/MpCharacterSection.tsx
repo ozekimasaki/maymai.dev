@@ -105,7 +105,7 @@ export function MpCharacterSection(): JSXNode {
             <div class="MpCharacter__imageWrap">
               <span class="MpCharacter__number">{char.number}</span>
               <div class="MpCharacter__imageFrame">
-                <img src={char.image} alt={char.name} class="MpCharacter__image" width="1200" height="1600" />
+                <img src={char.image} alt={char.name} class="MpCharacter__image" width="1200" height="1600" loading="lazy" decoding="async" />
               </div>
               <div class="MpCharacter__progress">
                 <span class="MpCharacter__progressFill"></span>

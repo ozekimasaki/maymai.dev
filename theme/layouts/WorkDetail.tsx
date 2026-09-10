@@ -77,7 +77,7 @@ export function WorkDetailLayout({ children }: ThemeProps): JSXNode {
           </div>
 
           <div class="WorkDetail__thumbnail u-anime" style="--delay: .2s;">
-            <img src={thumbnail} alt={page.title} width="1182" height="680" />
+            <img src={thumbnail} alt={page.title} width="1182" height="680" decoding="async" />
           </div>
 
           <div class="WorkDetail__body u-anime" style="--delay: .15s;">

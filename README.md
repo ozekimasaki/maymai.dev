@@ -32,7 +32,7 @@ npm install
 
 ## 使い方
 
-各コマンドは実行前に `scripts/generate-assets.mjs` を走らせてアセットを生成します。見た目の確認は `npm run build` のあと `npm run preview`（デフォルト `http://localhost:4173`）を使ってください。`vite` 開発サーバーは ox-content 標準のドキュメント UI になります。
+各コマンドは実行前に `scripts/generate-assets.mjs` を走らせてアセットを生成します（`preview` を除く）。見た目の確認は `npm run build` のあと `npm run preview`（デフォルト `http://localhost:4173`）を使ってください。`vite` 開発サーバーは ox-content 標準のドキュメント UI になります。
 
 ```bash
 # 開発サーバー（http://localhost:5173）
@@ -57,8 +57,9 @@ npm run deploy
 | :-- | :-- |
 | `npm run dev` | アセット生成後に開発サーバーを起動（`http://localhost:5173`） |
 | `npm run build` | アセット生成後に本番ビルドを `./dist` へ出力 |
-| `npm run preview` | アセット生成後にビルド結果をローカルでプレビュー（`http://localhost:4173`） |
+| `npm run preview` | ビルド結果をローカルでプレビュー（`http://localhost:4173`） |
 | `npm run deploy` | アセット生成 → ビルド → `wrangler deploy` |
+| `npm run generate:assets` | OG / アイコン / フォントなどを強制再生成 |
 | `npm run generate:gallery` | ギャラリー画像を生成（デフォルトプリセット `webp-light`） |
 | `npm run generate:gallery:webp` | ギャラリー画像を WebP（`webp-light`）で生成 |
 | `npm run generate:gallery:avif` | ギャラリー画像を AVIF（`avif-light`）で生成 |
@@ -75,7 +76,8 @@ maymai.dev/
 │   ├── generate-assets.mjs         # OG 画像 / アイコン / ギャラリー生成のエントリポイント
 │   └── generate-works-thumbnails.mjs  # Works サムネイル（GitHub OGP）生成
 ├── src/
-│   ├── client.ts               # クライアント CSS / JS のエントリ
+│   ├── site-client.ts          # ポートフォリオのクライアント CSS / JS
+│   ├── mp-client.ts            # Mayproject のクライアント CSS / JS
 │   ├── lib/                    # 共有ロジック（likes API など）
 │   ├── scripts/                # 共有クライアントスクリプト（.ts）
 │   ├── styles/                 # Lightning CSS（素の CSS）

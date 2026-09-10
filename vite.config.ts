@@ -3,7 +3,14 @@ import { resolve } from 'node:path';
 import { oxContent } from '@ox-content/vite-plugin';
 import { theme } from './theme/index.ts';
 import { likesDevPlugin } from './vite-likes-plugin.ts';
+import { applyClientAssets } from './scripts/apply-client-assets.mjs';
 import { normalizeHtmlPaths } from './scripts/normalize-html-paths.mjs';
+
+const lightningTargets = {
+  chrome: 123 << 16,
+  firefox: 123 << 16,
+  safari: 18 << 16,
+};
 
 export default defineConfig({
   publicDir: 'public',
@@ -13,24 +20,30 @@ export default defineConfig({
       drafts: {
         customMedia: true,
       },
+      targets: lightningTargets,
     },
   },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     cssMinify: 'lightningcss',
-    rollupOptions: {
-      input: resolve('src/client.ts'),
+    cssCodeSplit: true,
+    manifest: true,
+    reportCompressedSize: false,
+    modulePreload: {
+      polyfill: false,
+    },
+    target: ['chrome123', 'firefox123', 'safari18'],
+    cssTarget: ['chrome123', 'firefox123', 'safari18'],
+    rolldownOptions: {
+      input: {
+        site: resolve('src/site-client.ts'),
+        mp: resolve('src/mp-client.ts'),
+      },
       output: {
-        entryFileNames: 'assets/client.js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: (assetInfo) => {
-          const names = assetInfo.names ?? (assetInfo.name ? [assetInfo.name] : []);
-          if (names.some((name) => name.endsWith('.css'))) {
-            return 'assets/client.css';
-          }
-          return 'assets/[name][extname]';
-        },
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
       },
     },
   },
@@ -71,7 +84,9 @@ export default defineConfig({
       apply: 'build',
       enforce: 'post',
       async closeBundle() {
-        await normalizeHtmlPaths(resolve('dist'));
+        const outDir = resolve('dist');
+        await applyClientAssets(outDir);
+        await normalizeHtmlPaths(outDir);
       },
     },
   ],
