@@ -15,6 +15,31 @@
 - 対象タスク: コーディング支援、リファクタリング、デバッグ、開発関連ドキュメント作成
 - 対象技術: Vite / ox-content / Lightning CSS / TypeScript / Cloudflare Workers
 
+## 0-1. プロジェクト概要とセットアップ
+
+`portfolio_maymai`（[https://maymai.dev](https://maymai.dev)）は Vite + ox-content の SSG で静的 HTML を出力し、Cloudflare Workers 上で配信する。`/api/likes` だけ Worker 上の KV を使う。
+
+### 技術スタック
+
+- Vite / ox-content / TypeScript / Lightning CSS（素の CSS）
+- 画像処理: `sharp`、カルーセル: `@splidejs/splide`
+- サイトマップ: ox-content の sitemap 出力（`/api/` は静的ページに含まれない）
+- 見た目の確認は `npm run build` のあと `npm run preview`。`vite` 開発サーバーは ox-content 標準のドキュメント UI になる
+
+### 主なエントリポイント / ディレクトリ
+
+- `content/`: ルーティング起点。`layout` と `permalink` を付ける Markdown / MDX
+- `theme/layouts/` / `theme/components/`: ox-content の静的 JSX テーマ
+- `workers/likes.ts`: いいね API。本番は Cloudflare KV（`LIKES_KV`）、開発・preview 時は Vite プラグインのインメモリ Map
+- `src/client.ts`: クライアント CSS / JS のエントリ
+- `scripts/generate-assets.mjs`: OG 画像・アイコン・Works サムネイル・ギャラリー画像を生成するアセット生成のエントリポイント（`dev` / `build` / `preview` の前に必ず実行される）
+- `wrangler.jsonc`: Cloudflare Workers 設定（`LIKES_KV` バインディング、`./dist` の静的アセットなど）
+
+### セットアップ
+
+- Node.js は `>=24`（`package.json` の `engines`）
+- 依存インストール: `npm install`
+
 ## 1. ファイル基本仕様（`file-encoding.mdc`）
 
 - 文字コード: UTF-8（BOMなし）
@@ -35,18 +60,27 @@
 ### 開発コマンド
 
 ```bash
-# 開発サーバー
+# 依存インストール
+npm install
+
+# 開発サーバー（http://localhost:5173）
 npm run dev
 
-# 本番ビルド
+# 本番ビルド（出力先: ./dist）
 npm run build
 
-# ビルド済み成果物の確認
+# ビルド済み成果物の確認（http://localhost:4173）
 npm run preview
 
 # Cloudflare へデプロイ
 npm run deploy
+
+# ギャラリー画像生成（プリセット指定版もあり）
+npm run generate:gallery
 ```
+
+- `dev` / `build` / `preview` / `deploy` は実行前に `scripts/generate-assets.mjs` を走らせる。
+- **テスト / lint**: 専用のテストランナーや ESLint / Prettier は導入されていない。品質確認は `npm run build` と手動の Chrome DevTools 検証（§9）で行う。新たにツールを追加する場合はユーザーに確認する。
 
 ### 基本構成
 
