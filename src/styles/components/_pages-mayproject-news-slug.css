@@ -1,0 +1,106 @@
+.MpNewsDetail {
+    padding: 128px 0 96px;
+    background-color: #fff;
+    min-height: 100vh;
+
+    @media (--sp) {
+      padding: 88px 0 56px;
+    }
+
+    .MpNewsDetail__inner {
+      max-width: 720px;
+      margin-inline: auto;
+      padding-inline: 40px;
+
+      @media (--sp) {
+        padding-inline: 20px;
+      }
+    }
+
+    .MpNewsDetail__meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .MpNewsDetail__date {
+      font-size: .75rem;
+      letter-spacing: .05em;
+      color: var(--mp-color-text-light);
+    }
+
+    .MpNewsDetail__badge {
+      display: inline-block;
+      padding: 2px 12px;
+      font-size: .625rem;
+      letter-spacing: .08em;
+      color: #fff;
+    }
+
+    .MpNewsDetail__heading {
+      font-family: var(--mp-font-main);
+      font-size: 1.75rem;
+      line-height: 1.6;
+      letter-spacing: .06em;
+      color: var(--mp-color-dark);
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--mp-color-border);
+
+      @media (--sp) {
+        font-size: 1.25rem;
+      }
+    }
+
+    .MpNewsDetail__body {
+      padding-top: 32px;
+
+      p {
+        font-size: .9375rem;
+        line-height: 2.2;
+        letter-spacing: .04em;
+        color: rgba(26, 26, 46, .9);
+      }
+
+      p + p {
+        margin-top: 24px;
+      }
+    }
+
+    .MpNewsDetail__paragraph {
+      font-size: .9375rem;
+      line-height: 2.2;
+      letter-spacing: .04em;
+      color: rgba(26, 26, 46, .9);
+
+      & + & {
+        margin-top: 24px;
+      }
+    }
+
+    .MpNewsDetail__nav {
+      display: flex;
+      gap: 24px;
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--mp-color-border);
+
+      @media (--sp) {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    .MpNewsDetail__navLink {
+      font-size: .8125rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-primary);
+      transition: opacity var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          opacity: .7;
+        }
+      }
+    }
+  }

@@ -1,8 +1,10 @@
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, rm, stat, writeFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { basename, dirname, extname, resolve } from 'path';
 import { generateWorksThumbnails } from './generate-works-thumbnails.mjs';
+import { generateMpFonts } from './generate-fonts.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(__dirname, '..', 'public');
@@ -10,7 +12,7 @@ const gallerySourceDir = resolve(__dirname, '..', 'Gallery');
 const galleryOutputDir = resolve(publicDir, 'gallery');
 const galleryManifestDir = resolve(__dirname, '..', 'src', 'data', 'generated');
 const galleryManifestPath = resolve(galleryManifestDir, 'mp-gallery-manifest.json');
-const galleryCacheDir = resolve(__dirname, '..', '.astro', 'cache');
+const galleryCacheDir = resolve(__dirname, '..', '.cache');
 const galleryCachePath = resolve(galleryCacheDir, 'mp-gallery-cache.json');
 const GALLERY_SOURCE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.avif']);
 const GALLERY_OUTPUT_EXTENSIONS = new Set(['.avif', '.webp']);
@@ -69,6 +71,8 @@ const shouldGenerateGallery = cliArgs.includes('--gallery')
   || cliArgs.includes('--only-gallery')
   || process.env.GENERATE_GALLERY === '1';
 const shouldGenerateOnlyGallery = cliArgs.includes('--only-gallery');
+const forceAssets = cliArgs.includes('--force');
+const brandCachePath = resolve(galleryCacheDir, 'brand-assets.json');
 
 const BRAND = {
   bg: '#1a1b1e',
@@ -78,7 +82,11 @@ const BRAND = {
   accent: '#c85b17',
 };
 
-async function generateOgImage() {
+function hashString(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+async function generateOgImage(brandCache) {
   const svg = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
     <rect width="100%" height="100%" fill="${BRAND.bg}"/>
 
@@ -99,22 +107,41 @@ async function generateOgImage() {
 
     <text x="80" y="590" font-family="'Courier New', monospace" font-size="13" fill="${BRAND.label}" opacity=".4">https://maymai.dev</text>
   </svg>`;
+  const outputPath = resolve(publicDir, 'og-image.png');
+  const hash = hashString(svg);
+  const existing = await getFileStat(outputPath);
 
-  await sharp(Buffer.from(svg)).png({ quality: 90 }).toFile(resolve(publicDir, 'og-image.png'));
+  if (!forceAssets && brandCache.ogImage === hash && existing) {
+    console.log('Skipped: public/og-image.png (unchanged)');
+    return;
+  }
+
+  await sharp(Buffer.from(svg)).png({ quality: 90 }).toFile(outputPath);
+  brandCache.ogImage = hash;
   console.log('Generated: public/og-image.png');
 }
 
-async function generateIcon(size, filename) {
+async function generateIcon(size, filename, brandCache) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 32 32">
     <rect width="32" height="32" rx="6" fill="${BRAND.bg}"/>
     <path d="M6 24V8l5 10 5-10v16" stroke="${BRAND.text}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     <circle cx="24.5" cy="21.5" r="2.5" fill="${BRAND.accent}"/>
   </svg>`;
+  const outputPath = resolve(publicDir, filename);
+  const cacheKey = `icon-${filename}`;
+  const hash = hashString(`${size}:${svg}`);
+  const existing = await getFileStat(outputPath);
+
+  if (!forceAssets && brandCache[cacheKey] === hash && existing) {
+    console.log(`Skipped: public/${filename} (unchanged)`);
+    return;
+  }
 
   await sharp(Buffer.from(svg))
     .resize(size, size)
     .png()
-    .toFile(resolve(publicDir, filename));
+    .toFile(outputPath);
+  brandCache[cacheKey] = hash;
   console.log(`Generated: public/${filename}`);
 }
 
@@ -354,14 +381,16 @@ async function generateGalleryImages() {
 
 async function main() {
   const generators = [];
+  const brandCache = await readJsonFile(brandCachePath, {});
 
   if (!shouldGenerateOnlyGallery) {
     generators.push(
-      generateOgImage(),
-      generateIcon(180, 'apple-touch-icon.png'),
-      generateIcon(192, 'icon-192.png'),
-      generateIcon(512, 'icon-512.png'),
-      generateWorksThumbnails(),
+      generateOgImage(brandCache),
+      generateIcon(180, 'apple-touch-icon.png', brandCache),
+      generateIcon(192, 'icon-192.png', brandCache),
+      generateIcon(512, 'icon-512.png', brandCache),
+      generateWorksThumbnails({ force: forceAssets }),
+      generateMpFonts({ force: forceAssets }),
     );
   }
 
@@ -370,6 +399,11 @@ async function main() {
   }
 
   await Promise.all(generators);
+
+  if (!shouldGenerateOnlyGallery) {
+    await mkdir(galleryCacheDir, { recursive: true });
+    await writeFile(brandCachePath, `${JSON.stringify(brandCache, null, 2)}\n`, 'utf8');
+  }
 
   if (!shouldGenerateGallery) {
     console.log('Skipped: gallery conversion.');

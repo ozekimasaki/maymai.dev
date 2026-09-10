@@ -1,0 +1,189 @@
+.WorkDetail {
+    padding: 128px 0 80px;
+
+    @media (--sp) {
+      padding: 100px 0 60px;
+    }
+
+    .WorkDetail__header {
+      margin-bottom: 48px;
+    }
+
+    .WorkDetail__category {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      line-height: 1.5;
+      color: var(--color-label);
+      margin-bottom: 12px;
+    }
+
+    .WorkDetail__title {
+      font-family: var(--font-heading);
+      font-weight: 400;
+      font-size: 2.5rem;
+      line-height: 1.4;
+      color: var(--color-text);
+
+      @media (--sp) {
+        font-size: 1.75rem;
+      }
+    }
+
+    .WorkDetail__description {
+      margin-top: 16px;
+      font-size: .875rem;
+      line-height: 1.8;
+      color: var(--color-label);
+    }
+
+    .WorkDetail__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      padding: 24px 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 48px;
+
+      @media (--sp) {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+
+    .WorkDetail__metaItem {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .WorkDetail__metaKey {
+      font-family: var(--font-mono);
+      font-size: .625rem;
+      color: var(--color-label);
+      flex-shrink: 0;
+    }
+
+    .WorkDetail__metaValue {
+      font-family: var(--font-heading);
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--color-text);
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+    }
+
+    .WorkDetail__thumbnail {
+      margin-bottom: 64px;
+      aspect-ratio: 1182 / 680;
+      overflow: hidden;
+      padding: 24px;
+      background-color: var(--color-bg);
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+      }
+    }
+
+    .WorkDetail__body {
+      max-width: 720px;
+      margin-inline: auto;
+
+      h2 {
+        font-family: var(--font-heading);
+        font-weight: 400;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        margin-top: 48px;
+        margin-bottom: 16px;
+        color: var(--color-text);
+      }
+
+      p {
+        font-size: .875rem;
+        line-height: 2;
+        margin-bottom: 1.5em;
+      }
+
+      ul,
+      ol {
+        margin-bottom: 1.5em;
+        padding-left: 1.5em;
+        list-style: disc;
+      }
+
+      li {
+        font-size: .875rem;
+        line-height: 2;
+        margin-bottom: .5em;
+      }
+    }
+
+    .WorkDetail__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      max-width: 720px;
+      margin-inline: auto;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .WorkDetail__repoLink {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      height: 48px;
+      padding: 0 20px;
+      border: 1px solid var(--color-text);
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      color: var(--color-text);
+      transition: background-color var(--duration-base) ease, color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          background-color: var(--color-text);
+          color: var(--color-bg);
+          text-decoration: none;
+        }
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--color-text);
+        outline-offset: 2px;
+      }
+    }
+
+    .WorkDetail__back {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .WorkDetail__backLink {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--color-label);
+      transition: color var(--duration-base) ease;
+
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+    }
+  }

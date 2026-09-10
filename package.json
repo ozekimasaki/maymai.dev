@@ -4,31 +4,28 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=24"
   },
   "scripts": {
-    "dev": "node scripts/generate-assets.mjs && astro dev",
-    "build": "node scripts/generate-assets.mjs && astro build",
-    "preview": "node scripts/generate-assets.mjs && astro preview",
-    "deploy": "node scripts/generate-assets.mjs && astro build && wrangler deploy",
+    "dev": "node scripts/generate-assets.mjs && vite",
+    "build": "node scripts/generate-assets.mjs && vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && wrangler deploy",
+    "generate:assets": "node scripts/generate-assets.mjs --force",
     "generate:gallery": "node scripts/generate-assets.mjs --only-gallery",
     "generate:gallery:webp": "node scripts/generate-assets.mjs --only-gallery --preset=webp-light",
     "generate:gallery:avif": "node scripts/generate-assets.mjs --only-gallery --preset=avif-light",
-    "generate:gallery:quality": "node scripts/generate-assets.mjs --only-gallery --preset=avif-quality",
-    "astro": "astro"
+    "generate:gallery:quality": "node scripts/generate-assets.mjs --only-gallery --preset=avif-quality"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/cloudflare": "^14.2.1",
-    "@astrojs/compiler-rs": "^0.3.2",
-    "@astrojs/sitemap": "^3.7.3",
     "@splidejs/splide": "^4.1.4",
-    "astro": "^7.2.1",
-    "heerich": "^0.3.0",
-    "sass": "^1.102.0",
-    "sharp": "^0.34.5",
-    "swiper": "^12.1.4",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@ox-content/vite-plugin": "^3.1.7",
+    "lightningcss": "^1.33.0",
     "typescript": "^5.9.3",
+    "vite": "^8.3.0",
     "wrangler": "^4.121.0"
   }
 }

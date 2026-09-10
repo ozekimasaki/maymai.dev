@@ -1,0 +1,125 @@
+.MpAbout {
+    background-color: color-mix(in srgb, var(--mp-color-bg-warm) 95%, transparent);
+    padding: 112px 0;
+    position: relative;
+    overflow: hidden;
+
+    @media (--sp) {
+      padding: 64px 0;
+    }
+
+    .MpAbout__radial {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(
+        circle at center,
+        rgba(232, 115, 42, .05) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .MpAbout__header {
+      position: relative;
+      text-align: center;
+      margin-bottom: 64px;
+      grid-column: 3 / 11;
+
+      @media (--sp) {
+        margin-bottom: 40px;
+      }
+    }
+
+    .MpAbout__titleBg {
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mp-font-main);
+      font-size: 6.25rem;
+      font-weight: 400;
+      letter-spacing: .1em;
+      color: rgba(232, 115, 42, .05);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+
+      @media (--sp) {
+        font-size: 3.5rem;
+        top: -16px;
+      }
+    }
+
+    .MpAbout__titleCenter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .MpAbout__titleAccent {
+      width: 40px;
+      height: 2px;
+      background-color: var(--mp-color-primary);
+    }
+
+    .MpAbout__titleGroup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .MpAbout__titleEn {
+      font-size: .6875rem;
+      letter-spacing: .25em;
+      color: var(--mp-color-primary);
+    }
+
+    .MpAbout__titleJa {
+      font-family: var(--mp-font-main);
+      font-size: 2rem;
+      letter-spacing: .08em;
+      color: var(--mp-color-dark);
+
+      @media (--sp) {
+        font-size: 1.5rem;
+      }
+    }
+
+    .MpAbout__body {
+      text-align: center;
+      grid-column: 3 / 11;
+    }
+
+    .MpAbout__text {
+      font-size: .875rem;
+      line-height: 2.6;
+      letter-spacing: .04em;
+      color: rgba(26, 26, 46, .9);
+
+      & + & {
+        margin-top: 0;
+      }
+
+      @media (--sp) {
+        font-size: .8125rem;
+        line-height: 2.2;
+
+        br {
+          display: none;
+        }
+      }
+    }
+
+    .MpAbout__divider {
+      width: 48px;
+      height: 1px;
+      background-color: rgba(232, 115, 42, .3);
+      margin: 40px auto 0;
+    }
+  }

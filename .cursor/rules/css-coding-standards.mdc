@@ -1,6 +1,6 @@
 ---
-description: CSS コーディング規約（グローバル CSS / Astro scoped style）
-globs: **/*.scss, **/*.css, **/*.astro
+description: CSS コーディング規約（Lightning CSS / 素の CSS）
+globs: **/*.css
 alwaysApply: false
 ---
 
@@ -8,27 +8,28 @@ alwaysApply: false
 
 ## セレクタ
 
-- グローバル CSS / SCSS はクラスセレクタ中心で書く
-- `.astro` の scoped style 内では、必要最小限の要素セレクタを許容する
+- クラスセレクタ中心で書く
 - ID セレクタは禁止
 - セレクタ深さは最大 3 階層を目安にする
+- 空セレクタ禁止
 
-```astro
-<style lang="scss">
-  .Card {
-    padding: 24px;
-  }
-
-  h2 {
-    margin: 0;
-  }
-</style>
+```css
+.Card {
+  padding: 24px;
+}
 ```
+
+## Lightning CSS 固有
+
+- `//` コメント禁止。`/* */` のみ
+- `@custom-media` はファイル先頭のトップレベルに置く（`@layer` や `@import` のレイヤーラップ内に置かない）
+- `@keyframes` はセレクタにネストせずトップレベルへ出す
+- `&--modifier` は使わない。`.Block__el--modifier` または `&__el--modifier` を使う
+- `@import` より前にルールを置かない
 
 ## グローバル汚染の抑制
 
-- `:global()` や `<style is:global>` は必要最小限にする
-- サードパーティライブラリの上書きや reset 用途以外で広域指定しない
+- reset とトークン以外で広域指定しない
 
 ## ブロック・宣言
 
@@ -61,7 +62,7 @@ alwaysApply: false
 
 - `:hover` は必ず `@media (any-hover: hover)` で囲む
 
-```scss
+```css
 @media (any-hover: hover) {
   .Button:hover {
     opacity: .7;
@@ -71,7 +72,7 @@ alwaysApply: false
 
 ## `transition: all` 禁止
 
-```scss
+```css
 .Button {
   transition: background .3s ease, color .3s ease;
 }
@@ -79,9 +80,9 @@ alwaysApply: false
 
 ## フォーカス状態
 
-```scss
+```css
 .Button:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 ```

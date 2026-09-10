@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+# Vite / ox-content ワークフロー
+
+## 開発コマンド
+
+```bash
+# 開発サーバー
+npm run dev
+
+# 本番ビルド
+npm run build
+
+# ビルド後の確認
+npm run preview
+
+# Cloudflare へデプロイ
+npm run deploy
+```
+
+## 基本ディレクトリ構成
+
+```text
+プロジェクトルート/
+├── content/              # Markdown / MDX
+├── theme/                # ox-content 静的 JSX
+├── public/               # そのまま配信するファイル
+├── src/
+│   ├── site-client.ts    # ポートフォリオの CSS / JS エントリ
+│   ├── mp-client.ts       # Mayproject の CSS / JS エントリ
+│   ├── scripts/          # 共有ブラウザスクリプト
+│   ├── styles/           # Lightning CSS
+│   └── lib/
+├── workers/likes.ts
+├── vite.config.ts
+└── wrangler.jsonc
+```
+
+## 運用ルール
+
+1. 公開ページは `content/` が起点。`layout` と `permalink` を付ける
+2. 共通 UI は `theme/layouts/` と `theme/components/` に分割する
+3. 自作の CSS / JS は原則 `src/` 配下に置く
+4. `public/` は favicon, robots.txt, そのまま配信したいファイルのみに使う
+5. 対話 UI はバニラ JS（`js-` クラス）を維持し、React / Vue 島は追加しない
+6. CSS は Dart Sass を使わず Lightning CSS + 素の CSS で書く
+7. 見た目の確認は `npm run build` のあと `npm run preview` を使う。`vite` 開発サーバーは ox-content 標準のドキュメント UI になる
+
+## クライアント資産
+
+- CSS とブラウザ JS は `src/site-client.ts` / `src/mp-client.ts` から読み込む
+- レイアウトは `/assets/site.css` / `/assets/mp.css` と対応する JS をリンクする（本番ではハッシュ付き）
+- likes API は開発時 Vite プラグイン、本番は `workers/likes.ts`

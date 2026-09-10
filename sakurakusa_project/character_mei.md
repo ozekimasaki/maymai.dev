@@ -1,6 +1,6 @@
 ---
 title: character_mei
-aliases: ["桜草メイ", "メイ", "Mei Sakurakusa", "メイ・サクラソウ"]
+aliases: ["桜草メイ", "メイ", "May Sakurakusa", "メイ・サクラソウ"]
 type: character
 role: main
 age: 20
@@ -33,7 +33,7 @@ updated: 2026-01-05
 
 ## 1. 基本プロフィール
 - 名前：桜草メイ（サクラソウ メイ）
-- パスポート表記：Mei Sakurakusa
+- パスポート表記：May Sakurakusa
 - 年齢：20歳
 - 出身：日本・北海道（自然豊かな田舎町）
 - 現在地：イギリス・ロンドン郊外

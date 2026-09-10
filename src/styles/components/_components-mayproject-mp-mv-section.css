@@ -1,0 +1,84 @@
+.MpMv {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    z-index: 0;
+
+    @media (--sp) {
+      min-height: 500px;
+    }
+
+    .MpMv__bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .MpMv__bgPicture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .MpMv__bgImg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .MpMv__overlay {
+      position: absolute;
+      inset: 0;
+    }
+
+    .MpMv__heading {
+      position: absolute;
+      left: 48px;
+      bottom: 48px;
+      z-index: 1;
+      margin: 0;
+
+      @media (--sp) {
+        left: 24px;
+        bottom: 24px;
+      }
+    }
+
+    .MpMv__logo {
+      width: 280px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .25));
+
+      @media (--sp) {
+        width: 180px;
+      }
+    }
+
+    /* Side vertical text */
+    .MpMv__side {
+      position: absolute;
+      right: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .MpMv__sideLine {
+      width: 1px;
+      height: 64px;
+      background-color: rgba(255, 255, 255, .35);
+    }
+
+    .MpMv__sideText {
+      writing-mode: vertical-rl;
+      font-size: .875rem;
+      letter-spacing: .4em;
+      color: rgba(255, 255, 255, .35);
+    }
+  }

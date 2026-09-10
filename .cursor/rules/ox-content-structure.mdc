@@ -1,0 +1,57 @@
+---
+alwaysApply: true
+---
+
+# ox-content 構成・命名規則
+
+## ファイル命名
+
+| 種別 | 規則 | 例 |
+|---|---|---|
+| テーマレイアウト | PascalCase の `.tsx` | `Home.tsx`, `WorkDetail.tsx` |
+| テーマコンポーネント | PascalCase | `Header.tsx`, `HeroSection.tsx`, `SiteShell.tsx` |
+| コンテンツ | ルート準拠の kebab-case | `content/index.mdx`, `content/blog/first-post.md` |
+| 共有スクリプト | kebab-case | `scroll-header.ts` |
+
+## 基本構成
+
+```text
+content/
+├── index.mdx
+├── works/
+└── blog/
+theme/
+├── index.ts
+├── layouts/
+│   └── Home.tsx
+└── components/
+    └── SiteShell.tsx
+src/
+├── site-client.ts
+├── mp-client.ts
+├── scripts/
+└── styles/
+    ├── site.css
+    └── mp.css
+```
+
+## 再利用の考え方
+
+- ページ全体の共通構造は `theme/components/SiteShell.tsx` / `MpShell.tsx`
+- 再利用 UI は `theme/components/`
+- ページ固有の小さな構造は該当レイアウトまたはセクションコンポーネント内に閉じる
+- Markdown 本文は `raw(page.html)` または `children` で描画する
+
+## テーマ JSX
+
+- `jsxImportSource` は `@ox-content/vite-plugin`
+- 属性は `class` を使う
+- `each(items, (item, i) => ...)` / `when(condition, node)` を使う
+- レイアウト関数は同期。一覧は `useSiteConfig().pages` から取る
+
+## ルーティング
+
+- URL は frontmatter の `permalink` で末尾スラッシュ付きにする
+- 一覧は `content/blog/index.md` など
+- 詳細は `content/blog/*.md`
+- 404 は `content/404.md`
